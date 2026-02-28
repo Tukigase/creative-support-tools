@@ -1,0 +1,171 @@
+/* メインコンテナ */
+.container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    max-width: 1000px;
+    margin: 40px auto;
+    gap: 30px;
+}
+
+/* プレビューエリア（ここで色を確認する） */
+.preview-box {
+    width: 100%;
+    padding: 50px 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s, color 0.3s;
+    /* 初期値はJSでセットされます */
+}
+
+.preview-box h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+/* 色選択エリア */
+.color-picker-area {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: var(--bg-footer);
+    padding: 30px;
+    border-radius: 12px;
+    box-sizing: border-box;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.color-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40%;
+}
+
+.color-section h3 {
+    font-size: 1.2rem;
+    color: var(--sub-text);
+    margin-bottom: 15px;
+}
+
+/* カラーピッカーの装飾 */
+.input-wrapper {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 15px;
+    border: 3px solid var(--sub-text);
+    transition: border-color 0.3s;
+}
+
+.input-wrapper:hover {
+    border-color: var(--main-btn);
+}
+
+input[type="color"] {
+    width: 200%;
+    height: 200%;
+    transform: translate(-25%, -25%);
+    border: none;
+    cursor: pointer;
+}
+
+/* 情報表示 */
+.color-info {
+    text-align: left;
+    background-color: var(--bg-base);
+    padding: 15px;
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.color-info p {
+    font-size: 0.9rem;
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.color-info .label {
+    color: var(--sub-text);
+    font-weight: normal;
+    width: 40px;
+}
+
+/* 入れ替えボタン */
+#swapColorsButton {
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+    background-color: var(--main-btn);
+    color: var(--bg-base);
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.3s, background-color 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+#swapColorsButton:hover {
+    transform: rotate(180deg);
+    background-color: var(--accent);
+}
+
+/* コピーボタン */
+.copy-button {
+    padding: 4px 10px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--main-btn);
+    color: var(--bg-base);
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+.copy-button:hover {
+    background-color: var(--accent);
+}
+
+.copy-button.copied {
+    background-color: #10B981; /* 成功時の緑色 */
+    color: white;
+}
+
+/* フッター */
+.footer {
+    background-color: var(--bg-footer);
+    text-align: center;
+    padding: 15px;
+    color: var(--sub-text);
+    font-size: 0.8rem;
+    margin-top: auto;
+}
+
+/* スマホ対応 */
+@media (max-width: 768px) {
+    .color-picker-area {
+        flex-direction: column;
+        gap: 30px;
+    }
+    .color-section {
+        width: 100%;
+    }
+    #swapColorsButton {
+        transform: rotate(90deg); /* 縦並びの時は矢印を縦に向ける */
+    }
+    #swapColorsButton:hover {
+        transform: rotate(270deg);
+    }
+}
