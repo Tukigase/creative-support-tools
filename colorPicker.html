@@ -1,72 +1,59 @@
 ---
+layout: default
+title: 配色テスター - Creative-Support-Tools
+css: colorPicker.css
+js: colorPicker.js
 ---
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>colorPicker</title>
-    <link rel="stylesheet" href="assets/css/colorPicker.css">
-    <link rel="stylesheet" href="assets/css/common.css">
-</head>
-<body>
-    {% include header.html %}
+<main class="container">
+    <div class="preview-box" id="previewBox">
+        <h2>プレビュー</h2>
+        <p>このボックス内で、選択した背景色と文字色の組み合わせを確認できます。</p>
+        <p>見やすさやコントラストをチェックしましょう。</p>
+        <div id="contrastBadge" class="contrast-badge">判定中...</div>
+    </div>
 
-    <main class="container">
-        <div class="preview-box" id="previewBox">
-            <h2>プレビュー</h2>
-            <p>このボックス内で、選択した背景色と文字色の組み合わせを確認できます。</p>
-            <p>見やすさやコントラストをチェックしましょう。</p>
-        </div>
-
-        <div class="color-picker-area">
-            <div class="color-section">
-                <h3>背景色</h3>
-                <div class="input-wrapper">
-                    <input type="color" id="backgroundColorPicker" value="#f0f0f0">
-                </div>
-                <div class="color-info">
-                    <p>
-                        <span class="label">HEX:</span> <span id="backgroundHexCode">#f0f0f0</span>
-                        <button class="copy-button" data-copy-target="backgroundHexCode">コピー</button>
-                    </p>
-                    <p>
-                        <span class="label">RGB:</span> <span id="backgroundRgbValue">rgb(240, 240, 240)</span>
-                        <button class="copy-button" data-copy-target="backgroundRgbValue">コピー</button>
-                    </p>
-                </div>
+    <div class="color-picker-area">
+        <div class="color-section">
+            <h3>背景色</h3>
+            <div class="input-wrapper">
+                <input type="color" id="backgroundColorPicker" value="#f0f0f0">
             </div>
-
-            <button id="swapColorsButton" aria-label="色を入れ替える">
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="17 1 21 5 17 9"></polyline>
-                    <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
-                    <polyline points="7 23 3 19 7 15"></polyline>
-                    <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
-                </svg>
-            </button>
-
-            <div class="color-section">
-                <h3>文字色</h3>
-                <div class="input-wrapper">
-                    <input type="color" id="textColorPicker" value="#000000">
-                </div>
-                <div class="color-info">
-                    <p>
-                        <span class="label">HEX:</span> <span id="textHexCode">#000000</span>
-                        <button class="copy-button" data-copy-target="textHexCode">コピー</button>
-                    </p>
-                    <p>
-                        <span class="label">RGB:</span> <span id="textRgbValue">rgb(0, 0, 0)</span>
-                        <button class="copy-button" data-copy-target="textRgbValue">コピー</button>
-                    </p>
-                </div>
+            <div class="color-info">
+                <p>
+                    <span class="label">HEX:</span> <span id="backgroundHexCode">#f0f0f0</span>
+                    <button class="copy-button" data-copy-target="backgroundHexCode">コピー</button>
+                </p>
+                <p>
+                    <span class="label">RGB:</span> <span id="backgroundRgbValue">rgb(240, 240, 240)</span>
+                    <button class="copy-button" data-copy-target="backgroundRgbValue">コピー</button>
+                </p>
             </div>
         </div>
-    </main>
 
-    {% include footer.html %}
+        <button id="swapColorsButton" aria-label="色を入れ替える">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="17 1 21 5 17 9"></polyline>
+                <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
+                <polyline points="7 23 3 19 7 15"></polyline>
+                <path d="M21 13v2a4 4 0 0 1-4 4H3"></path>
+            </svg>
+        </button>
 
-    <script src="assets/js/colorPicker.js"></script>
-</body>
-</html>
+        <div class="color-section">
+            <h3>文字色</h3>
+            <div class="input-wrapper">
+                <input type="color" id="textColorPicker" value="#000000">
+            </div>
+            <div class="color-info">
+                <p>
+                    <span class="label">HEX:</span> <span id="textHexCode">#000000</span>
+                    <button class="copy-button" data-copy-target="textHexCode">コピー</button>
+                </p>
+                <p>
+                    <span class="label">RGB:</span> <span id="textRgbValue">rgb(0, 0, 0)</span>
+                    <button class="copy-button" data-copy-target="textRgbValue">コピー</button>
+                </p>
+            </div>
+        </div>
+    </div>
+</main>
