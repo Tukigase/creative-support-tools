@@ -18,21 +18,22 @@ hr {
 
 /* ツールカードが並ぶエリア */
 #toolsCardSection {
-    display: grid;
-    /* 1frを使わず300px固定にし、auto-fillで余白を維持したまま折り返す */
-    grid-template-columns: repeat(auto-fill, 300px);
-    justify-content: center; /* 画面中央にカード群を配置したい場合は追加 */
-    gap: 20px;
-    margin: 20px;
+    display: flex;         /* GridをやめてFlexboxにする */
+    flex-wrap: wrap;       /* 画面端にきたら折り返す */
+    justify-content: center; /* 常に画面中央に並べる */
+    gap: 30px;             /* カード間の余白 */
+    margin: 40px auto;
+    max-width: 1000px;     /* 全体が広がりすぎないように制限 */
 }
 
 /* 個別のツールカード */
 .tool-card {
+    width: 300px;          /* ★ここで幅を完全に300pxに固定！ */
+    max-width: 100%;       /* スマホ画面ではみ出さないための保険 */
+    aspect-ratio: 1 / 1.4141; /* 白銀比を維持 */
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* 理想のアスペクト比を復活！ (幅はGrid側で300pxに固定されています) */
-    aspect-ratio: 1 / 1.4141; 
     border: 1px solid #475569;
     border-radius: 8px;
     background-color: #334155;

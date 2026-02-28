@@ -1,4 +1,5 @@
 <header class="header">
+    {% if page.url != "/" and page.url != "/index.html" %}
     <a href="{{ '/' | relative_url }}" class="back-button">
         <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"
             stroke-linecap="round" stroke-linejoin="round">
@@ -7,5 +8,6 @@
         </svg>
         TOPへ戻る
     </a>
+    {% endif %}
     <h1>{{ page.title | default: "Creative-Support-Tools" }}</h1>
 </header>
