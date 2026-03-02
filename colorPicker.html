@@ -8,8 +8,23 @@ js: colorPicker.js
     <div class="preview-box" id="previewBox">
         <h2>プレビュー</h2>
         <p>このボックス内で、選択した背景色と文字色の組み合わせを確認できます。</p>
-        <p>見やすさやコントラストをチェックしましょう。</p>
+        
         <div id="contrastBadge" class="contrast-badge">判定中...</div>
+
+        <div class="universal-check-area">
+            <div class="sim-item">
+                <span class="sim-label">P型の見え方<br><small>(赤が暗く感じる)</small></span>
+                <div class="sim-chip" id="chipP_bg"><span id="chipP_text">あ</span></div>
+            </div>
+            <div class="sim-item">
+                <span class="sim-label">D型の見え方<br><small>(赤と緑が似る)</small></span>
+                <div class="sim-chip" id="chipD_bg"><span id="chipD_text">あ</span></div>
+            </div>
+            <div class="sim-item">
+                <span class="sim-label">T型の見え方<br><small>(青と黄が似る)</small></span>
+                <div class="sim-chip" id="chipT_bg"><span id="chipT_text">あ</span></div>
+            </div>
+        </div>
     </div>
 
     <div class="color-picker-area">
