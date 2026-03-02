@@ -1,0 +1,79 @@
+---
+layout: default
+title: アスペクト比計算機 - Creative-Support-Tools
+css: aspectRatio.css
+js: aspectRatio.js
+---
+<main class="container">
+    <div class="preview-box">
+        <h2>リアルタイム・プレビュー</h2>
+        <p>入力した比率に合わせて、下の図形が自動で変形します。</p>
+        
+        <div class="visualizer-area">
+            <div id="visualShape" class="visual-shape">
+                <span id="visualText">16 : 9</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="calculator-area">
+        <div class="calc-section">
+            <h3>サイズ (px)</h3>
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <label for="inputWidth">横幅 (W)</label>
+                    <input type="number" id="inputWidth" value="1920" min="1">
+                </div>
+                
+                <button id="lockButton" class="lock-btn locked" aria-label="比率を固定">
+                    <svg id="icon-lock" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    <svg id="icon-unlock" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>
+                </button>
+
+                <div class="input-wrapper">
+                    <label for="inputHeight">縦幅 (H)</label>
+                    <input type="number" id="inputHeight" value="1080" min="1">
+                </div>
+            </div>
+        </div>
+
+        <div class="calc-section">
+            <h3>比率 (Ratio)</h3>
+            <div class="input-group">
+                <div class="input-wrapper">
+                    <input type="number" id="ratioW" value="16" step="0.001" min="0.001">
+                </div>
+                <span class="ratio-colon">:</span>
+                <div class="input-wrapper">
+                    <input type="number" id="ratioH" value="9" step="0.001" min="0.001">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tools-area">
+        <div class="preset-section">
+            <h3>定番プリセット</h3>
+            <div class="preset-buttons">
+                <button class="preset-btn" data-w="16" data-h="9">16:9<br><small>動画/サムネ</small></button>
+                <button class="preset-btn" data-w="4" data-h="3">4:3<br><small>写真/iPad</small></button>
+                <button class="preset-btn" data-w="1" data-h="1">1:1<br><small>SNSアイコン</small></button>
+                <button class="preset-btn" data-w="1.618" data-h="1">黄金比<br><small>1.618 : 1</small></button>
+                <button class="preset-btn" data-w="1.414" data-h="1">白銀比(A4)<br><small>1.414 : 1</small></button>
+                <button class="preset-btn" data-w="1200" data-h="630">OGP<br><small>1200x630</small></button>
+            </div>
+        </div>
+
+        <div class="css-section">
+            <h3>CSS生成 (コピペ用)</h3>
+            <div class="code-box">
+                <code id="cssOutput">aspect-ratio: 16 / 9;</code>
+                <button class="copy-button" data-copy-target="cssOutput">コピー</button>
+            </div>
+            <div class="code-box">
+                <code id="cssHackOutput">padding-top: 56.25%; /* 古いブラウザ用 */</code>
+                <button class="copy-button" data-copy-target="cssHackOutput">コピー</button>
+            </div>
+        </div>
+    </div>
+</main>
