@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const max = Math.max(r, g, b), min = Math.min(r, g, b);
         let h, s, l = (max + min) / 2;
         if (max === min) {
-            h = s = 0; 
+            h = s = 0;
         } else {
             const d = max - min;
             s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
@@ -102,27 +102,37 @@ document.addEventListener('DOMContentLoaded', () => {
         textRgbSpan.textContent = `rgb(${textRgb.join(', ')})`;
         previewBox.style.color = textHex;
 
-        // 1. 複合判定ロジック (輝度・色相・彩度による4段階評価＋特例)
+        // 1. 複合判定ロジック (輝度・色相・彩度による評価)
         const ratio = getContrastRatio(bgRgb, textRgb).toFixed(2);
         const bgHsl = rgbToHsl(...bgRgb);
         const textHsl = rgbToHsl(...textRgb);
-        
-        // 色相の差 (0〜180度) と 彩度チェック
+
+        // 色相の差 (0〜180度)
         const deltaH = Math.min(Math.abs(bgHsl[0] - textHsl[0]), 360 - Math.abs(bgHsl[0] - textHsl[0]));
+        // どちらも一定以上の鮮やかさか？ (特例Pass用)
         const isSaturated = bgHsl[1] > 40 && textHsl[1] > 40;
 
-        if (ratio >= 4.5) {
+        // ★新規追加: チカチカするハレーションの判定
+        // 条件: 両方とも彩度が80%以上 ＆ 明度の差が30未満 ＆ 色相が60度以上離れている
+        const isHalation = bgHsl[1] > 80 && textHsl[1] > 80 &&
+            Math.abs(bgHsl[2] - textHsl[2]) < 30 &&
+            deltaH > 60;
+
+        // --- ここから判定分岐 ---
+        if (isHalation) {
+            // 最優先でハレーションを「罰（NG）」として弾く！
+            contrastBadge.textContent = `❌ チカチカして目が疲れる色です (ハレーション)`;
+            contrastBadge.className = 'contrast-badge fail';
+        } else if (ratio >= 4.5) {
             contrastBadge.textContent = `✅ 完璧に見やすい (AAA / 比率: ${ratio})`;
             contrastBadge.className = 'contrast-badge pass';
         } else if (ratio >= 3.0) {
             contrastBadge.textContent = `🆗 見やすい (AA / 比率: ${ratio})`;
             contrastBadge.className = 'contrast-badge pass';
         } else if (ratio >= 2.5) {
-            // ★ あなたの実践的な感覚を活かした許容範囲ライン！
             contrastBadge.textContent = `⚠️ 許容範囲 (大文字推奨 / 比率: ${ratio})`;
             contrastBadge.className = 'contrast-badge warning';
         } else if (deltaH > 90 && isSaturated) {
-            // 抹茶と赤のような、輝度は低いが色相で読める特例
             contrastBadge.textContent = `✅ 色の対比で読める (比率: ${ratio})`;
             contrastBadge.className = 'contrast-badge special-pass';
         } else {
@@ -134,10 +144,10 @@ document.addEventListener('DOMContentLoaded', () => {
         types.forEach(type => {
             const simBgRgb = simulateColorblindness(bgRgb, type);
             const simTextRgb = simulateColorblindness(textRgb, type);
-            
+
             const chipBg = document.getElementById(`chip${type}_bg`);
             const chipText = document.getElementById(`chip${type}_text`);
-            
+
             chipBg.style.backgroundColor = rgbArrayToHex(simBgRgb);
             chipText.style.color = rgbArrayToHex(simTextRgb);
         });
@@ -169,7 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // コピーボタン処理 (既存のまま)
     const copyButtons = document.querySelectorAll('.copy-button');
     copyButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             const targetId = this.dataset.copyTarget;
             const textToCopy = document.getElementById(targetId).textContent;
             navigator.clipboard.writeText(textToCopy).then(() => {
