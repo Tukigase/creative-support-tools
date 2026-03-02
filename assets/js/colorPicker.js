@@ -102,28 +102,33 @@ document.addEventListener('DOMContentLoaded', () => {
         textRgbSpan.textContent = `rgb(${textRgb.join(', ')})`;
         previewBox.style.color = textHex;
 
-        // 1. 複合判定ロジック (輝度・色相・彩度)
+        // 1. 複合判定ロジック (輝度・色相・彩度による4段階評価＋特例)
         const ratio = getContrastRatio(bgRgb, textRgb).toFixed(2);
         const bgHsl = rgbToHsl(...bgRgb);
         const textHsl = rgbToHsl(...textRgb);
         
-        // 色相の差 (0〜180度)
+        // 色相の差 (0〜180度) と 彩度チェック
         const deltaH = Math.min(Math.abs(bgHsl[0] - textHsl[0]), 360 - Math.abs(bgHsl[0] - textHsl[0]));
-        // どちらも一定以上の鮮やかさか？ (彩度40%以上)
         const isSaturated = bgHsl[1] > 40 && textHsl[1] > 40;
 
-        if (ratio >= 3.0) {
-            contrastBadge.textContent = `✅ 見やすい (比率: ${ratio}:1)`;
+        if (ratio >= 4.5) {
+            contrastBadge.textContent = `✅ 完璧に見やすい (AAA / 比率: ${ratio})`;
             contrastBadge.className = 'contrast-badge pass';
+        } else if (ratio >= 3.0) {
+            contrastBadge.textContent = `🆗 見やすい (AA / 比率: ${ratio})`;
+            contrastBadge.className = 'contrast-badge pass';
+        } else if (ratio >= 2.5) {
+            // ★ あなたの実践的な感覚を活かした許容範囲ライン！
+            contrastBadge.textContent = `⚠️ 許容範囲 (大文字推奨 / 比率: ${ratio})`;
+            contrastBadge.className = 'contrast-badge warning';
         } else if (deltaH > 90 && isSaturated) {
-            // 例の「抹茶と赤」を救済する特例Passルート
-            contrastBadge.textContent = `✅ 色の対比で読める (比率: ${ratio}:1)`;
+            // 抹茶と赤のような、輝度は低いが色相で読める特例
+            contrastBadge.textContent = `✅ 色の対比で読める (比率: ${ratio})`;
             contrastBadge.className = 'contrast-badge special-pass';
         } else {
-            contrastBadge.textContent = `⚠️ 見づらい (比率: ${ratio}:1)`;
+            contrastBadge.textContent = `❌ 見づらい (NG / 比率: ${ratio})`;
             contrastBadge.className = 'contrast-badge fail';
         }
-
         // 2. ユニバーサルシミュレーションの更新
         const types = ['P', 'D', 'T'];
         types.forEach(type => {

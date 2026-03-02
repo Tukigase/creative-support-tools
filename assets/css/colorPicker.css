@@ -198,6 +198,11 @@ input[type="color"] {
     border: 2px solid #0EA5E9;
 }
 
+.contrast-badge.warning {
+    color: #F59E0B; /* 注意を促すオレンジ色 */
+    border: 2px solid #F59E0B;
+}
+
 .contrast-badge.fail {
     color: #EF4444; /* 赤文字 */
     border: 2px solid #EF4444;
