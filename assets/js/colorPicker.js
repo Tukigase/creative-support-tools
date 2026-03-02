@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // どちらも一定以上の鮮やかさか？ (彩度40%以上)
         const isSaturated = bgHsl[1] > 40 && textHsl[1] > 40;
 
-        if (ratio >= 4.5) {
+        if (ratio >= 3.0) {
             contrastBadge.textContent = `✅ 見やすい (比率: ${ratio}:1)`;
             contrastBadge.className = 'contrast-badge pass';
         } else if (deltaH > 90 && isSaturated) {
