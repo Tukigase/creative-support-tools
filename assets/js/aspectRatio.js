@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // 要素の取得
     const inputW = document.getElementById('inputWidth');
     const inputH = document.getElementById('inputHeight');
     const ratioW = document.getElementById('ratioW');
@@ -13,37 +12,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const cssOutput = document.getElementById('cssOutput');
     const cssHackOutput = document.getElementById('cssHackOutput');
 
-    let isLocked = true; // 初期状態は比率固定
+    let isLocked = true;
 
-    // 最大公約数(GCD)を求める関数 (比率の簡単化用)
+    // ★修正1：小数が来ても無限ループでクラッシュしない安全な最大公約数計算
     function getGCD(a, b) {
-        return b === 0 ? a : getGCD(b, a % b);
+        a = Math.round(Math.abs(a));
+        b = Math.round(Math.abs(b));
+        if (b === 0) return a || 1;
+        return getGCD(b, a % b);
     }
 
-    // 数値を綺麗に丸める関数 (小数点第3位まで)
     function roundNum(num) {
         return Math.round(num * 1000) / 1000;
     }
 
-    // UI (図形とCSS) の更新
+    // ★修正2：UIの更新（文字も動かして「生きてる感」を出す）
     function updateVisuals() {
-        const w = parseFloat(ratioW.value) || 16;
-        const h = parseFloat(ratioH.value) || 9;
+        const rw = parseFloat(ratioW.value) || 16;
+        const rh = parseFloat(ratioH.value) || 9;
+        const w = parseFloat(inputW.value) || 1920;
+        const h = parseFloat(inputH.value) || 1080;
 
-        // 図形の変形 (縦長か横長かで基準を変える)
-        if (w >= h) {
-            visualShape.style.width = '100%';
-            visualShape.style.height = 'auto';
-        } else {
-            visualShape.style.width = 'auto';
-            visualShape.style.height = '100%';
-        }
-        visualShape.style.aspectRatio = `${w} / ${h}`;
-        visualText.textContent = `${w} : ${h}`;
+        // JSでの面倒な幅計算を削除し、CSSの max-height と aspect-ratio に任せる
+        visualShape.style.aspectRatio = `${rw} / ${rh}`;
+        
+        // 図形の中に「実際のサイズ」と「比率」を両方表示
+        visualText.innerHTML = `
+            <span class="visual-size-text">${w} × ${h}</span><br>
+            <span class="visual-ratio-text">(${rw} : ${rh})</span>
+        `;
 
-        // CSSコードの生成
-        cssOutput.textContent = `aspect-ratio: ${w} / ${h};`;
-        const percentage = roundNum((h / w) * 100);
+        cssOutput.textContent = `aspect-ratio: ${rw} / ${rh};`;
+        const percentage = roundNum((rh / rw) * 100);
         cssHackOutput.textContent = `padding-top: ${percentage}%; /* 古いブラウザ用 */`;
     }
 
@@ -53,12 +53,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!w) return;
 
         if (isLocked) {
-            // ロック中: 比率に合わせて高さを自動計算
-            const rw = parseFloat(ratioW.value);
-            const rh = parseFloat(ratioH.value);
+            const rw = parseFloat(ratioW.value) || 16;
+            const rh = parseFloat(ratioH.value) || 9;
             inputH.value = Math.round(w * (rh / rw));
         } else {
-            // アンロック中: 新しい横幅と高さから比率を再計算
             const h = parseFloat(inputH.value) || 1;
             const gcd = getGCD(w, h);
             ratioW.value = roundNum(w / gcd);
@@ -73,12 +71,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!h) return;
 
         if (isLocked) {
-            // ロック中: 比率に合わせて横幅を自動計算
-            const rw = parseFloat(ratioW.value);
-            const rh = parseFloat(ratioH.value);
+            const rw = parseFloat(ratioW.value) || 16;
+            const rh = parseFloat(ratioH.value) || 9;
             inputW.value = Math.round(h * (rw / rh));
         } else {
-            // アンロック中: 比率を再計算
             const w = parseFloat(inputW.value) || 1;
             const gcd = getGCD(w, h);
             ratioW.value = roundNum(w / gcd);
@@ -87,13 +83,12 @@ document.addEventListener('DOMContentLoaded', () => {
         updateVisuals();
     });
 
-    // 比率(Ratio W/H)が直接変更された時
+    // 比率(Ratio)が変更された時
     const updateFromRatio = () => {
         const rw = parseFloat(ratioW.value);
         const rh = parseFloat(ratioH.value);
         if (!rw || !rh) return;
 
-        // 横幅を基準にして高さを合わせる (一般的な挙動)
         const w = parseFloat(inputW.value) || 1920;
         inputH.value = Math.round(w * (rh / rw));
         updateVisuals();
@@ -102,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ratioW.addEventListener('input', updateFromRatio);
     ratioH.addEventListener('input', updateFromRatio);
 
-    // ロックボタンの切り替え
+    // ロックボタン切替
     lockBtn.addEventListener('click', () => {
         isLocked = !isLocked;
         lockBtn.classList.toggle('locked', isLocked);
@@ -110,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         iconUnlock.style.display = isLocked ? 'none' : 'block';
     });
 
-    // プリセットボタンの処理
+    // プリセットボタン
     document.querySelectorAll('.preset-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const presetW = parseFloat(btn.dataset.w);
@@ -119,7 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ratioW.value = presetW;
             ratioH.value = presetH;
             
-            // 特別対応: OGP(1200x630)など、比率ではなく直接サイズを入れたいプリセットの場合
             if (presetW > 100) {
                 inputW.value = presetW;
                 inputH.value = presetH;
@@ -127,12 +121,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 ratioW.value = presetW / gcd;
                 ratioH.value = presetH / gcd;
             } else {
-                updateFromRatio(); // 通常の比率プリセット
+                updateFromRatio();
             }
         });
     });
 
-    // コピーボタン処理 (colorPickerと同じ流用)
+    // コピーボタン
     document.querySelectorAll('.copy-button').forEach(button => {
         button.addEventListener('click', function() {
             const targetId = this.dataset.copyTarget;
@@ -149,6 +143,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 初期化
     updateVisuals();
 });

@@ -35,17 +35,34 @@
     border: 1px dashed rgba(255,255,255,0.2);
 }
 
+/* aspectRatio.css の .visual-shape を以下に上書き */
 .visual-shape {
     background-color: var(--main-btn);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
     border-radius: 4px;
     display: flex;
+    flex-direction: column; /* 縦並びに変更 */
     justify-content: center;
     align-items: center;
     color: var(--bg-base);
     font-weight: bold;
-    font-size: 1.5rem;
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    text-align: center;
+    
+    /* ★はみ出し防止の魔法 */
+    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* プレビュー内の文字用に追加 */
+.visual-size-text {
+    font-size: 1.5rem;
+}
+.visual-ratio-text {
+    font-size: 1rem;
+    opacity: 0.8;
+    margin-top: 4px;
 }
 
 /* 計算機エリア */
