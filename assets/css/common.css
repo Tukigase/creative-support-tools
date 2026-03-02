@@ -62,3 +62,23 @@ body {
     font-size: 0.8rem;
     margin-top: auto;
 }
+
+/* スマホ用ヘッダー調整 */
+@media (max-width: 768px) {
+    /* 戻るボタンの文字を隠し、アイコンだけにする */
+    .back-text {
+        display: none;
+    }
+    
+    /* タイトルの文字を少し小さくし、長すぎる場合は「...」で省略する */
+    .header h1 {
+        font-size: 1.1rem;
+        /* アイコンと被らないように左右に余白を持たせる */
+        padding: 0 40px; 
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+}

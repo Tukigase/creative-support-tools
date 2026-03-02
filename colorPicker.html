@@ -8,8 +8,27 @@ js: colorPicker.js
     <div class="preview-box" id="previewBox">
         <h2>プレビュー</h2>
         <p>このボックス内で、選択した背景色と文字色の組み合わせを確認できます。</p>
-        <p>見やすさやコントラストをチェックしましょう。</p>
+
         <div id="contrastBadge" class="contrast-badge">判定中...</div>
+
+        <div class="universal-section">
+            <h3 class="universal-title">ユニバーサルカラー・シミュレーション</h3>
+            <div class="universal-check-area">
+                <div class="sim-item">
+                    <span class="sim-label">P型の見え方<br><small>(赤が暗く感じる)</small></span>
+                    <div class="sim-chip" id="chipP_bg"><span id="chipP_text">あ</span></div>
+                </div>
+                <div class="sim-item">
+                    <span class="sim-label">D型の見え方<br><small>(赤と緑が似る)</small></span>
+                    <div class="sim-chip" id="chipD_bg"><span id="chipD_text">あ</span></div>
+                </div>
+                <div class="sim-item">
+                    <span class="sim-label">T型の見え方<br><small>(青と黄が似る)</small></span>
+                    <div class="sim-chip" id="chipT_bg"><span id="chipT_text">あ</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 
     <div class="color-picker-area">
@@ -31,7 +50,8 @@ js: colorPicker.js
         </div>
 
         <button id="swapColorsButton" aria-label="色を入れ替える">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="17 1 21 5 17 9"></polyline>
                 <path d="M3 11V9a4 4 0 0 1 4-4h14"></path>
                 <polyline points="7 23 3 19 7 15"></polyline>
