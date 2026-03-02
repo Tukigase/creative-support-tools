@@ -120,23 +120,25 @@ document.addEventListener('DOMContentLoaded', () => {
         iconUnlock.style.display = isLocked ? 'none' : 'block';
     });
 
-    // プリセットボタン
     document.querySelectorAll('.preset-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const presetW = parseFloat(btn.dataset.w);
             const presetH = parseFloat(btn.dataset.h);
 
-            ratioW.value = presetW;
-            ratioH.value = presetH;
-
             if (presetW > 100) {
+                // OGP(1200x630)など、直接サイズを入れたい場合
                 inputW.value = presetW;
                 inputH.value = presetH;
                 const gcd = getGCD(presetW, presetH);
-                ratioW.value = presetW / gcd;
-                ratioH.value = presetH / gcd;
+                ratioW.value = roundNum(presetW / gcd);
+                ratioH.value = roundNum(presetH / gcd);
+
+                updateVisuals(); // ★ここがすっぽり抜けていました！！！
             } else {
-                updateFromRatio();
+                // 16:9などの比率プリセットの場合
+                ratioW.value = presetW;
+                ratioH.value = presetH;
+                updateFromRatio(); // この中に updateVisuals() が含まれている
             }
         });
     });
