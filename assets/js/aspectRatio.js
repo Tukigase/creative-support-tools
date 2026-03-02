@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const lockBtn = document.getElementById('lockButton');
     const iconLock = document.getElementById('icon-lock');
     const iconUnlock = document.getElementById('icon-unlock');
-    
+
     const visualShape = document.getElementById('visualShape');
     const visualText = document.getElementById('visualText');
     const cssOutput = document.getElementById('cssOutput');
@@ -26,22 +26,37 @@ document.addEventListener('DOMContentLoaded', () => {
         return Math.round(num * 1000) / 1000;
     }
 
-    // ★修正2：UIの更新（文字も動かして「生きてる感」を出す）
     function updateVisuals() {
         const rw = parseFloat(ratioW.value) || 16;
         const rh = parseFloat(ratioH.value) || 9;
         const w = parseFloat(inputW.value) || 1920;
         const h = parseFloat(inputH.value) || 1080;
 
-        // JSでの面倒な幅計算を削除し、CSSの max-height と aspect-ratio に任せる
+        // ★最強のフィットロジック：親要素の比率と比較して、縦横のどちらを100%にするか決める
+        const parentArea = visualShape.parentElement;
+        const parentRatio = parentArea.clientWidth / parentArea.clientHeight;
+        const targetRatio = rw / rh;
+
+        if (targetRatio > parentRatio) {
+            // 図形の方が「横長」な場合 → 横幅を100%にして、縦幅は自動（縮む）
+            visualShape.style.width = '100%';
+            visualShape.style.height = 'auto';
+        } else {
+            // 図形の方が「縦長」な場合 → 縦幅を100%にして、横幅は自動（縮む）
+            visualShape.style.width = 'auto';
+            visualShape.style.height = '100%';
+        }
+
+        // アスペクト比を適用
         visualShape.style.aspectRatio = `${rw} / ${rh}`;
-        
-        // 図形の中に「実際のサイズ」と「比率」を両方表示
+
+        // テキストの更新
         visualText.innerHTML = `
             <span class="visual-size-text">${w} × ${h}</span><br>
             <span class="visual-ratio-text">(${rw} : ${rh})</span>
         `;
 
+        // CSS生成の更新
         cssOutput.textContent = `aspect-ratio: ${rw} / ${rh};`;
         const percentage = roundNum((rh / rw) * 100);
         cssHackOutput.textContent = `padding-top: ${percentage}%; /* 古いブラウザ用 */`;
@@ -110,10 +125,10 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', () => {
             const presetW = parseFloat(btn.dataset.w);
             const presetH = parseFloat(btn.dataset.h);
-            
+
             ratioW.value = presetW;
             ratioH.value = presetH;
-            
+
             if (presetW > 100) {
                 inputW.value = presetW;
                 inputH.value = presetH;
@@ -128,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // コピーボタン
     document.querySelectorAll('.copy-button').forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             const targetId = this.dataset.copyTarget;
             const textToCopy = document.getElementById(targetId).textContent;
             navigator.clipboard.writeText(textToCopy).then(() => {
