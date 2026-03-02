@@ -18,35 +18,49 @@ hr {
 
 /* ツールカードが並ぶエリア */
 #toolsCardSection {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    margin: 20px;
+    display: flex;         /* GridをやめてFlexboxにする */
+    flex-wrap: wrap;       /* 画面端にきたら折り返す */
+    justify-content: center; /* 常に画面中央に並べる */
+    gap: 30px;             /* カード間の余白 */
+    margin: 40px auto;
+    max-width: 1000px;     /* 全体が広がりすぎないように制限 */
 }
 
 /* 個別のツールカード */
 .tool-card {
+    width: 300px;          /* ★ここで幅を完全に300pxに固定！ */
+    max-width: 100%;       /* スマホ画面ではみ出さないための保険 */
+    aspect-ratio: 1 / 1.4141; /* 白銀比を維持 */
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 300px;
-    aspect-ratio: 1 / 1.4141;
     border: 1px solid #475569;
-    border-radius: 8px; /* 配色テスターと合わせて少し丸みを強く */
+    border-radius: 8px;
     background-color: #334155;
     transition: all 0.3s ease;
-    /* 影の付け方を配色テスターと統一 */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     text-align: center;
-    overflow: hidden; /* 画像が角丸からはみ出さないように追加 */
+    overflow: hidden; 
 }
 
 /* カード内のサムネイル画像 */
 .tool-card img {
     width: 100%;
-    height: 160px; /* 高さを固定することで、どんな画像が来てもカードの形が崩れないようにする */
-    object-fit: cover; /* 画像の比率を保ったまま枠を埋める */
+    /* サムネイル部分は16:9を維持 */
+    aspect-ratio: 16 / 9; 
+    object-fit: cover;
     border-bottom: 1px solid #475569;
+}
+
+/* カードの説明文 (※固定比率からはみ出さないための保険) */
+.tool-card p {
+    margin: 15px;
+    text-align: left;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    /* テキストが長すぎた場合はスクロールさせるか、隠す設定をしておくと安全です */
+    overflow-y: auto; 
+    flex: 1; /* ボタンを一番下に押しやるために追加 */
 }
 
 /* カードのタイトル */
@@ -55,14 +69,6 @@ hr {
     padding-bottom: 5px;
     margin-top: 15px;
     width: 80%; /* 線が端から端までいかないように調整 */
-}
-
-/* カードの説明文 */
-.tool-card p {
-    margin: 15px;
-    text-align: left;
-    font-size: 0.95rem;
-    line-height: 1.5;
 }
 
 /* カードのホバー時（マウスカーソルを乗せた時） */

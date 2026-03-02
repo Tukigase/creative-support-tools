@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page.title | default: "Creative-Support-Tools" }}</title>
+    <link rel="stylesheet" href="{{ '/assets/css/common.css' | relative_url }}">
+    {% if page.css %}
+    <link rel="stylesheet" href="{{ '/assets/css/' | append: page.css | relative_url }}">
+    {% endif %}
+</head>
+<body>
+    {% include header.html %}
+    
+    {{ content }}
+    
+    {% include footer.html %}
+    
+    {% if page.js %}
+    <script src="{{ '/assets/js/' | append: page.js | relative_url }}"></script>
+    {% endif %}
+</body>
+</html>

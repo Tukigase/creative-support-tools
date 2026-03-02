@@ -1,5 +1,6 @@
 <header class="header">
-    <a href="index.html" class="back-button">
+    {% if page.url != "/" and page.url != "/index.html" %}
+    <a href="{{ '/' | relative_url }}" class="back-button">
         <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"
             stroke-linecap="round" stroke-linejoin="round">
             <line x1="19" y1="12" x2="5" y2="12"></line>
@@ -7,5 +8,6 @@
         </svg>
         TOPへ戻る
     </a>
-    <h1>配色テスター</h1>
+    {% endif %}
+    <h1>{{ page.title | default: "Creative-Support-Tools" }}</h1>
 </header>

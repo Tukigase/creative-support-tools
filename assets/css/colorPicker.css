@@ -139,7 +139,8 @@ input[type="color"] {
 }
 
 .copy-button.copied {
-    background-color: #10B981; /* 成功時の緑色 */
+    background-color: #10B981;
+    /* 成功時の緑色 */
     color: white;
 }
 
@@ -159,13 +160,40 @@ input[type="color"] {
         flex-direction: column;
         gap: 30px;
     }
+
     .color-section {
         width: 100%;
     }
+
     #swapColorsButton {
-        transform: rotate(90deg); /* 縦並びの時は矢印を縦に向ける */
+        transform: rotate(90deg);
+        /* 縦並びの時は矢印を縦に向ける */
     }
+
     #swapColorsButton:hover {
         transform: rotate(270deg);
     }
+}
+
+/* コントラストバッジ */
+.contrast-badge {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 6px 16px;
+    border-radius: 9999px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.contrast-badge.pass {
+    background-color: rgba(16, 185, 129, 0.2);
+    color: #10B981;
+    border: 1px solid #10B981;
+}
+
+.contrast-badge.fail {
+    background-color: rgba(239, 68, 68, 0.2);
+    color: #EF4444;
+    border: 1px solid #EF4444;
 }
