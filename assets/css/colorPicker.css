@@ -183,38 +183,61 @@ input[type="color"] {
     border-radius: 9999px;
     font-size: 0.95rem;
     font-weight: bold;
-    background-color: #FFFFFF; /* 背景は白固定 */
+    background-color: #FFFFFF;
+    /* 背景は白固定 */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
     transition: all 0.3s;
 }
 
 .contrast-badge.pass {
-    color: #10B981; /* 緑文字 */
+    color: #10B981;
+    /* 緑文字 */
     border: 2px solid #10B981;
 }
 
 .contrast-badge.special-pass {
-    color: #0EA5E9; /* 青文字（特例Pass用） */
+    color: #0EA5E9;
+    /* 青文字（特例Pass用） */
     border: 2px solid #0EA5E9;
 }
 
 .contrast-badge.warning {
-    color: #F59E0B; /* 注意を促すオレンジ色 */
+    color: #F59E0B;
+    /* 注意を促すオレンジ色 */
     border: 2px solid #F59E0B;
 }
 
 .contrast-badge.fail {
-    color: #EF4444; /* 赤文字 */
+    color: #EF4444;
+    /* 赤文字 */
     border: 2px solid #EF4444;
 }
 
-/* ユニバーサル見え方シミュレーション エリア */
+/* ユニバーサルセクション全体をまとめる枠 */
+.universal-section {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.05);
+    /* うっすら明るい背景でエリアを区切る */
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* セクションのタイトル */
+.universal-title {
+    font-size: 0.95rem;
+    color: var(--sub-text);
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-weight: normal;
+    letter-spacing: 0.05em;
+}
+
+/* 3等分グリッド（margin-topを削除して微調整） */
 .universal-check-area {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 15px;
-    margin-top: 30px;
-    /* 上部の破線は不要になるので削除（または残してもOK） */
 }
 
 /* ★ここを「安全地帯のカード」に変更 */
@@ -223,7 +246,8 @@ input[type="color"] {
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    background-color: #FFFFFF; /* 白背景で安全地帯化！ */
+    background-color: #FFFFFF;
+    /* 白背景で安全地帯化！ */
     padding: 12px 8px;
     border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
@@ -233,7 +257,8 @@ input[type="color"] {
 /* カード内のテキストは「常に濃いグレー」で固定して見やすくする */
 .sim-label {
     font-size: 0.8rem;
-    color: #475569; /* ユーザーの文字色に依存しない濃い色 */
+    color: #475569;
+    /* ユーザーの文字色に依存しない濃い色 */
     line-height: 1.3;
     font-weight: bold;
     text-align: center;
@@ -255,6 +280,7 @@ input[type="color"] {
     align-items: center;
     font-weight: bold;
     font-size: 1.2rem;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-    border: 1px solid rgba(0,0,0,0.1); /* 枠線を少し暗めに調整 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    /* 枠線を少し暗めに調整 */
 }
