@@ -5,6 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ page.title | default: "Creative-Support-Tools" }}</title>
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Creative-Support-Tools">
+    <meta property="og:title" content="{{ page.title | default: 'Creative-Support-Tools' }}">
+    <meta property="og:description" content="{{ page.description | default: 'クリエイター、デザイナー、エンジニアの「作業中のちょっとした手間」をブラウザ上で一瞬で解決する、ニッチで実用的なWebツール群です。' }}">
+    <meta property="og:url" content="https://tukigase.github.io/creative-support-tools{{ page.url | remove: 'index.html' }}">
+    <meta property="og:image" content="https://tukigase.github.io/creative-support-tools{{ page.ogp_image | default: '/assets/images/ogp-default.png' }}">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="stylesheet" href="{{ '/assets/css/common.css' | relative_url }}">
     {% if page.css %}
     <link rel="stylesheet" href="{{ '/assets/css/' | append: page.css | relative_url }}">
