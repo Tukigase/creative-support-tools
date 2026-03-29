@@ -63,6 +63,23 @@ body {
     margin-top: auto;
 }
 
+/* フッター内の段落（余白調整） */
+.footer p {
+    margin: 5px 0;
+}
+
+/* プライバシーポリシーなどのリンク */
+.footer-link {
+    color: var(--sub-text);
+    text-decoration: underline; /* リンクだと分かるように下線を引く */
+    transition: color 0.2s;
+}
+
+/* マウスを乗せた時はアクセントカラー（黄色）で光らせる */
+.footer-link:hover {
+    color: var(--accent);
+}
+
 /* スマホ用ヘッダー調整 */
 @media (max-width: 768px) {
     /* 戻るボタンの文字を隠し、アイコンだけにする */
