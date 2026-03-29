@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,16 +9,27 @@
     {% if page.css %}
     <link rel="stylesheet" href="{{ '/assets/css/' | append: page.css | relative_url }}">
     {% endif %}
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-01JZGJ4FBM"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-01JZGJ4FBM');
+    </script>
 </head>
+
 <body>
     {% include header.html %}
-    
+
     {{ content }}
-    
+
     {% include footer.html %}
-    
+
     {% if page.js %}
     <script src="{{ '/assets/js/' | append: page.js | relative_url }}"></script>
     {% endif %}
 </body>
+
 </html>
