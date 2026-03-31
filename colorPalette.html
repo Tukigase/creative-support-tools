@@ -1,0 +1,67 @@
+---
+layout: default
+title: カラーパレット生成 - Creative-Support-Tools
+css: colorPalette.css
+js: colorPalette.js
+---
+<main class="container">
+    <div class="palette-layout">
+        <div class="preview-panel">
+            <h2>リアルタイムプレビュー</h2>
+            <div class="mockup-window" id="mockupWindow">
+                <header class="mock-header">
+                    <div class="mock-logo">BrandLogo</div>
+                    <nav class="mock-nav">
+                        <span>Home</span><span>About</span><span>Contact</span>
+                    </nav>
+                </header>
+                
+                <main class="mock-main">
+                    <h1 class="mock-title">カラーパレットジェネレーター</h1>
+                    <p class="mock-text">
+                        これはメインテキストの表示サンプルです。選択した色がリアルタイムでプレビューに反映されます。配色のバランスを確認しながら、最高のテーマを作成しましょう。
+                    </p>
+                    
+                    <hr class="mock-divider">
+                    
+                    <p class="mock-subtext">※ここはサブテキストの表示領域です。補足情報やラベルなどに使用されます。</p>
+                    
+                    <div class="mock-action">
+                        <button class="mock-btn">メインアクション</button>
+                        <a href="#" class="mock-link">アクセントリンク</a>
+                    </div>
+                </main>
+                
+                <footer class="mock-footer">
+                    &copy; 2026 Creative-Support-Tools.
+                </footer>
+            </div>
+        </div>
+
+        <div class="controls-panel">
+            <h2>パレット設定</h2>
+            <div class="color-inputs" id="colorInputsArea">
+                </div>
+
+            <h2 class="mt-4">エクスポート</h2>
+            <div class="export-tabs">
+                <button class="tab-btn active" data-target="exportCss">CSS</button>
+                <button class="tab-btn" data-target="exportMd">Markdown</button>
+            </div>
+            
+            <div class="export-content active" id="exportCss">
+                <div class="code-box">
+                    <code id="cssOutputCode"></code>
+                    <button class="copy-button" data-copy-target="cssOutputCode">コピー</button>
+                </div>
+            </div>
+            
+            <div class="export-content" id="exportMd">
+                <div class="code-box">
+                    <code id="mdOutputCode"></code>
+                    <button class="copy-button" data-copy-target="mdOutputCode">コピー</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

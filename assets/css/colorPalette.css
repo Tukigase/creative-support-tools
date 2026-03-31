@@ -1,0 +1,275 @@
+/* 全体レイアウト */
+.container {
+    flex: 1;
+    width: 95%;
+    max-width: 1200px;
+    margin: 40px auto;
+}
+
+.palette-layout {
+    display: flex;
+    gap: 30px;
+}
+
+@media (max-width: 900px) {
+    .palette-layout {
+        flex-direction: column;
+    }
+}
+
+.preview-panel, .controls-panel {
+    flex: 1;
+    background-color: var(--bg-footer);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+    font-size: 1.2rem;
+    color: var(--sub-text);
+    margin-top: 0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 10px;
+}
+
+.mt-4 {
+    margin-top: 30px;
+}
+
+/* =========================================
+   モックアップウィンドウのスタイル (プレビュー用)
+   ※ここはJSで書き換えられるCSS変数で動きます
+========================================= */
+.mockup-window {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+    
+    /* 初期値 (JSが動く前の一時的な値) */
+    --bg-base: #1E293B;
+    --bg-header: #1E293B;
+    --bg-footer: #0F172A;
+    --main-btn: #38BDF8;
+    --main-text: #F8FAFC;
+    --sub-text: #94A3B8;
+    --accent: #FACC15;
+
+    background-color: var(--bg-base);
+    color: var(--main-text);
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 400px;
+}
+
+.mock-header {
+    background-color: var(--bg-header);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--sub-text);
+}
+
+.mock-logo {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--main-btn);
+}
+
+.mock-nav span {
+    margin-left: 15px;
+    font-size: 0.9rem;
+    color: var(--sub-text);
+    cursor: pointer;
+}
+.mock-nav span:hover {
+    color: var(--accent);
+}
+
+.mock-main {
+    padding: 30px 20px;
+    flex: 1;
+}
+
+.mock-title {
+    margin: 0 0 15px 0;
+    font-size: 1.5rem;
+    color: var(--main-text);
+}
+
+.mock-text {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.mock-divider {
+    border: none;
+    border-top: 1px dashed var(--sub-text);
+    margin: 20px 0;
+    opacity: 0.5;
+}
+
+.mock-subtext {
+    font-size: 0.85rem;
+    color: var(--sub-text);
+    margin-bottom: 25px;
+}
+
+.mock-action {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.mock-btn {
+    background-color: var(--main-btn);
+    color: var(--bg-base);
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.mock-btn:hover {
+    background-color: var(--accent); /* ホバーでアクセント色に！ */
+}
+
+.mock-link {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.95rem;
+}
+.mock-link:hover {
+    text-decoration: underline;
+}
+
+.mock-footer {
+    background-color: var(--bg-footer);
+    padding: 15px;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--sub-text);
+}
+
+/* =========================================
+   コントロール (入力欄) のスタイル
+========================================= */
+.color-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.color-row {
+    display: flex;
+    align-items: center;
+    background-color: var(--bg-base);
+    padding: 10px 15px;
+    border-radius: 8px;
+    gap: 15px;
+}
+
+.color-row label {
+    width: 120px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: var(--text-color);
+}
+
+.color-row .role-desc {
+    flex: 1;
+    font-size: 0.8rem;
+    color: var(--sub-text);
+}
+
+.color-row input[type="color"] {
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--sub-text);
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    padding: 0;
+    background: none;
+}
+.color-row input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+.color-row input[type="color"]::-webkit-color-swatch { border: none; border-radius: 50%; }
+
+.color-row .hex-val {
+    width: 70px;
+    font-family: monospace;
+    font-size: 0.95rem;
+    color: #10B981;
+}
+
+/* =========================================
+   エクスポートエリア
+========================================= */
+.export-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.tab-btn {
+    background-color: var(--bg-base);
+    color: var(--sub-text);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.tab-btn.active {
+    background-color: var(--main-btn);
+    color: var(--bg-base);
+}
+
+.export-content {
+    display: none;
+}
+.export-content.active {
+    display: block;
+}
+
+.code-box {
+    position: relative;
+    background-color: #1E293B;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.code-box code {
+    display: block;
+    font-family: monospace;
+    color: #F8FAFC;
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+    line-height: 1.5;
+}
+
+.code-box .copy-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(255,255,255,0.1);
+    border: none;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+.code-box .copy-button:hover {
+    background-color: var(--main-btn);
+}
