@@ -64,7 +64,87 @@ document.addEventListener('DOMContentLoaded', () => {
 
         cssOutputCode.textContent = cssString;
         mdOutputCode.textContent = mdString;
+        checkIntegratedContrast();
     }
+
+    // 色計算関数群 (colorPickerから移植)
+    function hexToRgbArray(hex) { return [parseInt(hex.slice(1, 3), 16), parseInt(hex.slice(3, 5), 16), parseInt(hex.slice(5, 7), 16)]; }
+    function rgbArrayToHex(rgb) { return "#" + rgb.map(x => Math.max(0, Math.min(255, Math.round(x))).toString(16).padStart(2, '0')).join(''); }
+    function rgbToHsl(r, g, b) {
+        r /= 255; g /= 255; b /= 255;
+        const max = Math.max(r, g, b), min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+        if (max === min) h = s = 0;
+        else {
+            const d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) {
+                case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                case g: h = (b - r) / d + 2; break;
+                case b: h = (r - g) / d + 4; break;
+            }
+            h /= 6;
+        }
+        return [h * 360, s * 100, l * 100];
+    }
+    function simulateColorblindness(rgb, type) {
+        const [r, g, b] = rgb; let R, G, B;
+        if (type === 'P') { R = 0.56667 * r + 0.43333 * g; G = 0.55833 * r + 0.44167 * g; B = 0.24167 * g + 0.75833 * b; }
+        else if (type === 'D') { R = 0.625 * r + 0.375 * g; G = 0.7 * r + 0.3 * g; B = 0.3 * g + 0.7 * b; }
+        else if (type === 'T') { R = 0.95 * r + 0.05 * g; G = 0.43333 * g + 0.56667 * b; B = 0.475 * g + 0.525 * b; }
+        return [R, G, B];
+    }
+    function getLuminance(rgbArray) {
+        let a = rgbArray.map(v => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); });
+        return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+    }
+    function getContrastRatio(rgb1, rgb2) {
+        const lum1 = getLuminance(rgb1), lum2 = getLuminance(rgb2);
+        return (Math.max(lum1, lum2) + 0.05) / (Math.min(lum1, lum2) + 0.05);
+    }
+
+    // ★ 判定ロジック
+    function checkIntegratedContrast() {
+        const bgId = document.getElementById('bgRoleSelect').value;
+        const textId = document.getElementById('textRoleSelect').value;
+
+        // 選択された項目の現在のHEXを取得
+        const bgHex = document.getElementById(bgId).value;
+        const textHex = document.getElementById(textId).value;
+
+        const bgRgb = hexToRgbArray(bgHex);
+        const textRgb = hexToRgbArray(textHex);
+        const bgHsl = rgbToHsl(...bgRgb);
+        const textHsl = rgbToHsl(...textRgb);
+
+        const ratio = getContrastRatio(bgRgb, textRgb).toFixed(2);
+        const deltaH = Math.min(Math.abs(bgHsl[0] - textHsl[0]), 360 - Math.abs(bgHsl[0] - textHsl[0]));
+        const isHalation = bgHsl[1] > 80 && textHsl[1] > 80 && Math.abs(bgHsl[2] - textHsl[2]) < 30 && deltaH > 60;
+
+        const badge = document.getElementById('integratedContrastBadge');
+        if (isHalation) {
+            badge.textContent = `❌ チカチカして目が疲れます (ハレーション)`; badge.className = 'contrast-badge fail';
+        } else if (ratio >= 4.5) {
+            badge.textContent = `✅ 完璧に見やすい (AAA / 比率: ${ratio})`; badge.className = 'contrast-badge pass';
+        } else if (ratio >= 3.0) {
+            badge.textContent = `🆗 見やすい (AA / 比率: ${ratio})`; badge.className = 'contrast-badge pass';
+        } else if (ratio >= 2.5) {
+            badge.textContent = `⚠️ 大文字推奨 (比率: ${ratio})`; badge.className = 'contrast-badge warning';
+        } else {
+            badge.textContent = `❌ 見づらい (NG / 比率: ${ratio})`; badge.className = 'contrast-badge fail';
+        }
+
+        ['P', 'D', 'T'].forEach(type => {
+            const chipBg = document.getElementById(`chip${type}_bg`);
+            const chipText = document.getElementById(`chip${type}_text`);
+            chipBg.style.backgroundColor = rgbArrayToHex(simulateColorblindness(bgRgb, type));
+            chipText.style.color = rgbArrayToHex(simulateColorblindness(textRgb, type));
+        });
+    }
+
+    // プルダウンが変更された時に判定を更新
+    document.getElementById('bgRoleSelect').addEventListener('change', checkIntegratedContrast);
+    document.getElementById('textRoleSelect').addEventListener('change', checkIntegratedContrast);
 
     // タブ切り替え処理
     document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -93,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     });
-    
+
     // インポート処理
     const importBtn = document.getElementById('importBtn');
     const importCssText = document.getElementById('importCssText');

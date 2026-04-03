@@ -59,7 +59,48 @@ js: colorPalette.js
             <h2>パレット設定</h2>
             <div class="color-inputs" id="colorInputsArea">
             </div>
+            <h2 class="mt-4">アクセシビリティ・チェック</h2>
+            <div class="contrast-check-section">
+                <div class="check-selectors">
+                    <div class="selector-box">
+                        <label>背景にする色</label>
+                        <select id="bgRoleSelect">
+                            <option value="bg-base">ベース（背景）</option>
+                            <option value="bg-header">ヘッダー</option>
+                            <option value="bg-footer">フッター</option>
+                            <option value="main-btn">メイン（ボタン）</option>
+                        </select>
+                    </div>
+                    <span class="cross-icon">×</span>
+                    <div class="selector-box">
+                        <label>文字にする色</label>
+                        <select id="textRoleSelect">
+                            <option value="main-text">メインテキスト</option>
+                            <option value="sub-text">サブテキスト</option>
+                            <option value="accent">アクセント</option>
+                            <option value="bg-base">ベース（白抜き用）</option>
+                        </select>
+                    </div>
+                </div>
 
+                <div id="integratedContrastBadge" class="contrast-badge" style="margin-bottom: 15px;">判定中...</div>
+
+                <div class="universal-check-area"
+                    style="grid-template-columns: repeat(3, 1fr); gap: 10px; display: grid;">
+                    <div class="sim-item">
+                        <span class="sim-label">P型<br><small>(赤暗い)</small></span>
+                        <div class="sim-chip" id="chipP_bg"><span id="chipP_text">あ</span></div>
+                    </div>
+                    <div class="sim-item">
+                        <span class="sim-label">D型<br><small>(赤緑似る)</small></span>
+                        <div class="sim-chip" id="chipD_bg"><span id="chipD_text">あ</span></div>
+                    </div>
+                    <div class="sim-item">
+                        <span class="sim-label">T型<br><small>(青黄似る)</small></span>
+                        <div class="sim-chip" id="chipT_bg"><span id="chipT_text">あ</span></div>
+                    </div>
+                </div>
+            </div>
             <h2 class="mt-4">インポート</h2>
             <div class="import-section">
                 <div class="code-box">

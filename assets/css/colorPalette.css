@@ -223,6 +223,101 @@ h2 {
 }
 
 /* =========================================
+   統合アクセシビリティチェックエリア
+========================================= */
+.contrast-check-section {
+    background-color: var(--bg-base);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.check-selectors {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.selector-box {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+}
+
+.selector-box label {
+    font-size: 0.8rem;
+    color: var(--sub-text);
+    margin-bottom: 5px;
+}
+
+.selector-box select {
+    padding: 8px;
+    border-radius: 6px;
+    background-color: var(--bg-footer);
+    color: var(--main-text);
+    border: 1px solid var(--sub-text);
+}
+
+.cross-icon {
+    font-weight: bold;
+    color: var(--sub-text);
+    margin-top: 15px;
+}
+
+/* 判定バッジ (colorPickerと同等) */
+.contrast-badge {
+    display: block;
+    text-align: center;
+    padding: 8px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    background-color: #FFFFFF;
+}
+
+.contrast-badge.pass {
+    color: #10B981;
+    border: 2px solid #10B981;
+}
+
+.contrast-badge.warning {
+    color: #F59E0B;
+    border: 2px solid #F59E0B;
+}
+
+.contrast-badge.fail {
+    color: #EF4444;
+    border: 2px solid #EF4444;
+}
+
+/* シミュレーションチップ */
+.sim-item {
+    background-color: #FFFFFF;
+    padding: 8px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.sim-label {
+    font-size: 0.75rem;
+    color: #475569;
+    font-weight: bold;
+}
+
+.sim-chip {
+    width: 100%;
+    height: 30px;
+    border-radius: 4px;
+    margin-top: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* =========================================
    インポートエリア
 ========================================= */
 textarea#importCssText {
