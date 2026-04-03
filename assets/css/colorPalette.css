@@ -273,3 +273,49 @@ h2 {
 .code-box .copy-button:hover {
     background-color: var(--main-btn);
 }
+
+.mock-hero {
+    margin-bottom: 30px;
+}
+
+/* カードレイアウト */
+.mock-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2列に並べる */
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.mock-card {
+    border: 1px solid var(--sub-text); /* 枠線にサブテキスト色を利用 */
+    border-radius: 8px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.03); /* 背景をほんの少し明るくして浮き上がらせる */
+}
+
+.mock-card-title {
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+    color: var(--main-text);
+}
+
+/* アラート・バッジ */
+.mock-alert {
+    background-color: var(--bg-header); /* 背景にヘッダー色を使い回す */
+    border-left: 4px solid var(--accent); /* 左側にアクセント色の太い線 */
+    padding: 15px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.mock-badge {
+    background-color: var(--accent);
+    color: var(--bg-base); /* アクセントの中の文字は、ベース背景色で抜いて目立たせる */
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    white-space: nowrap;
+}
