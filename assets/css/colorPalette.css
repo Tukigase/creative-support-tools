@@ -1,22 +1,30 @@
 /* レイアウト全体設定 */
 .container-fluid {
-    padding: 20px;
+    padding: 15px;
+    /* 全体の余白を詰める */
     width: 100%;
-    max-width: 1800px;
-    /* 1600pxから1800pxに拡張し、さらに広く */
-    margin: 20px auto;
+    max-width: 1600px;
+    margin: 0 auto;
+    /* 上下のマージンを削る */
+    height: calc(100vh - 30px);
+    /* 画面の高さにピッタリ合わせる */
+    display: flex;
+    flex-direction: column;
 }
 
 .studio-layout {
     display: grid;
-    /* ★ 左を420px、右を400pxに大幅サイズアップ！ */
-    grid-template-columns: 420px 1fr 400px;
-    gap: 30px;
-    align-items: start;
+    grid-template-columns: 360px 1fr 340px;
+    /* 左: 360px, 中: 自動, 右: 340px */
+    gap: 20px;
+    /* 隙間を詰める */
+    flex: 1;
+    /* コンテナ内で高さを最大限使う */
+    min-height: 0;
+    /* Gridはみ出し防止 */
 }
 
-/* 画面が少し狭くなった時は2カラムに */
-@media (max-width: 1400px) {
+@media (max-width: 1200px) {
     .studio-layout {
         grid-template-columns: 1fr 1fr;
     }
@@ -36,30 +44,52 @@
     }
 }
 
-/* パネル共通デザイン */
+/* パネル共通デザイン（高さを自動で埋める） */
 .panel {
     background-color: var(--bg-footer);
-    padding: 30px;
-    /* パネル内の余白もゆったりと */
+    padding: 20px;
+    /* 30pxから圧縮 */
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* パネル自体を縦100%に */
+    box-sizing: border-box;
+
+    /* 画面が狭い時だけスクロールを許可 */
+    overflow-y: auto;
+}
+
+.panel::-webkit-scrollbar {
+    width: 6px;
+}
+
+.panel::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.panel::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
 }
 
 .panel h2 {
-    font-size: 1.25rem;
-    /* 見出しを大きく */
+    font-size: 1.05rem;
     color: var(--sub-text);
     margin-top: 0;
-    margin-bottom: 25px;
+    margin-bottom: 12px;
+    /* 25pxから圧縮 */
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 12px;
+    padding-bottom: 8px;
+    flex-shrink: 0;
 }
 
 .mt-4 {
-    margin-top: 40px;
+    margin-top: 20px;
 }
 
-/* 各セクションの縦の隙間を広げる */
+/* 間隔を圧縮 */
 
 /* =========================================
    左パネル: 色選択
@@ -67,33 +97,32 @@
 .color-inputs {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 8px;
+    flex-shrink: 0;
 }
-
-/* 間隔を拡張 */
 
 .color-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
     background-color: var(--bg-base);
-    padding: 12px 16px;
-    /* 上下左右を分厚く */
+    padding: 8px 12px;
+    /* 上下をスリムに */
     border-radius: 8px;
 }
 
 .color-row label {
     flex: 1;
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 0.9rem;
     margin-left: 10px;
     color: var(--text-color);
 }
 
 .color-row input[type="color"] {
-    width: 44px;
-    height: 44px;
-    /* カラーチップを巨大化！ */
+    width: 32px;
+    height: 32px;
+    /* 44pxから32pxへスマートに */
     border: 2px solid var(--sub-text);
     border-radius: 50%;
     overflow: hidden;
@@ -112,9 +141,9 @@
 }
 
 .hex-val {
-    width: 75px;
+    width: 65px;
     font-family: monospace;
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: #10B981;
     text-align: right;
 }
@@ -124,16 +153,17 @@
 ========================================= */
 .contrast-check-section {
     background-color: var(--bg-base);
-    padding: 20px;
+    padding: 15px;
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
 }
 
 .check-selectors {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .selector-box {
@@ -143,37 +173,37 @@
 }
 
 .selector-box label {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     color: var(--sub-text);
-    margin-bottom: 8px;
+    margin-bottom: 4px;
 }
 
 .selector-box select {
-    padding: 10px;
+    padding: 6px;
     border-radius: 6px;
     background-color: var(--bg-footer);
     color: var(--main-text);
     border: 1px solid var(--sub-text);
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     outline: none;
 }
 
 .cross-icon {
     font-weight: bold;
     color: var(--sub-text);
-    margin-top: 20px;
-    font-size: 1.2rem;
+    margin-top: 15px;
+    font-size: 1rem;
 }
 
 .contrast-badge {
     display: block;
     text-align: center;
-    padding: 12px;
+    padding: 8px;
     border-radius: 6px;
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 0.9rem;
     background-color: #FFFFFF;
-    margin-bottom: 20px;
+    margin-bottom: 12px;
 }
 
 .contrast-badge.pass {
@@ -194,32 +224,32 @@
 .universal-check-area {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+    gap: 6px;
 }
 
 .sim-item {
     background-color: #FFFFFF;
-    padding: 10px;
+    padding: 6px;
     border-radius: 6px;
     text-align: center;
 }
 
 .sim-label {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: #475569;
     font-weight: bold;
 }
 
 .sim-chip {
     width: 100%;
-    height: 36px;
+    height: 28px;
     border-radius: 4px;
-    margin-top: 6px;
+    margin-top: 4px;
     display: flex;
     justify-content: center;
     align-items: center;
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 0.85rem;
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
@@ -227,8 +257,6 @@
    中央パネル: モックアップ
 ========================================= */
 .mockup-window {
-    position: sticky;
-    top: 20px;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
@@ -239,7 +267,8 @@
     font-family: sans-serif;
     display: flex;
     flex-direction: column;
-    min-height: 500px;
+    flex: 1;
+    /* 親のパネルに合わせて縦いっぱいに伸びる */
 }
 
 .mock-header {
@@ -274,7 +303,7 @@
 }
 
 .mock-hero {
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
 .mock-title {
@@ -284,7 +313,7 @@
 }
 
 .mock-text {
-    font-size: 1rem;
+    font-size: 0.95rem;
     line-height: 1.6;
     margin-bottom: 20px;
 }
@@ -321,7 +350,7 @@
     color: var(--accent);
     text-decoration: none;
     font-weight: bold;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
 }
 
 .mock-link:hover {
@@ -332,7 +361,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 15px;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
 .mock-card {
@@ -361,7 +390,6 @@
     border-radius: 6px;
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
 }
 
 .mock-badge {
@@ -385,46 +413,52 @@
 /* =========================================
    右パネル: エクスポート・インポート
 ========================================= */
+.right-panel .panel-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.right-panel .panel-section.mt-4 {
+    flex: 1;
+}
+
+/* エクスポート部分を残りの高さ全開に */
+
 .code-box {
     position: relative;
     background-color: #1E293B;
-    padding: 25px;
+    padding: 15px;
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.code-box.no-copy {
-    padding: 20px;
-}
-
-/* 入力エリアを縦に長く */
+/* インポートエリアはコンパクトに */
 textarea#importCssText {
     width: 100%;
-    height: 120px;
+    height: 60px;
     background-color: transparent;
     color: #F8FAFC;
     font-family: monospace;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     border: none;
     resize: vertical;
     outline: none;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 textarea#importCssText::placeholder {
     color: rgba(255, 255, 255, 0.3);
 }
 
-/* ボタン類を大きく押しやすく */
 .action-btn {
     background-color: var(--main-btn);
     color: var(--bg-base);
     border: none;
-    padding: 12px 16px;
+    padding: 10px 16px;
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 0.9rem;
     width: 100%;
     transition: all 0.2s;
 }
@@ -435,19 +469,20 @@ textarea#importCssText::placeholder {
 
 .export-tabs {
     display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-shrink: 0;
 }
 
 .tab-btn {
     background-color: var(--bg-base);
     color: var(--sub-text);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 10px 20px;
+    padding: 8px 16px;
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 0.9rem;
 }
 
 .tab-btn.active {
@@ -457,33 +492,44 @@ textarea#importCssText::placeholder {
 
 .export-content {
     display: none;
+    flex: 1;
+    min-height: 0;
 }
 
 .export-content.active {
-    display: block;
+    display: flex;
+    flex-direction: column;
 }
 
-/* コードの文字サイズを拡張 */
+.export-content .code-box {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+/* 出力コードエリアはフレックスで画面下までピッタリ伸びる */
 .code-box code {
+    flex: 1;
     display: block;
     font-family: monospace;
     color: #F8FAFC;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     white-space: pre-wrap;
-    line-height: 1.6;
+    line-height: 1.5;
+    overflow-y: auto;
 }
 
 .code-box .copy-button {
     position: absolute;
-    top: 12px;
-    right: 12px;
+    top: 10px;
+    right: 10px;
     background-color: rgba(255, 255, 255, 0.1);
     border: none;
     color: white;
-    padding: 6px 14px;
+    padding: 6px 12px;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 .code-box .copy-button:hover {
