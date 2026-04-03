@@ -4,9 +4,56 @@ title: カラーパレット生成 - Creative-Support-Tools
 css: colorPalette.css
 js: colorPalette.js
 ---
-<main class="container">
-    <div class="palette-layout">
-        <div class="preview-panel">
+<main class="container-fluid">
+    <div class="studio-layout">
+
+        <aside class="panel left-panel">
+            <section class="panel-section">
+                <h2>パレット設定</h2>
+                <div class="color-inputs" id="colorInputsArea">
+                </div>
+            </section>
+
+            <section class="panel-section mt-4">
+                <h2>アクセシビリティ・チェック</h2>
+                <div class="contrast-check-section">
+                    <div class="check-selectors">
+                        <div class="selector-box">
+                            <label>背景色にする項目</label>
+                            <select id="bgRoleSelect"></select>
+                        </div>
+                        <span class="cross-icon">×</span>
+                        <div class="selector-box">
+                            <label>文字色にする項目</label>
+                            <select id="textRoleSelect"></select>
+                        </div>
+                    </div>
+
+                    <div id="integratedContrastBadge" class="contrast-badge">判定中...</div>
+
+                    <div class="universal-check-area">
+                        <div class="sim-item">
+                            <span class="sim-label">通常</span>
+                            <div class="sim-chip" id="chipNormal_bg"><span id="chipNormal_text">あ</span></div>
+                        </div>
+                        <div class="sim-item">
+                            <span class="sim-label">P型</span>
+                            <div class="sim-chip" id="chipP_bg"><span id="chipP_text">あ</span></div>
+                        </div>
+                        <div class="sim-item">
+                            <span class="sim-label">D型</span>
+                            <div class="sim-chip" id="chipD_bg"><span id="chipD_text">あ</span></div>
+                        </div>
+                        <div class="sim-item">
+                            <span class="sim-label">T型</span>
+                            <div class="sim-chip" id="chipT_bg"><span id="chipT_text">あ</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </aside>
+
+        <section class="panel center-panel">
             <h2>リアルタイムプレビュー</h2>
             <div class="mockup-window" id="mockupWindow">
                 <header class="mock-header">
@@ -18,9 +65,9 @@ js: colorPalette.js
 
                 <main class="mock-main">
                     <div class="mock-hero">
-                        <h1 class="mock-title">カラーパレットジェネレーター</h1>
+                        <h1 class="mock-title">Color Palette Studio</h1>
                         <p class="mock-text">
-                            これはメインテキストの表示サンプルです。選択した色がリアルタイムで反映され、実際のWebサイトに近い構成で配色のバランスを確認できます。
+                            左側のパレットで色を変更すると、即座にこのプレビューに反映され、実際のWebサイトに近い構成で配色のバランスを確認できます。
                         </p>
                         <div class="mock-action">
                             <button class="mock-btn">メインアクション</button>
@@ -53,81 +100,41 @@ js: colorPalette.js
                     &copy; 2026 Creative-Support-Tools.
                 </footer>
             </div>
-        </div>
+        </section>
 
-        <div class="controls-panel">
-            <h2>パレット設定</h2>
-            <div class="color-inputs" id="colorInputsArea">
-            </div>
-            <h2 class="mt-4">アクセシビリティ・チェック</h2>
-            <div class="contrast-check-section">
-                <div class="check-selectors">
-                    <div class="selector-box">
-                        <label>背景にする色</label>
-                        <select id="bgRoleSelect">
-                            <option value="bg-base">ベース（背景）</option>
-                            <option value="bg-header">ヘッダー</option>
-                            <option value="bg-footer">フッター</option>
-                            <option value="main-btn">メイン（ボタン）</option>
-                        </select>
+        <aside class="panel right-panel">
+            <section class="panel-section">
+                <h2>インポート</h2>
+                <div class="import-section">
+                    <div class="code-box no-copy">
+                        <textarea id="importCssText" placeholder="出力された :root { ... } のCSSを貼り付けてください"></textarea>
+                        <button id="importBtn" class="action-btn">CSSを読み込む</button>
                     </div>
-                    <span class="cross-icon">×</span>
-                    <div class="selector-box">
-                        <label>文字にする色</label>
-                        <select id="textRoleSelect">
-                            <option value="main-text">メインテキスト</option>
-                            <option value="sub-text">サブテキスト</option>
-                            <option value="accent">アクセント</option>
-                            <option value="bg-base">ベース（白抜き用）</option>
-                        </select>
+                </div>
+            </section>
+
+            <section class="panel-section mt-4">
+                <h2>エクスポート</h2>
+                <div class="export-tabs">
+                    <button class="tab-btn active" data-target="exportCss">CSS</button>
+                    <button class="tab-btn" data-target="exportMd">Markdown</button>
+                </div>
+
+                <div class="export-content active" id="exportCss">
+                    <div class="code-box">
+                        <code id="cssOutputCode"></code>
+                        <button class="copy-button" data-copy-target="cssOutputCode">コピー</button>
                     </div>
                 </div>
 
-                <div id="integratedContrastBadge" class="contrast-badge" style="margin-bottom: 15px;">判定中...</div>
-
-                <div class="universal-check-area"
-                    style="grid-template-columns: repeat(3, 1fr); gap: 10px; display: grid;">
-                    <div class="sim-item">
-                        <span class="sim-label">P型<br><small>(赤暗い)</small></span>
-                        <div class="sim-chip" id="chipP_bg"><span id="chipP_text">あ</span></div>
-                    </div>
-                    <div class="sim-item">
-                        <span class="sim-label">D型<br><small>(赤緑似る)</small></span>
-                        <div class="sim-chip" id="chipD_bg"><span id="chipD_text">あ</span></div>
-                    </div>
-                    <div class="sim-item">
-                        <span class="sim-label">T型<br><small>(青黄似る)</small></span>
-                        <div class="sim-chip" id="chipT_bg"><span id="chipT_text">あ</span></div>
+                <div class="export-content" id="exportMd">
+                    <div class="code-box">
+                        <code id="mdOutputCode"></code>
+                        <button class="copy-button" data-copy-target="mdOutputCode">コピー</button>
                     </div>
                 </div>
-            </div>
-            <h2 class="mt-4">インポート</h2>
-            <div class="import-section">
-                <div class="code-box">
-                    <textarea id="importCssText" placeholder="出力された :root { ... } のCSSを貼り付けてください"></textarea>
-                    <button id="importBtn" class="action-btn">CSSを読み込む</button>
-                </div>
-            </div>
+            </section>
+        </aside>
 
-            <h2 class="mt-4">エクスポート</h2>
-            <div class="export-tabs">
-                <button class="tab-btn active" data-target="exportCss">CSS</button>
-                <button class="tab-btn" data-target="exportMd">Markdown</button>
-            </div>
-
-            <div class="export-content active" id="exportCss">
-                <div class="code-box">
-                    <code id="cssOutputCode"></code>
-                    <button class="copy-button" data-copy-target="cssOutputCode">コピー</button>
-                </div>
-            </div>
-
-            <div class="export-content" id="exportMd">
-                <div class="code-box">
-                    <code id="mdOutputCode"></code>
-                    <button class="copy-button" data-copy-target="mdOutputCode">コピー</button>
-                </div>
-            </div>
-        </div>
     </div>
 </main>

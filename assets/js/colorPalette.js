@@ -1,73 +1,78 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // ユーザー提案の7項目の定義
+    // 1. 7つの色設定を定義
     const paletteSettings = [
         { id: 'bg-base', varName: '--bg-base', label: 'ベース（背景）', defaultHex: '#1E293B', desc: 'サイト全体のメイン背景色' },
         { id: 'bg-header', varName: '--bg-header', label: 'ヘッダー', defaultHex: '#1E293B', desc: '画面上部のナビゲーション領域' },
         { id: 'bg-footer', varName: '--bg-footer', label: 'フッター', defaultHex: '#0F172A', desc: '画面下部の領域' },
-        { id: 'main-btn', varName: '--main-btn', label: 'メイン（ボタン）', defaultHex: '#38BDF8', desc: '主要なアクションボタン、強調リンク' },
+        { id: 'main-btn', varName: '--main-btn', label: 'メイン（ボタン）', defaultHex: '#38BDF8', desc: '主要なアクションボタン' },
         { id: 'main-text', varName: '--main-text', label: 'メインテキスト', defaultHex: '#F8FAFC', desc: '通常の文章、見出し文字' },
         { id: 'sub-text', varName: '--sub-text', label: 'サブテキスト', defaultHex: '#94A3B8', desc: '補足情報、ラベル、境界線' },
-        { id: 'accent', varName: '--accent', label: 'アクセント', defaultHex: '#FACC15', desc: 'ホバー時のハイライト、注意喚起' }
+        { id: 'accent', varName: '--accent', label: 'アクセント', defaultHex: '#FACC15', desc: 'ホバー時のハイライト等' }
     ];
 
     const inputsArea = document.getElementById('colorInputsArea');
+    const bgSelect = document.getElementById('bgRoleSelect');
+    const textSelect = document.getElementById('textRoleSelect');
     const mockupWindow = document.getElementById('mockupWindow');
     const cssOutputCode = document.getElementById('cssOutputCode');
     const mdOutputCode = document.getElementById('mdOutputCode');
 
-    // 1. 入力UIの動的生成
+    // 2. 左パネル：入力UIとプルダウンの動的生成
     paletteSettings.forEach(setting => {
+        // 色選択（カラーピッカー）行の生成
         const row = document.createElement('div');
         row.className = 'color-row';
         row.innerHTML = `
-            <label for="${setting.id}">${setting.label}</label>
             <input type="color" id="${setting.id}" value="${setting.defaultHex}">
+            <label for="${setting.id}">${setting.label}</label>
             <span class="hex-val" id="${setting.id}-hex">${setting.defaultHex}</span>
-            <span class="role-desc">${setting.desc}</span>
         `;
         inputsArea.appendChild(row);
 
-        // イベントリスナーの追加
-        const inputEl = document.getElementById(setting.id);
-        const hexSpan = document.getElementById(`${setting.id}-hex`);
+        // アクセシビリティ判定用のプルダウン選択肢を追加
+        const optBg = new Option(setting.label, setting.id);
+        const optText = new Option(setting.label, setting.id);
+        bgSelect.add(optBg);
+        textSelect.add(optText);
 
+        // 色が変更されたときのイベントリスナー
+        const inputEl = document.getElementById(setting.id);
         inputEl.addEventListener('input', (e) => {
             const newHex = e.target.value.toUpperCase();
-            hexSpan.textContent = newHex;
+            document.getElementById(`${setting.id}-hex`).textContent = newHex;
             updatePalette();
         });
     });
 
-    // 2. プレビューとコード出力の更新関数
+    // アクセシビリティ判定の初期選択
+    bgSelect.value = 'bg-base';
+    textSelect.value = 'main-text';
+
+    // 3. 全体更新関数（モックアップ反映・コード出力・判定実行）
     function updatePalette() {
         let cssString = `:root {\n`;
-
-        // Markdownテーブルのヘッダー
-        let mdString = `| 役割 | プレビュー | カラーコード | 用途・備考 |\n`;
-        mdString += `| :--- | :---: | :--- | :--- |\n`;
+        let mdString = `| 役割 | プレビュー | カラーコード | 用途・備考 |\n| :--- | :---: | :--- | :--- |\n`;
 
         paletteSettings.forEach(setting => {
-            const inputEl = document.getElementById(setting.id);
-            const currentHex = inputEl.value.toUpperCase();
+            const hex = document.getElementById(setting.id).value.toUpperCase();
 
             // モックアップへのCSS変数リアルタイム適用
-            mockupWindow.style.setProperty(setting.varName, currentHex);
+            mockupWindow.style.setProperty(setting.varName, hex);
 
-            // CSS文字列の構築
-            cssString += `    ${setting.varName}: ${currentHex};\n`;
-
-            // Markdown文字列の構築 (QiitaやGitHubで色がプレビューされるバッジ記法を活用)
-            mdString += `| ${setting.label} | ![${currentHex}](https://placehold.co/15x15/${currentHex.replace('#', '')}/${currentHex.replace('#', '')}.png) | \`${currentHex}\` | ${setting.desc} |\n`;
+            // 出力用コードの構築
+            cssString += `    ${setting.varName}: ${hex};\n`;
+            mdString += `| ${setting.label} | ![${hex}](https://placehold.co/15x15/${hex.replace('#', '')}/${hex.replace('#', '')}.png) | \`${hex}\` | ${setting.desc} |\n`;
         });
 
         cssString += `}`;
-
         cssOutputCode.textContent = cssString;
         mdOutputCode.textContent = mdString;
+
+        // 色が更新されるたびにアクセシビリティも再判定
         checkIntegratedContrast();
     }
 
-    // 色計算関数群 (colorPickerから移植)
+    // --- 色計算関連の補助関数 ---
     function hexToRgbArray(hex) { return [parseInt(hex.slice(1, 3), 16), parseInt(hex.slice(3, 5), 16), parseInt(hex.slice(5, 7), 16)]; }
     function rgbArrayToHex(rgb) { return "#" + rgb.map(x => Math.max(0, Math.min(255, Math.round(x))).toString(16).padStart(2, '0')).join(''); }
     function rgbToHsl(r, g, b) {
@@ -92,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (type === 'P') { R = 0.56667 * r + 0.43333 * g; G = 0.55833 * r + 0.44167 * g; B = 0.24167 * g + 0.75833 * b; }
         else if (type === 'D') { R = 0.625 * r + 0.375 * g; G = 0.7 * r + 0.3 * g; B = 0.3 * g + 0.7 * b; }
         else if (type === 'T') { R = 0.95 * r + 0.05 * g; G = 0.43333 * g + 0.56667 * b; B = 0.475 * g + 0.525 * b; }
+        else { return rgb; } // Normal
         return [R, G, B];
     }
     function getLuminance(rgbArray) {
@@ -103,12 +109,12 @@ document.addEventListener('DOMContentLoaded', () => {
         return (Math.max(lum1, lum2) + 0.05) / (Math.min(lum1, lum2) + 0.05);
     }
 
-    // ★ 判定ロジック
+    // 4. アクセシビリティ判定ロジック
     function checkIntegratedContrast() {
-        const bgId = document.getElementById('bgRoleSelect').value;
-        const textId = document.getElementById('textRoleSelect').value;
+        const bgId = bgSelect.value;
+        const textId = textSelect.value;
 
-        // 選択された項目の現在のHEXを取得
+        // プルダウンで選ばれた項目の現在色を取得
         const bgHex = document.getElementById(bgId).value;
         const textHex = document.getElementById(textId).value;
 
@@ -134,7 +140,8 @@ document.addEventListener('DOMContentLoaded', () => {
             badge.textContent = `❌ 見づらい (NG / 比率: ${ratio})`; badge.className = 'contrast-badge fail';
         }
 
-        ['P', 'D', 'T'].forEach(type => {
+        // 4種類の見え方シミュレーションを更新
+        ['Normal', 'P', 'D', 'T'].forEach(type => {
             const chipBg = document.getElementById(`chip${type}_bg`);
             const chipText = document.getElementById(`chip${type}_text`);
             chipBg.style.backgroundColor = rgbArrayToHex(simulateColorblindness(bgRgb, type));
@@ -142,11 +149,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // プルダウンが変更された時に判定を更新
-    document.getElementById('bgRoleSelect').addEventListener('change', checkIntegratedContrast);
-    document.getElementById('textRoleSelect').addEventListener('change', checkIntegratedContrast);
+    // プルダウン操作時も判定を再実行
+    bgSelect.addEventListener('change', checkIntegratedContrast);
+    textSelect.addEventListener('change', checkIntegratedContrast);
 
-    // タブ切り替え処理
+    // 5. 右パネル：タブ切り替え処理
     document.querySelectorAll('.tab-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -157,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // コピーボタン処理
+    // 6. 右パネル：コピーボタン処理
     document.querySelectorAll('.copy-button').forEach(button => {
         button.addEventListener('click', function () {
             const targetId = this.dataset.copyTarget;
@@ -174,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // インポート処理
+    // 7. 右パネル：インポート処理
     const importBtn = document.getElementById('importBtn');
     const importCssText = document.getElementById('importCssText');
 
@@ -183,17 +190,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!cssText) return;
 
         let updatedCount = 0;
-
         paletteSettings.forEach(setting => {
-            // 正規表現で、各CSS変数名とその後ろのHEXコードを探し出す
-            // 例: /--bg-base\s*:\s*(#[0-9A-Fa-f]{6})/i
             const regex = new RegExp(`${setting.varName}\\s*:\\s*(#[0-9A-Fa-f]{6})`, 'i');
             const match = cssText.match(regex);
 
             if (match && match[1]) {
                 const newHex = match[1].toUpperCase();
-
-                // input[type="color"] と表示用のテキストを更新
                 document.getElementById(setting.id).value = newHex;
                 document.getElementById(`${setting.id}-hex`).textContent = newHex;
                 updatedCount++;
@@ -201,10 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (updatedCount > 0) {
-            // 色が1つでも更新されたらプレビューを再描画
             updatePalette();
-
-            // 成功のフィードバックをボタンのアニメーションで表現
             const originalText = importBtn.textContent;
             importBtn.textContent = `${updatedCount}色をインポートしました！`;
             importBtn.style.backgroundColor = '#10B981';
@@ -214,14 +213,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 importBtn.style.backgroundColor = '';
                 importBtn.style.color = '';
             }, 2500);
-
-            // 読み込み後はテキストエリアを空にする（任意）
             importCssText.value = '';
         } else {
             alert('有効なCSS変数が見つかりませんでした。出力された :root { ... } の形式を貼り付けてください。');
         }
     });
 
-    // 初期化実行
+    // アプリ起動時の初回実行
     updatePalette();
 });

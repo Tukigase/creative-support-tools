@@ -1,33 +1,49 @@
-/* 全体レイアウト */
-.container {
-    flex: 1;
-    width: 95%;
-    max-width: 1200px;
-    margin: 40px auto;
+/* レイアウト全体設定 */
+.container-fluid {
+    padding: 20px;
+    width: 100%;
+    max-width: 1600px;
+    margin: 20px auto;
 }
 
-.palette-layout {
-    display: flex;
-    gap: 30px;
+.studio-layout {
+    display: grid;
+    grid-template-columns: 360px 1fr 340px;
+    /* 左: 360px, 中: 自動拡張, 右: 340px */
+    gap: 25px;
+    align-items: start;
 }
 
-@media (max-width: 900px) {
-    .palette-layout {
-        flex-direction: column;
+@media (max-width: 1200px) {
+    .studio-layout {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .right-panel {
+        grid-column: span 2;
     }
 }
 
-.preview-panel,
-.controls-panel {
-    flex: 1;
+@media (max-width: 900px) {
+    .studio-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .right-panel {
+        grid-column: span 1;
+    }
+}
+
+/* パネル共通デザイン */
+.panel {
     background-color: var(--bg-footer);
     padding: 25px;
     border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-h2 {
-    font-size: 1.2rem;
+.panel h2 {
+    font-size: 1.1rem;
     color: var(--sub-text);
     margin-top: 0;
     margin-bottom: 20px;
@@ -39,18 +55,168 @@ h2 {
     margin-top: 30px;
 }
 
-/* =========================================
-   モックアップウィンドウのスタイル (プレビュー用)
-   ※ここはJSで書き換えられるCSS変数で動きます
-========================================= */
+/* 左パネル: 色選択 */
+.color-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.color-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--bg-base);
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.color-row label {
+    flex: 1;
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-left: 10px;
+    color: var(--text-color);
+}
+
+.color-row input[type="color"] {
+    width: 36px;
+    height: 36px;
+    border: 2px solid var(--sub-text);
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    padding: 0;
+    background: none;
+}
+
+.color-row input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.color-row input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 50%;
+}
+
+.hex-val {
+    width: 65px;
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: #10B981;
+    text-align: right;
+}
+
+/* 左パネル: アクセシビリティ */
+.contrast-check-section {
+    background-color: var(--bg-base);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.check-selectors {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.selector-box {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+}
+
+.selector-box label {
+    font-size: 0.8rem;
+    color: var(--sub-text);
+    margin-bottom: 5px;
+}
+
+.selector-box select {
+    padding: 8px;
+    border-radius: 6px;
+    background-color: var(--bg-footer);
+    color: var(--main-text);
+    border: 1px solid var(--sub-text);
+    font-size: 0.85rem;
+    outline: none;
+}
+
+.cross-icon {
+    font-weight: bold;
+    color: var(--sub-text);
+    margin-top: 15px;
+}
+
+.contrast-badge {
+    display: block;
+    text-align: center;
+    padding: 8px;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    background-color: #FFFFFF;
+    margin-bottom: 15px;
+}
+
+.contrast-badge.pass {
+    color: #10B981;
+    border: 2px solid #10B981;
+}
+
+.contrast-badge.warning {
+    color: #F59E0B;
+    border: 2px solid #F59E0B;
+}
+
+.contrast-badge.fail {
+    color: #EF4444;
+    border: 2px solid #EF4444;
+}
+
+.universal-check-area {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.sim-item {
+    background-color: #FFFFFF;
+    padding: 6px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.sim-label {
+    font-size: 0.7rem;
+    color: #475569;
+    font-weight: bold;
+}
+
+.sim-chip {
+    width: 100%;
+    height: 28px;
+    border-radius: 4px;
+    margin-top: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* 中央パネル: モックアップ */
 .mockup-window {
+    position: sticky;
+    top: 20px;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
-
-    /* 初期値 (JSが動く前の一時的な値) */
     --bg-base: #1E293B;
     --bg-header: #1E293B;
     --bg-footer: #0F172A;
@@ -58,13 +224,12 @@ h2 {
     --main-text: #F8FAFC;
     --sub-text: #94A3B8;
     --accent: #FACC15;
-
     background-color: var(--bg-base);
     color: var(--main-text);
     font-family: sans-serif;
     display: flex;
     flex-direction: column;
-    min-height: 400px;
+    min-height: 500px;
 }
 
 .mock-header {
@@ -98,6 +263,10 @@ h2 {
     flex: 1;
 }
 
+.mock-hero {
+    margin-bottom: 30px;
+}
+
 .mock-title {
     margin: 0 0 15px 0;
     font-size: 1.5rem;
@@ -115,12 +284,6 @@ h2 {
     border-top: 1px dashed var(--sub-text);
     margin: 20px 0;
     opacity: 0.5;
-}
-
-.mock-subtext {
-    font-size: 0.85rem;
-    color: var(--sub-text);
-    margin-bottom: 25px;
 }
 
 .mock-action {
@@ -142,7 +305,6 @@ h2 {
 
 .mock-btn:hover {
     background-color: var(--accent);
-    /* ホバーでアクセント色に！ */
 }
 
 .mock-link {
@@ -156,6 +318,52 @@ h2 {
     text-decoration: underline;
 }
 
+.mock-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.mock-card {
+    border: 1px solid var(--sub-text);
+    border-radius: 8px;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.mock-card-title {
+    margin: 0 0 10px 0;
+    font-size: 1.1rem;
+    color: var(--main-text);
+}
+
+.mock-subtext {
+    font-size: 0.85rem;
+    color: var(--sub-text);
+    margin: 0;
+}
+
+.mock-alert {
+    background-color: var(--bg-header);
+    border-left: 4px solid var(--accent);
+    padding: 15px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.mock-badge {
+    background-color: var(--accent);
+    color: var(--bg-base);
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
 .mock-footer {
     background-color: var(--bg-footer);
     padding: 15px;
@@ -164,162 +372,19 @@ h2 {
     color: var(--sub-text);
 }
 
-/* =========================================
-   コントロール (入力欄) のスタイル
-========================================= */
-.color-inputs {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.color-row {
-    display: flex;
-    align-items: center;
-    background-color: var(--bg-base);
-    padding: 10px 15px;
-    border-radius: 8px;
-    gap: 15px;
-}
-
-.color-row label {
-    width: 120px;
-    font-weight: bold;
-    font-size: 0.9rem;
-    color: var(--text-color);
-}
-
-.color-row .role-desc {
-    flex: 1;
-    font-size: 0.8rem;
-    color: var(--sub-text);
-}
-
-.color-row input[type="color"] {
-    width: 40px;
-    height: 40px;
-    border: 2px solid var(--sub-text);
-    border-radius: 50%;
-    overflow: hidden;
-    cursor: pointer;
-    padding: 0;
-    background: none;
-}
-
-.color-row input[type="color"]::-webkit-color-swatch-wrapper {
-    padding: 0;
-}
-
-.color-row input[type="color"]::-webkit-color-swatch {
-    border: none;
-    border-radius: 50%;
-}
-
-.color-row .hex-val {
-    width: 70px;
-    font-family: monospace;
-    font-size: 0.95rem;
-    color: #10B981;
-}
-
-/* =========================================
-   統合アクセシビリティチェックエリア
-========================================= */
-.contrast-check-section {
-    background-color: var(--bg-base);
+/* 右パネル: エクスポート・インポート */
+.code-box {
+    position: relative;
+    background-color: #1E293B;
     padding: 20px;
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.check-selectors {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 15px;
+.code-box.no-copy {
+    padding: 15px;
 }
 
-.selector-box {
-    display: flex;
-    flex-direction: column;
-    width: 45%;
-}
-
-.selector-box label {
-    font-size: 0.8rem;
-    color: var(--sub-text);
-    margin-bottom: 5px;
-}
-
-.selector-box select {
-    padding: 8px;
-    border-radius: 6px;
-    background-color: var(--bg-footer);
-    color: var(--main-text);
-    border: 1px solid var(--sub-text);
-}
-
-.cross-icon {
-    font-weight: bold;
-    color: var(--sub-text);
-    margin-top: 15px;
-}
-
-/* 判定バッジ (colorPickerと同等) */
-.contrast-badge {
-    display: block;
-    text-align: center;
-    padding: 8px;
-    border-radius: 6px;
-    font-weight: bold;
-    font-size: 0.9rem;
-    background-color: #FFFFFF;
-}
-
-.contrast-badge.pass {
-    color: #10B981;
-    border: 2px solid #10B981;
-}
-
-.contrast-badge.warning {
-    color: #F59E0B;
-    border: 2px solid #F59E0B;
-}
-
-.contrast-badge.fail {
-    color: #EF4444;
-    border: 2px solid #EF4444;
-}
-
-/* シミュレーションチップ */
-.sim-item {
-    background-color: #FFFFFF;
-    padding: 8px;
-    border-radius: 8px;
-    text-align: center;
-}
-
-.sim-label {
-    font-size: 0.75rem;
-    color: #475569;
-    font-weight: bold;
-}
-
-.sim-chip {
-    width: 100%;
-    height: 30px;
-    border-radius: 4px;
-    margin-top: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-/* =========================================
-   インポートエリア
-========================================= */
 textarea#importCssText {
     width: 100%;
     height: 80px;
@@ -329,7 +394,6 @@ textarea#importCssText {
     font-size: 0.85rem;
     border: none;
     resize: vertical;
-    /* 縦方向のみサイズ変更可能 */
     outline: none;
     margin-bottom: 10px;
 }
@@ -355,9 +419,6 @@ textarea#importCssText::placeholder {
     background-color: var(--accent);
 }
 
-/* =========================================
-   エクスポートエリア
-========================================= */
 .export-tabs {
     display: flex;
     gap: 10px;
@@ -387,19 +448,11 @@ textarea#importCssText::placeholder {
     display: block;
 }
 
-.code-box {
-    position: relative;
-    background-color: #1E293B;
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
 .code-box code {
     display: block;
     font-family: monospace;
     color: #F8FAFC;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     white-space: pre-wrap;
     line-height: 1.5;
 }
@@ -419,56 +472,4 @@ textarea#importCssText::placeholder {
 
 .code-box .copy-button:hover {
     background-color: var(--main-btn);
-}
-
-.mock-hero {
-    margin-bottom: 30px;
-}
-
-/* カードレイアウト */
-.mock-cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    /* 2列に並べる */
-    gap: 15px;
-    margin-bottom: 30px;
-}
-
-.mock-card {
-    border: 1px solid var(--sub-text);
-    /* 枠線にサブテキスト色を利用 */
-    border-radius: 8px;
-    padding: 20px;
-    background-color: rgba(255, 255, 255, 0.03);
-    /* 背景をほんの少し明るくして浮き上がらせる */
-}
-
-.mock-card-title {
-    margin: 0 0 10px 0;
-    font-size: 1.1rem;
-    color: var(--main-text);
-}
-
-/* アラート・バッジ */
-.mock-alert {
-    background-color: var(--bg-header);
-    /* 背景にヘッダー色を使い回す */
-    border-left: 4px solid var(--accent);
-    /* 左側にアクセント色の太い線 */
-    padding: 15px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.mock-badge {
-    background-color: var(--accent);
-    color: var(--bg-base);
-    /* アクセントの中の文字は、ベース背景色で抜いて目立たせる */
-    padding: 4px 10px;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: bold;
-    white-space: nowrap;
 }
