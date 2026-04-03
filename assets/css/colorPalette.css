@@ -6,7 +6,7 @@
     max-width: 1600px;
     margin: 0 auto;
     /* 上下のマージンを削る */
-    height: calc(100vh - 30px);
+    height: calc(100vh - 180px);
     /* 画面の高さにピッタリ合わせる */
     display: flex;
     flex-direction: column;
@@ -269,6 +269,7 @@
     flex-direction: column;
     flex: 1;
     /* 親のパネルに合わせて縦いっぱいに伸びる */
+    min-height: 350px;
 }
 
 .mock-header {
