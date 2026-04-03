@@ -2,19 +2,21 @@
 .container-fluid {
     padding: 20px;
     width: 100%;
-    max-width: 1600px;
+    max-width: 1800px;
+    /* 1600pxから1800pxに拡張し、さらに広く */
     margin: 20px auto;
 }
 
 .studio-layout {
     display: grid;
-    grid-template-columns: 360px 1fr 340px;
-    /* 左: 360px, 中: 自動拡張, 右: 340px */
-    gap: 25px;
+    /* ★ 左を420px、右を400pxに大幅サイズアップ！ */
+    grid-template-columns: 420px 1fr 400px;
+    gap: 30px;
     align-items: start;
 }
 
-@media (max-width: 1200px) {
+/* 画面が少し狭くなった時は2カラムに */
+@media (max-width: 1400px) {
     .studio-layout {
         grid-template-columns: 1fr 1fr;
     }
@@ -37,51 +39,61 @@
 /* パネル共通デザイン */
 .panel {
     background-color: var(--bg-footer);
-    padding: 25px;
+    padding: 30px;
+    /* パネル内の余白もゆったりと */
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .panel h2 {
-    font-size: 1.1rem;
+    font-size: 1.25rem;
+    /* 見出しを大きく */
     color: var(--sub-text);
     margin-top: 0;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 10px;
+    padding-bottom: 12px;
 }
 
 .mt-4 {
-    margin-top: 30px;
+    margin-top: 40px;
 }
 
-/* 左パネル: 色選択 */
+/* 各セクションの縦の隙間を広げる */
+
+/* =========================================
+   左パネル: 色選択
+========================================= */
 .color-inputs {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
 }
+
+/* 間隔を拡張 */
 
 .color-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
     background-color: var(--bg-base);
-    padding: 8px 12px;
+    padding: 12px 16px;
+    /* 上下左右を分厚く */
     border-radius: 8px;
 }
 
 .color-row label {
     flex: 1;
     font-weight: bold;
-    font-size: 0.9rem;
+    font-size: 1rem;
     margin-left: 10px;
     color: var(--text-color);
 }
 
 .color-row input[type="color"] {
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
+    /* カラーチップを巨大化！ */
     border: 2px solid var(--sub-text);
     border-radius: 50%;
     overflow: hidden;
@@ -100,17 +112,19 @@
 }
 
 .hex-val {
-    width: 65px;
+    width: 75px;
     font-family: monospace;
-    font-size: 0.9rem;
+    font-size: 1rem;
     color: #10B981;
     text-align: right;
 }
 
-/* 左パネル: アクセシビリティ */
+/* =========================================
+   左パネル: アクセシビリティ
+========================================= */
 .contrast-check-section {
     background-color: var(--bg-base);
-    padding: 15px;
+    padding: 20px;
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
@@ -119,7 +133,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .selector-box {
@@ -129,36 +143,37 @@
 }
 
 .selector-box label {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: var(--sub-text);
-    margin-bottom: 5px;
+    margin-bottom: 8px;
 }
 
 .selector-box select {
-    padding: 8px;
+    padding: 10px;
     border-radius: 6px;
     background-color: var(--bg-footer);
     color: var(--main-text);
     border: 1px solid var(--sub-text);
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     outline: none;
 }
 
 .cross-icon {
     font-weight: bold;
     color: var(--sub-text);
-    margin-top: 15px;
+    margin-top: 20px;
+    font-size: 1.2rem;
 }
 
 .contrast-badge {
     display: block;
     text-align: center;
-    padding: 8px;
+    padding: 12px;
     border-radius: 6px;
     font-weight: bold;
-    font-size: 0.9rem;
+    font-size: 1rem;
     background-color: #FFFFFF;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .contrast-badge.pass {
@@ -179,36 +194,38 @@
 .universal-check-area {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
+    gap: 10px;
 }
 
 .sim-item {
     background-color: #FFFFFF;
-    padding: 6px;
+    padding: 10px;
     border-radius: 6px;
     text-align: center;
 }
 
 .sim-label {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     color: #475569;
     font-weight: bold;
 }
 
 .sim-chip {
     width: 100%;
-    height: 28px;
+    height: 36px;
     border-radius: 4px;
-    margin-top: 4px;
+    margin-top: 6px;
     display: flex;
     justify-content: center;
     align-items: center;
     font-weight: bold;
-    font-size: 0.9rem;
+    font-size: 1rem;
     border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-/* 中央パネル: モックアップ */
+/* =========================================
+   中央パネル: モックアップ
+========================================= */
 .mockup-window {
     position: sticky;
     top: 20px;
@@ -217,13 +234,6 @@
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
-    --bg-base: #1E293B;
-    --bg-header: #1E293B;
-    --bg-footer: #0F172A;
-    --main-btn: #38BDF8;
-    --main-text: #F8FAFC;
-    --sub-text: #94A3B8;
-    --accent: #FACC15;
     background-color: var(--bg-base);
     color: var(--main-text);
     font-family: sans-serif;
@@ -372,45 +382,49 @@
     color: var(--sub-text);
 }
 
-/* 右パネル: エクスポート・インポート */
+/* =========================================
+   右パネル: エクスポート・インポート
+========================================= */
 .code-box {
     position: relative;
     background-color: #1E293B;
-    padding: 20px;
+    padding: 25px;
     border-radius: 8px;
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .code-box.no-copy {
-    padding: 15px;
+    padding: 20px;
 }
 
+/* 入力エリアを縦に長く */
 textarea#importCssText {
     width: 100%;
-    height: 80px;
+    height: 120px;
     background-color: transparent;
     color: #F8FAFC;
     font-family: monospace;
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     border: none;
     resize: vertical;
     outline: none;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 textarea#importCssText::placeholder {
     color: rgba(255, 255, 255, 0.3);
 }
 
+/* ボタン類を大きく押しやすく */
 .action-btn {
     background-color: var(--main-btn);
     color: var(--bg-base);
     border: none;
-    padding: 8px 12px;
+    padding: 12px 16px;
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
-    font-size: 0.9rem;
+    font-size: 1rem;
     width: 100%;
     transition: all 0.2s;
 }
@@ -421,18 +435,19 @@ textarea#importCssText::placeholder {
 
 .export-tabs {
     display: flex;
-    gap: 10px;
-    margin-bottom: 15px;
+    gap: 15px;
+    margin-bottom: 20px;
 }
 
 .tab-btn {
     background-color: var(--bg-base);
     color: var(--sub-text);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 8px 16px;
+    padding: 10px 20px;
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
+    font-size: 1rem;
 }
 
 .tab-btn.active {
@@ -448,26 +463,27 @@ textarea#importCssText::placeholder {
     display: block;
 }
 
+/* コードの文字サイズを拡張 */
 .code-box code {
     display: block;
     font-family: monospace;
     color: #F8FAFC;
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     white-space: pre-wrap;
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
 .code-box .copy-button {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 12px;
+    right: 12px;
     background-color: rgba(255, 255, 255, 0.1);
     border: none;
     color: white;
-    padding: 4px 10px;
+    padding: 6px 14px;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
 }
 
 .code-box .copy-button:hover {
