@@ -17,7 +17,8 @@
     }
 }
 
-.preview-panel, .controls-panel {
+.preview-panel,
+.controls-panel {
     flex: 1;
     background-color: var(--bg-footer);
     padding: 25px;
@@ -30,7 +31,7 @@ h2 {
     color: var(--sub-text);
     margin-top: 0;
     margin-bottom: 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding-bottom: 10px;
 }
 
@@ -48,7 +49,7 @@ h2 {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
-    
+
     /* 初期値 (JSが動く前の一時的な値) */
     --bg-base: #1E293B;
     --bg-header: #1E293B;
@@ -87,6 +88,7 @@ h2 {
     color: var(--sub-text);
     cursor: pointer;
 }
+
 .mock-nav span:hover {
     color: var(--accent);
 }
@@ -137,8 +139,10 @@ h2 {
     cursor: pointer;
     transition: background-color 0.2s;
 }
+
 .mock-btn:hover {
-    background-color: var(--accent); /* ホバーでアクセント色に！ */
+    background-color: var(--accent);
+    /* ホバーでアクセント色に！ */
 }
 
 .mock-link {
@@ -147,6 +151,7 @@ h2 {
     font-weight: bold;
     font-size: 0.95rem;
 }
+
 .mock-link:hover {
     text-decoration: underline;
 }
@@ -200,14 +205,59 @@ h2 {
     padding: 0;
     background: none;
 }
-.color-row input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
-.color-row input[type="color"]::-webkit-color-swatch { border: none; border-radius: 50%; }
+
+.color-row input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.color-row input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 50%;
+}
 
 .color-row .hex-val {
     width: 70px;
     font-family: monospace;
     font-size: 0.95rem;
     color: #10B981;
+}
+
+/* =========================================
+   インポートエリア
+========================================= */
+textarea#importCssText {
+    width: 100%;
+    height: 80px;
+    background-color: transparent;
+    color: #F8FAFC;
+    font-family: monospace;
+    font-size: 0.85rem;
+    border: none;
+    resize: vertical;
+    /* 縦方向のみサイズ変更可能 */
+    outline: none;
+    margin-bottom: 10px;
+}
+
+textarea#importCssText::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.action-btn {
+    background-color: var(--main-btn);
+    color: var(--bg-base);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+    width: 100%;
+    transition: all 0.2s;
+}
+
+.action-btn:hover {
+    background-color: var(--accent);
 }
 
 /* =========================================
@@ -222,7 +272,7 @@ h2 {
 .tab-btn {
     background-color: var(--bg-base);
     color: var(--sub-text);
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 8px 16px;
     border-radius: 6px;
     cursor: pointer;
@@ -237,6 +287,7 @@ h2 {
 .export-content {
     display: none;
 }
+
 .export-content.active {
     display: block;
 }
@@ -246,7 +297,7 @@ h2 {
     background-color: #1E293B;
     padding: 20px;
     border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.05);
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .code-box code {
@@ -262,7 +313,7 @@ h2 {
     position: absolute;
     top: 10px;
     right: 10px;
-    background-color: rgba(255,255,255,0.1);
+    background-color: rgba(255, 255, 255, 0.1);
     border: none;
     color: white;
     padding: 4px 10px;
@@ -270,6 +321,7 @@ h2 {
     cursor: pointer;
     font-size: 0.8rem;
 }
+
 .code-box .copy-button:hover {
     background-color: var(--main-btn);
 }
@@ -281,16 +333,19 @@ h2 {
 /* カードレイアウト */
 .mock-cards {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* 2列に並べる */
+    grid-template-columns: 1fr 1fr;
+    /* 2列に並べる */
     gap: 15px;
     margin-bottom: 30px;
 }
 
 .mock-card {
-    border: 1px solid var(--sub-text); /* 枠線にサブテキスト色を利用 */
+    border: 1px solid var(--sub-text);
+    /* 枠線にサブテキスト色を利用 */
     border-radius: 8px;
     padding: 20px;
-    background-color: rgba(255, 255, 255, 0.03); /* 背景をほんの少し明るくして浮き上がらせる */
+    background-color: rgba(255, 255, 255, 0.03);
+    /* 背景をほんの少し明るくして浮き上がらせる */
 }
 
 .mock-card-title {
@@ -301,8 +356,10 @@ h2 {
 
 /* アラート・バッジ */
 .mock-alert {
-    background-color: var(--bg-header); /* 背景にヘッダー色を使い回す */
-    border-left: 4px solid var(--accent); /* 左側にアクセント色の太い線 */
+    background-color: var(--bg-header);
+    /* 背景にヘッダー色を使い回す */
+    border-left: 4px solid var(--accent);
+    /* 左側にアクセント色の太い線 */
     padding: 15px;
     border-radius: 6px;
     display: flex;
@@ -312,7 +369,8 @@ h2 {
 
 .mock-badge {
     background-color: var(--accent);
-    color: var(--bg-base); /* アクセントの中の文字は、ベース背景色で抜いて目立たせる */
+    color: var(--bg-base);
+    /* アクセントの中の文字は、ベース背景色で抜いて目立たせる */
     padding: 4px 10px;
     border-radius: 9999px;
     font-size: 0.75rem;

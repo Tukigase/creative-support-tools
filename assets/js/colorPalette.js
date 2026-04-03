@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. プレビューとコード出力の更新関数
     function updatePalette() {
         let cssString = `:root {\n`;
-        
+
         // Markdownテーブルのヘッダー
         let mdString = `| 役割 | プレビュー | カラーコード | 用途・備考 |\n`;
         mdString += `| :--- | :---: | :--- | :--- |\n`;
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cssString += `    ${setting.varName}: ${currentHex};\n`;
 
             // Markdown文字列の構築 (QiitaやGitHubで色がプレビューされるバッジ記法を活用)
-            mdString += `| ${setting.label} | ![${currentHex}](https://placehold.co/15x15/${currentHex.replace('#','')}/${currentHex.replace('#','')}.png) | \`${currentHex}\` | ${setting.desc} |\n`;
+            mdString += `| ${setting.label} | ![${currentHex}](https://placehold.co/15x15/${currentHex.replace('#', '')}/${currentHex.replace('#', '')}.png) | \`${currentHex}\` | ${setting.desc} |\n`;
         });
 
         cssString += `}`;
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.addEventListener('click', (e) => {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.export-content').forEach(c => c.classList.remove('active'));
-            
+
             e.target.classList.add('active');
             document.getElementById(e.target.dataset.target).classList.add('active');
         });
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // コピーボタン処理
     document.querySelectorAll('.copy-button').forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             const targetId = this.dataset.copyTarget;
             const textToCopy = document.getElementById(targetId).textContent;
             navigator.clipboard.writeText(textToCopy).then(() => {
@@ -92,6 +92,54 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 2000);
             });
         });
+    });
+    
+    // インポート処理
+    const importBtn = document.getElementById('importBtn');
+    const importCssText = document.getElementById('importCssText');
+
+    importBtn.addEventListener('click', () => {
+        const cssText = importCssText.value;
+        if (!cssText) return;
+
+        let updatedCount = 0;
+
+        paletteSettings.forEach(setting => {
+            // 正規表現で、各CSS変数名とその後ろのHEXコードを探し出す
+            // 例: /--bg-base\s*:\s*(#[0-9A-Fa-f]{6})/i
+            const regex = new RegExp(`${setting.varName}\\s*:\\s*(#[0-9A-Fa-f]{6})`, 'i');
+            const match = cssText.match(regex);
+
+            if (match && match[1]) {
+                const newHex = match[1].toUpperCase();
+
+                // input[type="color"] と表示用のテキストを更新
+                document.getElementById(setting.id).value = newHex;
+                document.getElementById(`${setting.id}-hex`).textContent = newHex;
+                updatedCount++;
+            }
+        });
+
+        if (updatedCount > 0) {
+            // 色が1つでも更新されたらプレビューを再描画
+            updatePalette();
+
+            // 成功のフィードバックをボタンのアニメーションで表現
+            const originalText = importBtn.textContent;
+            importBtn.textContent = `${updatedCount}色をインポートしました！`;
+            importBtn.style.backgroundColor = '#10B981';
+            importBtn.style.color = '#FFFFFF';
+            setTimeout(() => {
+                importBtn.textContent = originalText;
+                importBtn.style.backgroundColor = '';
+                importBtn.style.color = '';
+            }, 2500);
+
+            // 読み込み後はテキストエリアを空にする（任意）
+            importCssText.value = '';
+        } else {
+            alert('有効なCSS変数が見つかりませんでした。出力された :root { ... } の形式を貼り付けてください。');
+        }
     });
 
     // 初期化実行
