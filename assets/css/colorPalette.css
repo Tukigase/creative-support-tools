@@ -404,19 +404,6 @@ textarea#importCssText::placeholder {
     overflow-y: auto;
 }
 
-.code-box .copy-button {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border: none;
-    color: white;
-    padding: 6px 14px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.85rem;
-}
-
-.code-box .copy-button:hover {
-    background-color: var(--main-btn);
+.mt-btn {
+    margin-top: 15px;
 }
