@@ -300,13 +300,17 @@
 /* =========================================
    右パネル: エクスポート・インポート
 ========================================= */
+/* セクションをFlex化し、エクスポート部分を残りの高さにフィットさせる */
 .right-panel .panel-section {
     display: flex;
     flex-direction: column;
+    flex-shrink: 0;
 }
 
 .right-panel .panel-section.mt-4 {
     flex: 1;
+    min-height: 0;
+    /* ★魔法：中身が溢れても親を押し広げない */
 }
 
 .code-box {
@@ -375,6 +379,7 @@ textarea#importCssText::placeholder {
     color: var(--bg-base);
 }
 
+/* エクスポートエリアのFlex制御 */
 .export-content {
     display: none;
     flex: 1;
@@ -388,22 +393,38 @@ textarea#importCssText::placeholder {
 
 .export-content .code-box {
     flex: 1;
-    display: flex;
-    overflow: hidden;
+    overflow-y: auto;
+    /* ★ここが重要：コード枠の中だけでスクロールさせる！ */
+    min-height: 0;
+    /* ★魔法：中身が溢れても親を押し広げない */
+}
+
+/* ★追加：コード枠の中のスクロールバーを細く綺麗にデザイン */
+.export-content .code-box::-webkit-scrollbar {
+    width: 6px;
+}
+
+.export-content .code-box::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.export-content .code-box::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
 }
 
 /* 出力コードエリア */
 .code-box code {
-    flex: 1;
     display: block;
     font-family: monospace;
     color: #F8FAFC;
     font-size: 0.9rem;
     white-space: pre-wrap;
     line-height: 1.6;
-    overflow-y: auto;
 }
 
+/* コピーボタンの上の隙間と、縮み防止 */
 .mt-btn {
     margin-top: 15px;
+    flex-shrink: 0;
 }
