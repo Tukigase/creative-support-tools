@@ -12,11 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Mermaidの初期化設定
     mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose' });
 
-    // 2. marked.js の基本設定（カスタムレンダラーは使わない）
-    // 最新版の marked は setOptions ではなく use を推奨
+    // 2. marked.js の基本設定
     marked.use({
-        breaks: true, // 改行を<br>に変換
-        gfm: true     // GitHub Flavored Markdown
+        breaks: true,
+        gfm: true
     });
 
     // 3. プレビューのレンダリング処理
@@ -26,23 +25,16 @@ document.addEventListener('DOMContentLoaded', () => {
         timeoutId = setTimeout(async () => {
             const rawText = mdInput.value;
             
-            // ① まず普通にHTMLに変換してプレビューに流し込む
+            // ① まずHTMLに変換してプレビューに流し込む
             mdPreview.innerHTML = marked.parse(rawText);
             
-            // ② marked.jsのAPIに依存しないDOM置換アプローチ
-            // 出力されたHTMLの中から `language-mermaid` のクラスを持つ code 要素を探す
+            // ② DOM置換アプローチでコードブロックを Mermaid 用の div に変換
             const mermaidCodeBlocks = mdPreview.querySelectorAll('code.language-mermaid');
-            
             mermaidCodeBlocks.forEach(codeBlock => {
-                // 親の <pre> 要素を取得
                 const preElement = codeBlock.parentElement;
-                
-                // 新しい <div class="mermaid"> を作成
                 const mermaidDiv = document.createElement('div');
                 mermaidDiv.className = 'mermaid';
-                mermaidDiv.textContent = codeBlock.textContent; // 中身のテキストをそのまま移動
-                
-                // <pre> を <div> にそっくり置き換える
+                mermaidDiv.textContent = codeBlock.textContent;
                 preElement.replaceWith(mermaidDiv);
             });
 
@@ -142,23 +134,74 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 📄 PDFエクスポート処理
-    exportPdfBtn.addEventListener('click', () => {
+    // 📄 PDFエクスポート処理（★SVGバグ回避・画像一時置換ロジック）
+    exportPdfBtn.addEventListener('click', async () => {
         const element = document.getElementById('mdPreview');
         const originalBtnText = exportPdfBtn.textContent;
         exportPdfBtn.textContent = '生成中...';
         exportPdfBtn.style.backgroundColor = '#6B7280';
         exportPdfBtn.disabled = true;
 
+        // 【対策】PDF化する前に、Mermaid要素を一時的に「画像」へ変換する
+        const mermaidElements = element.querySelectorAll('.mermaid');
+        const originalContents = []; // 元に戻すためのキャッシュ用配列
+
+        for (let i = 0; i < mermaidElements.length; i++) {
+            const container = mermaidElements[i];
+            
+            // 元のHTML（きれいなSVG状態）を記憶しておく
+            originalContents.push({
+                container: container,
+                html: container.innerHTML
+            });
+
+            try {
+                // 成功しているhtml2canvasのロジックで、図表単体をピンポイント画像化
+                const canvas = await html2canvas(container, {
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: '#ffffff'
+                });
+                const imgData = canvas.toDataURL('image/png');
+                
+                // SVGをimgタグにすり替える（レイアウト崩れ防止で横幅いっぱいに設定）
+                const img = document.createElement('img');
+                img.src = imgData;
+                img.style.width = '100%';
+                img.style.height = 'auto';
+                img.style.display = 'block';
+                
+                container.innerHTML = '';
+                container.appendChild(img);
+            } catch (err) {
+                console.error("PDF Mermaid pre-render error:", err);
+            }
+        }
+
+        // 【PDF生成】画像に置き換わった安全なHTMLをPDF化する
         const opt = {
             margin:       15,
             filename:     currentFileName.replace('.md', '.pdf'),
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 2, useCORS: true },
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+            pagebreak:    { mode: ['css', 'legacy'] }
         };
 
         html2pdf().set(opt).from(element).save().then(() => {
+            // PDF化が完了したら、即座に元のきれいなSVG表示に戻す
+            originalContents.forEach(item => {
+                item.container.innerHTML = item.html;
+            });
+        }).catch(err => {
+            console.error("PDF Export Error:", err);
+            alert("PDFの生成に失敗しました。");
+            // エラー時も元の状態に戻す
+            originalContents.forEach(item => {
+                item.container.innerHTML = item.html;
+            });
+        }).finally(() => {
             exportPdfBtn.textContent = originalBtnText;
             exportPdfBtn.style.backgroundColor = '';
             exportPdfBtn.disabled = false;
