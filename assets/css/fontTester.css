@@ -1,20 +1,18 @@
 /* レイアウト全体設定 */
 .container-fluid {
-    padding: 15px;
+    padding: 20px;
     width: 100%;
-    max-width: 1600px;
+    max-width: 1400px;
     margin: 0 auto;
-    height: calc(100vh - 180px); /* 共通ヘッダー・フッター分を引く */
-    display: flex;
-    flex-direction: column;
+    /* ★ height制限を解除。自然なページスクロールにする */
 }
 
 .studio-layout {
     display: grid;
-    grid-template-columns: 400px 1fr; /* 左: 400px, 右: 残り全部 */
-    gap: 25px;
-    flex: 1;
-    min-height: 0;
+    grid-template-columns: 380px 1fr; 
+    gap: 30px;
+    /* ★ 左パネルを固定するために必要 */
+    align-items: flex-start; 
 }
 
 @media (max-width: 900px) {
@@ -27,96 +25,56 @@
     padding: 25px;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    box-sizing: border-box;
 }
 
 .panel h2 {
-    font-size: 1.15rem;
-    color: var(--sub-text);
-    margin-top: 0;
-    margin-bottom: 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding-bottom: 10px;
-    flex-shrink: 0;
+    font-size: 1.15rem; color: var(--sub-text); margin: 0 0 20px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 10px;
 }
+.mt-4 { margin-top: 30px; } .mt-3 { margin-top: 15px; }
 
-.mt-4 { margin-top: 30px; }
-.mt-3 { margin-top: 20px; }
-
-/* 左パネル: コントロール */
-.left-panel { overflow-y: auto; }
+/* 左パネル: スクロール追従(Sticky) */
+.left-panel {
+    position: sticky;
+    top: 20px;
+    /* 画面より長い場合は左パネル内だけスクロール */
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+}
 .left-panel::-webkit-scrollbar { width: 6px; }
-.left-panel::-webkit-scrollbar-track { background: transparent; }
 .left-panel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
 
-.input-group textarea {
-    width: 100%;
-    padding: 15px;
-    background-color: var(--bg-base);
-    color: var(--main-text);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 8px;
-    font-size: 1rem;
-    resize: vertical;
-    outline: none;
-    box-sizing: border-box;
-}
-
+/* 各種コントロール UI */
+.input-group textarea { width: 100%; padding: 15px; background-color: var(--bg-base); color: var(--main-text); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; font-size: 1rem; resize: vertical; outline: none; box-sizing: border-box; }
 .slider-group { margin-bottom: 20px; }
 .slider-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 .slider-header label { font-size: 0.95rem; font-weight: bold; color: var(--main-text); }
 .val-badge { background-color: var(--bg-base); color: #10B981; padding: 4px 10px; border-radius: 6px; font-family: monospace; font-size: 0.9rem; font-weight: bold; }
-
 input[type="range"] { width: 100%; cursor: pointer; accent-color: var(--main-btn); }
-
 .toggle-label { display: flex; align-items: center; gap: 10px; cursor: pointer; }
 .toggle-text { font-size: 1rem; font-weight: bold; color: var(--main-text); }
-input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; accent-color: var(--main-btn); }
+
+/* カラーピッカー追加分 */
+.color-controls { display: flex; flex-direction: column; gap: 10px; }
+.color-row { display: flex; align-items: center; justify-content: space-between; background-color: var(--bg-base); padding: 8px 12px; border-radius: 8px; }
+.color-row label { font-size: 0.95rem; font-weight: bold; color: var(--text-color); }
+.color-row input[type="color"] { width: 36px; height: 36px; border: 2px solid var(--sub-text); border-radius: 50%; cursor: pointer; padding: 0; background: none; }
+.color-row input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+.color-row input[type="color"]::-webkit-color-swatch { border: none; border-radius: 50%; }
 
 /* 右パネル: プレビューリスト */
-.right-panel { padding-right: 15px; } /* スクロールバー用に少し余白 */
-.font-list-container {
-    flex: 1;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    padding-right: 10px;
-}
-.font-list-container::-webkit-scrollbar { width: 6px; }
-.font-list-container::-webkit-scrollbar-track { background: transparent; }
-.font-list-container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 3px; }
+.font-list-container { display: flex; flex-direction: column; gap: 20px; }
+.font-card { background-color: var(--bg-base); border-radius: 8px; padding: 25px; border: 1px solid rgba(255,255,255,0.05); transition: background-color 0.2s; }
 
-/* フォントカード */
-.font-card {
-    background-color: var(--bg-base);
-    border-radius: 8px;
-    padding: 20px;
-    border: 1px solid rgba(255,255,255,0.05);
-}
+.font-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px dashed rgba(255,255,255,0.1); }
+.font-name { font-size: 1.2rem; font-weight: bold; color: var(--main-btn); margin: 0; }
 
-.font-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px dashed rgba(255,255,255,0.1);
-}
+.font-preview-text { margin: 0; white-space: pre-wrap; transition: all 0.1s; padding: 10px; border-radius: 6px; }
 
-.font-name { font-size: 1.1rem; font-weight: bold; color: var(--main-btn); margin: 0; }
-.font-css-code { font-family: monospace; font-size: 0.85rem; color: var(--sub-text); background-color: rgba(255,255,255,0.05); padding: 4px 8px; border-radius: 4px; }
+/* 出力ボタンとコードエリア */
+.action-btn { background-color: var(--bg-footer); border: 1px solid var(--sub-text); color: var(--main-text); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: bold; transition: all 0.2s; }
+.action-btn:hover { background-color: var(--main-btn); color: #fff; border-color: var(--main-btn); }
 
-.font-preview-text {
-    margin: 0;
-    color: var(--main-text);
-    /* 初期値。JSで上書きされます */
-    font-size: 16px;
-    line-height: 1.6;
-    letter-spacing: 0em;
-    font-weight: normal;
-    white-space: pre-wrap; /* テキストエリアの改行を反映 */
-}
+.code-export-box { margin-top: 20px; background-color: #0F172A; padding: 15px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); display: none; }
+.code-export-box.active { display: block; }
+.code-export-box code { display: block; font-family: monospace; font-size: 0.85rem; color: #10B981; white-space: pre-wrap; line-height: 1.5; margin-bottom: 10px; }

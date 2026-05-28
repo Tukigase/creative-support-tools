@@ -4,10 +4,6 @@ title: Webフォント比較テスター - Creative-Support-Tools
 css: fontTester.css
 js: fontTester.js
 ---
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=BIZ+UDGothic:wght@400;700&family=BIZ+UDMincho:wght@400;700&family=Dela+Gothic+One&family=DotGothic16&family=Hachi+Maru+Pop&family=Kaisei+Decol:wght@400;700&family=Klee+One:wght@400;600&family=M+PLUS+1p:wght@400;700&family=M+PLUS+Rounded+1c:wght@400;700&family=Noto+Sans+JP:wght@400;700&family=Noto+Serif+JP:wght@400;700&family=Potta+One&family=Reggae+One&family=RocknRoll+One&family=Train+One&family=Yusei+Magic&display=swap" rel="stylesheet">
-
 <main class="container-fluid">
     <div class="studio-layout">
         
@@ -15,11 +11,9 @@ js: fontTester.js
             <section class="panel-section">
                 <h2>プレビューテキスト</h2>
                 <div class="input-group">
-                    <textarea id="previewText" rows="4">あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市、郊外のぎらぎらひかる草の波。
-
+                    <textarea id="previewText" rows="4">あのイーハトーヴォのすきとおった風、夏でも底に冷たさをもつ青いそら、うつくしい森で飾られたモリーオ市。
 ABCDEFGHIJKLMNOPQRSTUVWXYZ
-abcdefghijklmnopqrstuvwxyz
-0123456789</textarea>
+abcdefghijklmnopqrstuvwxyz</textarea>
                 </div>
             </section>
 
@@ -27,34 +21,36 @@ abcdefghijklmnopqrstuvwxyz
                 <h2>タイポグラフィ設定</h2>
                 
                 <div class="slider-group">
-                    <div class="slider-header">
-                        <label>文字サイズ (font-size)</label>
-                        <span id="fontSizeVal" class="val-badge">16px</span>
-                    </div>
+                    <div class="slider-header"><label>文字サイズ</label><span id="fontSizeVal" class="val-badge">16px</span></div>
                     <input type="range" id="fontSizeSlider" min="10" max="64" value="16" step="1">
                 </div>
-
                 <div class="slider-group">
-                    <div class="slider-header">
-                        <label>行間 (line-height)</label>
-                        <span id="lineHeightVal" class="val-badge">1.6</span>
-                    </div>
+                    <div class="slider-header"><label>行間</label><span id="lineHeightVal" class="val-badge">1.6</span></div>
                     <input type="range" id="lineHeightSlider" min="1.0" max="3.0" value="1.6" step="0.1">
                 </div>
-
                 <div class="slider-group">
-                    <div class="slider-header">
-                        <label>字送り (letter-spacing)</label>
-                        <span id="letterSpacingVal" class="val-badge">0em</span>
-                    </div>
+                    <div class="slider-header"><label>字送り</label><span id="letterSpacingVal" class="val-badge">0em</span></div>
                     <input type="range" id="letterSpacingSlider" min="-0.1" max="0.5" value="0" step="0.01">
                 </div>
-                
                 <div class="toggle-group mt-3">
                     <label class="toggle-label">
                         <input type="checkbox" id="fontWeightToggle">
-                        <span class="toggle-text">太字 (font-weight: bold)</span>
+                        <span class="toggle-text">太字 (Bold) にする</span>
                     </label>
+                </div>
+            </section>
+
+            <section class="panel-section mt-4">
+                <h2>カラーテスト</h2>
+                <div class="color-controls">
+                    <div class="color-row">
+                        <label>背景色</label>
+                        <input type="color" id="bgColorPicker" value="#FFFFFF">
+                    </div>
+                    <div class="color-row">
+                        <label>文字色</label>
+                        <input type="color" id="textColorPicker" value="#1E293B">
+                    </div>
                 </div>
             </section>
         </aside>
