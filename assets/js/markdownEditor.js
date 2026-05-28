@@ -12,24 +12,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Mermaidの初期化設定
     mermaid.initialize({ startOnLoad: false, theme: 'default', securityLevel: 'loose' });
 
-    // 2. marked.js の設定（★最新API対応版）
+    // 2. marked.js の基本設定（カスタムレンダラーは使わない）
+    // 最新版の marked は setOptions ではなく use を推奨
     marked.use({
-        breaks: true,
-        gfm: true,
-        renderer: {
-            // 最新版(オブジェクト引数)と旧版(文字列引数)の両方に対応する安全な書き方
-            code(arg1, arg2) {
-                const lang = typeof arg1 === 'object' ? (arg1.lang || '') : (arg2 || '');
-                const text = typeof arg1 === 'object' ? arg1.text : arg1;
-
-                if (lang === 'mermaid') {
-                    // mermaidの場合は図表描画用のdivタグに変換
-                    return `<div class="mermaid">${text}</div>`;
-                }
-                // それ以外の言語は false を返すことで、デフォルトのコードブロック処理に任せる
-                return false;
-            }
-        }
+        breaks: true, // 改行を<br>に変換
+        gfm: true     // GitHub Flavored Markdown
     });
 
     // 3. プレビューのレンダリング処理
@@ -39,21 +26,36 @@ document.addEventListener('DOMContentLoaded', () => {
         timeoutId = setTimeout(async () => {
             const rawText = mdInput.value;
             
-            // MarkdownをHTMLに変換して流し込む
+            // ① まず普通にHTMLに変換してプレビューに流し込む
             mdPreview.innerHTML = marked.parse(rawText);
             
+            // ② marked.jsのAPIに依存しないDOM置換アプローチ
+            // 出力されたHTMLの中から `language-mermaid` のクラスを持つ code 要素を探す
+            const mermaidCodeBlocks = mdPreview.querySelectorAll('code.language-mermaid');
+            
+            mermaidCodeBlocks.forEach(codeBlock => {
+                // 親の <pre> 要素を取得
+                const preElement = codeBlock.parentElement;
+                
+                // 新しい <div class="mermaid"> を作成
+                const mermaidDiv = document.createElement('div');
+                mermaidDiv.className = 'mermaid';
+                mermaidDiv.textContent = codeBlock.textContent; // 中身のテキストをそのまま移動
+                
+                // <pre> を <div> にそっくり置き換える
+                preElement.replaceWith(mermaidDiv);
+            });
+
+            // ③ 置換が終わった後にMermaidを描画
             try {
-                // プレビューエリア内のmermaid要素だけを取得
                 const mermaidNodes = mdPreview.querySelectorAll('.mermaid');
                 if (mermaidNodes.length > 0) {
-                    // 取得したノードに対してのみMermaidの描画を実行
                     await mermaid.run({ nodes: mermaidNodes });
                 }
             } catch (error) {
                 console.error("Mermaid parsing error:", error);
-                // 文法エラーで描画に失敗しても、エディター自体は落ちないようにする
             }
-        }, 300); // タイピング中の負荷軽減（0.3秒後に描画）
+        }, 300);
     }
 
     // 4. イベントリスナー群
@@ -132,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 100);
         }).catch(err => {
             console.error("Image Export Error:", err);
-            alert("画像の生成に失敗しました。図表が複雑すぎる可能性があります。");
+            alert("画像の生成に失敗しました。");
         }).finally(() => {
             exportImgBtn.textContent = originalBtnText;
             exportImgBtn.style.backgroundColor = '';
