@@ -25,10 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
         timeoutId = setTimeout(async () => {
             const rawText = mdInput.value;
             
-            // ① まずHTMLに変換してプレビューに流し込む
             mdPreview.innerHTML = marked.parse(rawText);
             
-            // ② DOM置換アプローチでコードブロックを Mermaid 用の div に変換
             const mermaidCodeBlocks = mdPreview.querySelectorAll('code.language-mermaid');
             mermaidCodeBlocks.forEach(codeBlock => {
                 const preElement = codeBlock.parentElement;
@@ -38,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 preElement.replaceWith(mermaidDiv);
             });
 
-            // ③ 置換が終わった後にMermaidを描画
             try {
                 const mermaidNodes = mdPreview.querySelectorAll('.mermaid');
                 if (mermaidNodes.length > 0) {
@@ -57,7 +54,6 @@ document.addEventListener('DOMContentLoaded', () => {
         mdPreview.className = `markdown-body ${e.target.value}`;
     });
 
-    // 📁 .mdファイルの読み込み
     importFile.addEventListener('change', (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -134,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 📄 PDFエクスポート処理（★SVGバグ回避・画像一時置換ロジック）
+    // 📄 PDFエクスポート処理
     exportPdfBtn.addEventListener('click', async () => {
         const element = document.getElementById('mdPreview');
         const originalBtnText = exportPdfBtn.textContent;
@@ -142,21 +138,18 @@ document.addEventListener('DOMContentLoaded', () => {
         exportPdfBtn.style.backgroundColor = '#6B7280';
         exportPdfBtn.disabled = true;
 
-        // 【対策】PDF化する前に、Mermaid要素を一時的に「画像」へ変換する
         const mermaidElements = element.querySelectorAll('.mermaid');
-        const originalContents = []; // 元に戻すためのキャッシュ用配列
+        const originalContents = []; 
 
         for (let i = 0; i < mermaidElements.length; i++) {
             const container = mermaidElements[i];
             
-            // 元のHTML（きれいなSVG状態）を記憶しておく
             originalContents.push({
                 container: container,
                 html: container.innerHTML
             });
 
             try {
-                // 成功しているhtml2canvasのロジックで、図表単体をピンポイント画像化
                 const canvas = await html2canvas(container, {
                     scale: 2,
                     useCORS: true,
@@ -165,12 +158,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
                 const imgData = canvas.toDataURL('image/png');
                 
-                // SVGをimgタグにすり替える（レイアウト崩れ防止で横幅いっぱいに設定）
                 const img = document.createElement('img');
                 img.src = imgData;
-                img.style.width = '100%';
+                // ★ 修正: width:100% の強制拡大をやめ、最大値のみ100%に制限して中央揃え
+                img.style.maxWidth = '100%';
                 img.style.height = 'auto';
                 img.style.display = 'block';
+                img.style.margin = '0 auto';
                 
                 container.innerHTML = '';
                 container.appendChild(img);
@@ -179,25 +173,23 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // 【PDF生成】画像に置き換わった安全なHTMLをPDF化する
+        // ★ 修正: pagebreak の avoid オプションに .mermaid を指定して途中でのスライスを防止
         const opt = {
             margin:       15,
             filename:     currentFileName.replace('.md', '.pdf'),
             image:        { type: 'jpeg', quality: 0.98 },
             html2canvas:  { scale: 2, useCORS: true },
             jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-            pagebreak:    { mode: ['css', 'legacy'] }
+            pagebreak:    { mode: ['css', 'legacy'], avoid: ['.mermaid', 'h1', 'h2', 'img'] }
         };
 
         html2pdf().set(opt).from(element).save().then(() => {
-            // PDF化が完了したら、即座に元のきれいなSVG表示に戻す
             originalContents.forEach(item => {
                 item.container.innerHTML = item.html;
             });
         }).catch(err => {
             console.error("PDF Export Error:", err);
             alert("PDFの生成に失敗しました。");
-            // エラー時も元の状態に戻す
             originalContents.forEach(item => {
                 item.container.innerHTML = item.html;
             });
