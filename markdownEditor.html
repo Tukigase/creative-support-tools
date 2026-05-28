@@ -1,0 +1,58 @@
+---
+layout: default
+title: Markdownエディター (Mermaid対応) - Creative-Support-Tools
+css: markdownEditor.css
+js: markdownEditor.js
+---
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<main class="container-fluid">
+    <div class="editor-toolbar panel">
+        <div class="toolbar-group">
+            <label class="action-btn file-btn">
+                📁 .md 読み込み
+                <input type="file" id="importFile" accept=".md" style="display: none;">
+            </label>
+            <select id="themeSelect" class="styled-select">
+                <option value="theme-zenn">🎨 プレビュー: Zenn風 (モダン)</option>
+                <option value="theme-github">🏢 プレビュー: GitHub風 (シンプル)</option>
+            </select>
+        </div>
+        <div class="toolbar-group">
+            <button id="exportPdfBtn" class="action-btn export-btn">📄 PDFで保存</button>
+        </div>
+    </div>
+
+    <div class="studio-layout">
+        <aside class="panel left-panel editor-panel">
+            <textarea id="mdInput" spellcheck="false">
+# Creative Markdown Editor
+
+ここは完全ブラウザ完結のMarkdownエディターです。
+記述した内容は右側にリアルタイムでプレビューされます。
+
+## ✨ 特徴
+- **Mermaid対応**: サーバーなしで図表を描画できます。
+- **テーマ切替**: Zenn風とGitHub風の見た目をワンクリックで切り替え。
+- **PDF出力**: 美しい仕様書をそのままPDFとしてエクスポート。
+
+## 📊 Mermaidのテスト
+
+```mermaid
+graph TD;
+    A[Markdown入力] --> B(marked.jsでHTML化);
+    A --> C(mermaid.jsでSVG化);
+    B --> D{プレビュー画面};
+    C --> D;
+    D --> E[PDFでエクスポート];
+```
+</textarea>
+    </aside>
+
+    <section class="panel right-panel preview-panel">
+        <div id="mdPreview" class="markdown-body theme-zenn">
+            </div>
+    </section>
+</div>
