@@ -1,0 +1,59 @@
+---
+layout: default
+title: モジュラースケール計算機 - Creative-Support-Tools
+css: modularScale.css
+js: modularScale.js
+---
+<main class="container-fluid">
+    <div class="studio-layout">
+        
+        <aside class="panel left-panel">
+            <section class="panel-section">
+                <h2>スケール設定</h2>
+                
+                <div class="input-group mb-3">
+                    <label class="input-label">ベースサイズ (px)</label>
+                    <div class="number-input-wrap">
+                        <input type="number" id="baseSizeInput" value="16" min="10" max="32">
+                        <span class="unit">px</span>
+                    </div>
+                    <p class="help-text">本文（pタグ）に使用する基本の文字サイズです。</p>
+                </div>
+
+                <div class="input-group mb-3">
+                    <label class="input-label">拡大比率 (Ratio)</label>
+                    <select id="ratioSelect" class="styled-select">
+                        <option value="1.125">1.125 - Major Second (堅めのUI向け)</option>
+                        <option value="1.200">1.200 - Minor Third</option>
+                        <option value="1.250" selected>1.250 - Major Third (標準的・おすすめ)</option>
+                        <option value="1.333">1.333 - Perfect Fourth (ブログ向け)</option>
+                        <option value="1.414">1.414 - Augmented Fourth</option>
+                        <option value="1.500">1.500 - Perfect Fifth</option>
+                        <option value="1.618">1.618 - Golden Ratio (黄金比・ダイナミック)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">プレビュー用テキスト</label>
+                    <input type="text" id="previewTextInput" value="美しい文字組みを探求する" class="styled-input">
+                </div>
+            </section>
+
+            <section class="panel-section mt-4">
+                <h2>CSSエクスポート</h2>
+                <button class="action-btn" id="generateBtn">CSS変数を生成する</button>
+                <div class="code-export-box" id="codeExportBox">
+                    <button class="copy-button" id="copyBtn">コピー</button>
+                    <code id="cssOutputCode"></code>
+                </div>
+            </section>
+        </aside>
+
+        <section class="panel right-panel">
+            <h2>スケールプレビュー</h2>
+            <div id="scaleListContainer" class="scale-list">
+                </div>
+        </section>
+
+    </div>
+</main>
