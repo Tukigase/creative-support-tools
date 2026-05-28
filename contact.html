@@ -1,0 +1,105 @@
+---
+layout: default
+title: お問い合わせ - Creative-Support-Tools
+css: contact.css
+---
+<main class="container-fluid contact-page">
+    <div class="panel contact-panel">
+        <h1 class="contact-title">お問い合わせ</h1>
+        <p class="contact-desc">
+            ツールのバグ報告、機能追加のご要望、その他メッセージなどお気軽にお送りください。<br>
+            より良いツール作りの参考にさせていただきます。
+        </p>
+
+        <form id="contactForm" class="contact-form">
+            <div class="input-group mb-4">
+                <label for="name" class="input-label">お名前 (ニックネーム可)</label>
+                <input type="text" id="name" name="name" class="styled-input" required placeholder="クリエイター 太郎">
+            </div>
+
+            <div class="input-group mb-4">
+                <label for="email" class="input-label">メールアドレス (任意)</label>
+                <input type="email" id="email" name="email" class="styled-input" placeholder="返信をご希望の場合はご入力ください">
+                
+                <label style="display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 0.9rem; color: var(--main-text); cursor: pointer;">
+                    <input type="checkbox" name="reply" value="希望する" style="width: 16px; height: 16px; cursor: pointer;">
+                    このメールアドレスへの返信を希望する
+                </label>
+            </div>
+
+            <div class="input-group mb-4">
+                <label for="category" class="input-label">お問い合わせの種類</label>
+                <select id="category" name="category" class="styled-select">
+                    <option value="bug">🐛 バグ・不具合の報告</option>
+                    <option value="feature">✨ 新機能のご要望</option>
+                    <option value="feedback">💬 ツールへの感想・フィードバック</option>
+                    <option value="other">📮 その他</option>
+                </select>
+            </div>
+
+            <div class="input-group mb-4">
+                <label for="environment" class="input-label">ご利用の環境 (任意)</label>
+                <input type="text" id="environment" name="environment" class="styled-input" placeholder="例: Windows 11, Chrome / Mac, Safari">
+            </div>
+
+            <div class="input-group mb-4">
+                <label for="url" class="input-label">参考URL (任意)</label>
+                <input type="url" id="url" name="url" class="styled-input" placeholder="https:// (スクリーンショットのURLなど)">
+            </div>
+
+            <div class="input-group mb-4">
+                <label for="message" class="input-label">メッセージ内容</label>
+                <textarea id="message" name="message" class="styled-input" rows="6" required placeholder="ここにお問い合わせ内容をご記入ください..."></textarea>
+            </div>
+
+            <button type="submit" id="submitBtn" class="action-btn submit-btn">メッセージを送信する</button>
+        </form>
+
+        <div id="resultMessage" style="display:none; text-align:center; margin-top:20px; font-weight:bold; font-size: 1.1rem;"></div>
+    </div>
+</main>
+
+<script>
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const form = this;
+    const btn = document.getElementById('submitBtn');
+    const resultMessage = document.getElementById('resultMessage');
+    
+    // ★ ここにご自身のGASのURL（新しいデプロイ版）を貼り付けてください
+    const gasUrl = 'https://script.google.com/macros/s/AKfycbyCtGDWyE9dYfFbPTOMPg43OjkdkRtfEqF6fCfpXAl_avNjM3O7U3YefGQ4Q-4cIwSeCA/exec';
+    
+    btn.textContent = '送信中...';
+    btn.disabled = true;
+    btn.style.backgroundColor = '#6B7280';
+
+    const formData = new FormData(form);
+
+    fetch(gasUrl, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            form.style.display = 'none';
+            resultMessage.textContent = '送信が完了しました！お問い合わせありがとうございます。';
+            resultMessage.style.color = '#10B981';
+            resultMessage.style.display = 'block';
+        } else {
+            throw new Error('GAS Error');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        resultMessage.textContent = 'エラーが発生しました。時間をおいて再度お試しください。';
+        resultMessage.style.color = '#EF4444';
+        resultMessage.style.display = 'block';
+        
+        btn.textContent = 'メッセージを送信する';
+        btn.disabled = false;
+        btn.style.backgroundColor = '';
+    });
+});
+</script>

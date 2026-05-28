@@ -1,4 +1,4 @@
-<header class="header">
+<header class="header" style="position: relative;">
     {% if page.url != "/" and page.url != "/index.html" %}
     <a href="{{ '/' | relative_url }}" class="back-button">
         <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"
@@ -9,5 +9,14 @@
         <span class="back-text">TOPへ戻る</span>
     </a>
     {% endif %}
+    
     <h1>{{ page.title | default: "Creative-Support-Tools" }}</h1>
+
+    <a href="{{ '/contact.html' | relative_url }}" class="contact-icon" title="お問い合わせ" style="position: absolute; right: 20px; color: var(--main-text); text-decoration: none; display: flex; align-items: center; justify-content: center; opacity: 0.7; transition: opacity 0.2s;">
+        <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+            <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+    </a>
 </header>
