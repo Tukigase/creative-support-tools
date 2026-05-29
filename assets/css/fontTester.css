@@ -1,0 +1,351 @@
+/* レイアウト全体設定（画面に収める） */
+.container-fluid {
+    padding: 15px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    height: calc(100vh - 150px);
+    /* ★ヘッダーとフッターの間で固定 */
+    display: flex;
+    flex-direction: column;
+}
+
+.studio-layout {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 25px;
+    flex: 1;
+    min-height: 0;
+    /* ★これがはみ出し防止の魔法 */
+}
+
+@media (max-width: 900px) {
+    .studio-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* パネル共通デザイン（パネル内スクロール） */
+.panel {
+    background-color: var(--bg-footer);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    /* パネル自体は高さいっぱい */
+    box-sizing: border-box;
+}
+
+.panel h2 {
+    font-size: 1.15rem;
+    color: var(--sub-text);
+    margin: 0 0 20px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+    flex-shrink: 0;
+}
+
+.mt-4 {
+    margin-top: 30px;
+}
+
+.mt-3 {
+    margin-top: 15px;
+}
+
+/* 左右パネルの独立スクロール */
+.left-panel,
+.right-panel {
+    overflow-y: auto;
+}
+
+.panel::-webkit-scrollbar {
+    width: 6px;
+}
+
+.panel::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.panel::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+/* 左パネルのコントロールUI */
+.input-group textarea {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--bg-base);
+    color: var(--main-text);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    font-size: 1rem;
+    resize: vertical;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.slider-group {
+    margin-bottom: 20px;
+}
+
+.slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.slider-header label {
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: var(--main-text);
+}
+
+.val-badge {
+    background-color: var(--bg-base);
+    color: #10B981;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+input[type="range"] {
+    width: 100%;
+    cursor: pointer;
+    accent-color: var(--main-btn);
+}
+
+.toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.toggle-text {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--main-text);
+}
+
+/* カラーピッカー */
+.color-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.color-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--bg-base);
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.color-row label {
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.color-row input[type="color"] {
+    width: 36px;
+    height: 36px;
+    border: 2px solid var(--sub-text);
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 0;
+    background: none;
+}
+
+.color-row input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.color-row input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 50%;
+}
+
+/* 右パネル: フォントカード */
+.font-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    padding-right: 10px;
+}
+
+.font-card {
+    background-color: var(--bg-base);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    /* 子要素のはみ出しを防ぐ */
+    display: flex;
+    flex-direction: column;
+}
+
+.font-card-header {
+    padding: 15px 20px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.font-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--main-btn);
+    margin: 0;
+}
+
+/* ★ プレビューエリア（カラーテストが適用される部分） */
+.font-preview-area {
+    padding: 25px 20px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.font-preview-text {
+    margin: 0;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+/* ★ カード下部のボタン・コードエリア */
+.font-card-footer {
+    padding: 15px 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.action-btn {
+    width: 100%;
+    background-color: var(--bg-footer);
+    border: 1px solid var(--sub-text);
+    color: var(--main-text);
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+.action-btn:hover {
+    background-color: var(--main-btn);
+    color: #fff;
+    border-color: var(--main-btn);
+}
+
+.code-export-box {
+    margin-top: 15px;
+    background-color: #0F172A;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: none;
+}
+
+.code-export-box.active {
+    display: block;
+}
+
+.code-export-box code {
+    display: block;
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: #10B981;
+    white-space: pre-wrap;
+    line-height: 1.5;
+}
+
+/* =========================================
+   出力ボタンとコードエリア
+========================================= */
+.action-btn {
+    width: 100%;
+    background-color: var(--bg-footer);
+    border: 1px solid var(--sub-text);
+    color: var(--main-text);
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+.action-btn:hover {
+    background-color: var(--main-btn);
+    color: #fff;
+    border-color: var(--main-btn);
+}
+
+/* ★ 修正：コピーボタンを右上に置くために position: relative を追加 */
+.code-export-box {
+    position: relative;
+    margin-top: 15px;
+    background-color: #0F172A;
+    padding: 20px 15px 15px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: none;
+}
+
+.code-export-box.active {
+    display: block;
+}
+
+.code-export-box code {
+    display: block;
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: #10B981;
+    white-space: pre-wrap;
+    line-height: 1.5;
+}
+
+/* ★ 追加：コピーボタンのデザイン */
+.copy-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background-color 0.2s;
+}
+
+.copy-button:hover {
+    background-color: var(--main-btn);
+}
+
+/* =========================================
+   カスタムフォント用のスタイル追加
+========================================= */
+.delete-btn {
+    background: transparent;
+    border: 1px solid #EF4444;
+    color: #EF4444;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    margin-left: 10px;
+    transition: all 0.2s;
+}
+
+.delete-btn:hover {
+    background-color: #EF4444;
+    color: #fff;
+}

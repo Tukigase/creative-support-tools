@@ -1,0 +1,103 @@
+main {
+    flex: 1;
+    margin: 10px;
+    /* color: #F8FAFC; も common.css にあるため削除 */
+}
+
+.about {
+    margin: 10px 20px;
+    color: var(--sub-text); /* サブテキストカラーを使用して少し落ち着いた印象に */
+}
+
+/* 区切り線 */
+hr {
+    border-color: var(--accent); /* 変数を利用 */
+    margin: 0 20px;
+    opacity: 0.5; /* 少し透過させて馴染ませる */
+}
+
+/* ツールカードが並ぶエリア */
+#toolsCardSection {
+    display: flex;         /* GridをやめてFlexboxにする */
+    flex-wrap: wrap;       /* 画面端にきたら折り返す */
+    justify-content: center; /* 常に画面中央に並べる */
+    gap: 30px;             /* カード間の余白 */
+    margin: 40px auto;
+    max-width: 1000px;     /* 全体が広がりすぎないように制限 */
+}
+
+/* 個別のツールカード */
+.tool-card {
+    width: 300px;          /* ★ここで幅を完全に300pxに固定！ */
+    max-width: 100%;       /* スマホ画面ではみ出さないための保険 */
+    aspect-ratio: 1 / 1.4141; /* 白銀比を維持 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #475569;
+    border-radius: 8px;
+    background-color: #334155;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    overflow: hidden; 
+}
+
+/* カード内のサムネイル画像 */
+.tool-card img {
+    width: 100%;
+    /* サムネイル部分は16:9を維持 */
+    aspect-ratio: 16 / 9; 
+    object-fit: cover;
+    border-bottom: 1px solid #475569;
+}
+
+/* カードの説明文 (※固定比率からはみ出さないための保険) */
+.tool-card p {
+    margin: 15px;
+    text-align: left;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    /* テキストが長すぎた場合はスクロールさせるか、隠す設定をしておくと安全です */
+    overflow-y: auto; 
+    flex: 1; /* ボタンを一番下に押しやるために追加 */
+}
+
+/* カードのタイトル */
+.tool-card h2 {
+    border-bottom: 2px solid var(--accent); /* 変数を利用 */
+    padding-bottom: 5px;
+    margin-top: 15px;
+    width: 80%; /* 線が端から端までいかないように調整 */
+}
+
+/* カードのホバー時（マウスカーソルを乗せた時） */
+.tool-card:hover {
+    background-color: #3F4E63;
+    cursor: pointer;
+    /* 影をメインカラー（青）で光らせる */
+    box-shadow: 0 8px 15px rgba(56, 189, 248, 0.2);
+    transform: translateY(-5px); /* 少し大きく浮き上がるように */
+}
+
+/* ボタン（カード内） */
+.btn-primary {
+    margin-top: auto;
+    margin-bottom: 20px;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: var(--main-btn); /* 変数を利用 */
+    color: var(--bg-base); /* 濃い色（背景ベース色）を利用して読みやすく */
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 9999px;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.btn-primary:hover {
+    background-color: var(--accent); /* ホバー時は黄色く光るように変更（統一感アップ） */
+    color: var(--bg-footer);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(250, 204, 21, 0.4);
+}

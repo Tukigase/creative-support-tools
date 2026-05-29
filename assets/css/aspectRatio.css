@@ -1,0 +1,220 @@
+/* ベースのレイアウトは colorPicker.css の .container を流用（共通化） */
+.container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    max-width: 1000px;
+    margin: 40px auto;
+    gap: 30px;
+}
+
+/* プレビューエリア */
+.preview-box {
+    width: 100%;
+    padding: 30px 20px;
+    border-radius: 12px;
+    text-align: center;
+    background-color: var(--bg-footer);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.visualizer-area {
+    width: 100%;
+    height: 250px;
+    background-color: var(--bg-base);
+    border-radius: 8px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    padding: 20px;
+    box-sizing: border-box;
+    border: 1px dashed rgba(255,255,255,0.2);
+}
+
+/* aspectRatio.css の .visual-shape を以下に上書き */
+.visual-shape {
+    background-color: var(--main-btn);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--bg-base);
+    font-weight: bold;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    text-align: center;
+}
+
+/* プレビュー内の文字用に追加 */
+.visual-size-text {
+    font-size: 1.5rem;
+}
+.visual-ratio-text {
+    font-size: 1rem;
+    opacity: 0.8;
+    margin-top: 4px;
+}
+
+/* 計算機エリア */
+.calculator-area {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    background-color: var(--bg-footer);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    gap: 20px;
+}
+
+.calc-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.calc-section h3 {
+    margin-top: 0;
+    color: var(--sub-text);
+    font-size: 1.1rem;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.input-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-wrapper label {
+    font-size: 0.8rem;
+    color: var(--sub-text);
+    margin-bottom: 5px;
+}
+
+input[type="number"] {
+    width: 100px;
+    padding: 10px;
+    font-size: 1.2rem;
+    text-align: center;
+    border: 2px solid var(--sub-text);
+    border-radius: 8px;
+    background-color: var(--bg-base);
+    color: var(--text-color);
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+input[type="number"]:focus {
+    border-color: var(--main-btn);
+}
+
+.ratio-colon {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--sub-text);
+    margin-top: 20px;
+}
+
+/* ロックボタン */
+.lock-btn {
+    margin-top: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--sub-text);
+    padding: 10px;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.lock-btn:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+.lock-btn.locked {
+    color: var(--main-btn);
+}
+
+/* プリセットとCSS出力 */
+.tools-area {
+    display: flex;
+    width: 100%;
+    gap: 20px;
+}
+
+.preset-section, .css-section {
+    flex: 1;
+    background-color: var(--bg-footer);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.preset-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.preset-btn {
+    background-color: var(--bg-base);
+    color: var(--text-color);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 6px;
+    padding: 10px 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+.preset-btn:hover {
+    background-color: var(--main-btn);
+    color: var(--bg-base);
+}
+
+.preset-btn small {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: normal;
+    opacity: 0.8;
+    margin-top: 4px;
+}
+
+.code-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1E293B;
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.code-box code {
+    font-family: monospace;
+    color: #10B981;
+    font-size: 0.95rem;
+}
+
+/* スマホ対応 */
+@media (max-width: 768px) {
+    .calculator-area, .tools-area {
+        flex-direction: column;
+    }
+    .preset-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

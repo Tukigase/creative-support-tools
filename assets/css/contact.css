@@ -1,0 +1,80 @@
+/* レイアウト全体設定 */
+.contact-page {
+    padding: 40px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: calc(100vh - 120px);
+}
+
+.contact-panel {
+    background-color: var(--bg-footer);
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+}
+
+.contact-title {
+    font-size: 1.5rem;
+    color: var(--main-text);
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.contact-desc {
+    color: var(--sub-text);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* フォーム部品 */
+.mb-4 { margin-bottom: 25px; }
+.input-label { display: block; font-size: 0.95rem; font-weight: bold; color: var(--main-text); margin-bottom: 8px; }
+
+.styled-input, .styled-select {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--bg-base);
+    color: var(--main-text);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+    font-family: inherit;
+}
+
+.styled-input:focus, .styled-select:focus {
+    border-color: var(--main-btn);
+}
+
+textarea.styled-input {
+    resize: vertical;
+}
+
+.submit-btn {
+    width: 100%;
+    background-color: var(--main-btn);
+    color: #fff;
+    padding: 16px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    background-color: var(--accent);
+}

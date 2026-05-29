@@ -1,0 +1,332 @@
+/* =========================================
+   基本レイアウト設定
+========================================= */
+.container-fluid {
+    padding: 15px;
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* ツールバー */
+.editor-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 25px;
+    flex-direction: row;
+    height: auto;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.toolbar-group {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.action-btn {
+    background-color: var(--bg-base);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--main-text);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+.action-btn:hover {
+    background-color: var(--main-btn);
+    color: var(--bg-base);
+}
+
+.export-btn {
+    background-color: #10B981;
+    color: #fff;
+    border: none;
+}
+
+.export-btn:hover {
+    background-color: #059669;
+    color: #fff;
+}
+
+.export-img-btn {
+    background-color: #3B82F6;
+    color: #fff;
+    border: none;
+}
+
+.export-img-btn:hover {
+    background-color: #2563EB;
+    color: #fff;
+}
+
+.styled-select {
+    padding: 8px 12px;
+    background-color: var(--bg-base);
+    color: var(--main-text);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    outline: none;
+    cursor: pointer;
+}
+
+/* エディター部レイアウト */
+.studio-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    height: 85vh;
+    min-height: 800px;
+}
+
+@media (max-width: 900px) {
+    .studio-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+.panel {
+    background-color: var(--bg-footer);
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.editor-panel {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.preview-panel {
+    padding: 0;
+    overflow-y: auto;
+    background-color: #ffffff;
+    /* プレビュー側は紙を意識して白背景ベース */
+}
+
+#mdInput {
+    flex: 1;
+    width: 100%;
+    padding: 25px;
+    background-color: #1E293B;
+    color: #F8FAFC;
+    border: none;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 1rem;
+    line-height: 1.6;
+    resize: none;
+    outline: none;
+    box-sizing: border-box;
+}
+
+/* プレビュー内の共通スクロールバー */
+.preview-panel::-webkit-scrollbar {
+    width: 8px;
+}
+
+.preview-panel::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 0 8px 8px 0;
+}
+
+.preview-panel::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+/* =========================================
+   Markdown テーマ設定 (共通)
+========================================= */
+.markdown-body {
+    padding: 40px;
+    box-sizing: border-box;
+    color: #333;
+    font-size: 16px;
+    line-height: 1.8;
+    word-wrap: break-word;
+}
+
+.markdown-body img {
+    max-width: 100%;
+    height: auto;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+    padding-left: 2em;
+    margin-bottom: 16px;
+}
+
+.markdown-body pre {
+    padding: 16px;
+    overflow: auto;
+    line-height: 1.45;
+    border-radius: 6px;
+    margin-bottom: 16px;
+}
+
+.markdown-body code {
+    font-family: monospace;
+    font-size: 85%;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+}
+
+.markdown-body pre code {
+    padding: 0;
+    background: transparent;
+}
+
+/* =========================================
+   テーマ: Zenn風 (モダン・エレガント)
+========================================= */
+.theme-zenn {
+    font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+}
+
+.theme-zenn h1 {
+    font-size: 2em;
+    font-weight: bold;
+    margin: 1.5em 0 1em;
+    padding-bottom: 0.3em;
+}
+
+.theme-zenn h2 {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 1.5em 0 0.8em;
+    padding-bottom: 0.3em;
+    border-bottom: 1px solid #eaecef;
+    border-left: 4px solid #3b82f6;
+    padding-left: 10px;
+}
+
+.theme-zenn h3 {
+    font-size: 1.25em;
+    font-weight: bold;
+    margin: 1.2em 0 0.6em;
+}
+
+.theme-zenn a {
+    color: #3b82f6;
+    text-decoration: none;
+}
+
+.theme-zenn blockquote {
+    padding: 10px 20px;
+    margin: 0 0 16px;
+    color: #6a737d;
+    border-left: 0.25em solid #dfe2e5;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+}
+
+.theme-zenn pre {
+    background-color: #282c34;
+    color: #abb2bf;
+}
+
+.theme-zenn code:not(pre code) {
+    background-color: #f1f3f5;
+    color: #e83e8c;
+}
+
+.theme-zenn table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+.theme-zenn th,
+.theme-zenn td {
+    border: 1px solid #dfe2e5;
+    padding: 6px 13px;
+}
+
+.theme-zenn th {
+    background-color: #f6f8fa;
+}
+
+/* =========================================
+   テーマ: GitHub風 (シンプル・堅牢)
+========================================= */
+.theme-github {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+}
+
+.theme-github h1 {
+    font-size: 2em;
+    font-weight: 600;
+    padding-bottom: 0.3em;
+    border-bottom: 1px solid #eaecef;
+    margin-top: 24px;
+    margin-bottom: 16px;
+}
+
+.theme-github h2 {
+    font-size: 1.5em;
+    font-weight: 600;
+    padding-bottom: 0.3em;
+    border-bottom: 1px solid #eaecef;
+    margin-top: 24px;
+    margin-bottom: 16px;
+}
+
+.theme-github h3 {
+    font-size: 1.25em;
+    font-weight: 600;
+    margin-top: 24px;
+    margin-bottom: 16px;
+}
+
+.theme-github a {
+    color: #0366d6;
+    text-decoration: none;
+}
+
+.theme-github a:hover {
+    text-decoration: underline;
+}
+
+.theme-github blockquote {
+    padding: 0 1em;
+    color: #6a737d;
+    border-left: 0.25em solid #dfe2e5;
+    margin: 0 0 16px 0;
+}
+
+.theme-github pre {
+    background-color: #f6f8fa;
+    color: #24292e;
+}
+
+.theme-github code:not(pre code) {
+    background-color: rgba(27, 31, 35, 0.05);
+    color: #24292e;
+}
+
+.theme-github table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+.theme-github th,
+.theme-github td {
+    border: 1px solid #dfe2e5;
+    padding: 6px 13px;
+}
+
+.theme-github tr:nth-child(2n) {
+    background-color: #f6f8fa;
+}
