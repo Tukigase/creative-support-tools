@@ -1,4 +1,4 @@
-/* ベースレイアウト (MarkdownEditorとほぼ共通) */
+/* ベースレイアウト */
 .container-fluid {
     padding: 15px;
     width: 100%;
@@ -18,11 +18,7 @@
 }
 
 /* ツールバー */
-.editor-toolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+.editor-toolbar { display: flex; justify-content: space-between; align-items: center; }
 .toolbar-group { display: flex; gap: 10px; align-items: center; }
 .toolbar-title { font-weight: bold; color: #F8FAFC; margin-right: 15px; }
 
@@ -37,7 +33,8 @@
     transition: 0.2s;
 }
 .action-btn:hover { background-color: #334155; }
-.action-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.run-btn { background-color: #059669; border-color: #10B981; }
+.run-btn:hover { background-color: #047857; }
 
 .styled-input {
     background-color: #0F172A;
@@ -49,49 +46,51 @@
 .full-width { width: 100%; box-sizing: border-box; margin-top: 5px; }
 
 /* 2カラムレイアウト */
-.studio-layout {
-    display: flex;
-    gap: 15px;
-    flex: 1;
-    min-height: 0;
-}
+.studio-layout { display: flex; gap: 15px; flex: 1; min-height: 0; }
 .left-panel { flex: 1; overflow-y: auto; }
-.right-panel { flex: 1; display: flex; flex-direction: column; }
+.right-panel { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 
-/* カラム設計行のスタイル */
+/* カラム設計行 */
 .columns-list { margin-bottom: 15px; }
 .column-row {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    background-color: #0F172A;
-    padding: 10px;
-    border-radius: 6px;
-    margin-bottom: 8px;
-    border: 1px solid #334155;
+    display: flex; gap: 10px; align-items: center;
+    background-color: #0F172A; padding: 10px; border-radius: 6px;
+    margin-bottom: 8px; border: 1px solid #334155;
 }
 .col-name { flex: 2; }
 .col-type { flex: 1.5; }
-.col-pk { flex: 0.5; text-align: center; }
-.remove-btn {
-    background: none; border: none; color: #EF4444; cursor: pointer; font-size: 1.2rem;
+.col-pk { flex: 0.5; text-align: center; color: #F8FAFC; }
+.remove-btn { background: none; border: none; color: #EF4444; cursor: pointer; font-size: 1.2rem; }
+
+/* タブUI */
+.tabs { display: flex; gap: 10px; margin-bottom: 10px; }
+.tab-btn {
+    background: transparent; color: #94A3B8; border: none; border-bottom: 2px solid transparent;
+    padding: 8px 15px; cursor: pointer; font-weight: bold; transition: 0.2s;
+}
+.tab-btn.active { color: #38BDF8; border-bottom-color: #38BDF8; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* プレビューエリア全般 */
+.preview-area {
+    background-color: #0F172A; border: 1px solid #334155;
+    border-radius: 6px; padding: 20px; overflow-y: auto; color: #F8FAFC;
 }
 
-/* プレビューエリア (Markdown用) */
-.preview-area {
-    background-color: #0F172A;
-    border: 1px solid #334155;
-    border-radius: 6px;
-    padding: 20px;
-    flex: 1;
-    overflow-y: auto;
-    color: #F8FAFC;
-    font-family: -apple-system, sans-serif;
+/* Markdownのテーブル */
+#mdPreviewArea table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+#mdPreviewArea th, #mdPreviewArea td { border: 1px solid #334155; padding: 8px; text-align: left; }
+#mdPreviewArea th { background-color: #1E293B; }
+
+/* SQLテスト入力欄 */
+#sqlInput {
+    flex: 0.4; font-family: monospace; resize: none;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2); font-size: 1rem; line-height: 1.5; padding: 15px;
 }
-.preview-area table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-.preview-area th, .preview-area td {
-    border: 1px solid #334155;
-    padding: 8px;
-    text-align: left;
-}
-.preview-area th { background-color: #1E293B; }
+#sqlInput:focus { border-color: #38BDF8; outline: none; }
+
+/* SQL実行結果テーブル (Wasm出力) */
+table.sql-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+table.sql-table th, table.sql-table td { border: 1px solid #334155; padding: 8px; text-align: left; font-size: 0.9rem;}
+table.sql-table th { background-color: #1E293B; color: #38BDF8; }

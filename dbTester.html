@@ -3,8 +3,11 @@ layout: default
 title: DB設計＆テストスタジオ - Creative-Support-Tools
 css: dbTester.css
 js: dbTester.js
+responsive: false
 ---
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
 
 <main class="container-fluid">
     <div class="editor-toolbar panel">
@@ -13,9 +16,9 @@ js: dbTester.js
             <input type="text" id="fileNameInput" class="styled-input" placeholder="ファイル名" value="schema">
         </div>
         <div class="toolbar-group">
-            <button id="exportSqlBtn" class="action-btn">📝 CREATE文保存</button>
-            <button id="exportMdBtn" class="action-btn">📄 仕様書(MD)保存</button>
-            <button id="exportPdfBtn" class="action-btn" disabled title="PDF出力は準備中です">📄 PDF保存 (準備中)</button>
+            <button id="exportSqlBtn" class="action-btn">📝 CREATE文</button>
+            <button id="exportMdBtn" class="action-btn">📄 仕様書(MD)</button>
+            <button id="exportPdfBtn" class="action-btn">📄 PDF保存</button>
         </div>
     </div>
 
@@ -24,17 +27,14 @@ js: dbTester.js
             <div class="panel-header">
                 <h3>テーブル設計 (GUI)</h3>
             </div>
-            
             <div class="table-designer">
                 <div class="input-group">
                     <label>テーブル名</label>
                     <input type="text" id="tableName" value="users" class="styled-input full-width">
                 </div>
-
                 <div class="columns-container">
                     <h4>カラム定義</h4>
-                    <div id="columnsList" class="columns-list">
-                        </div>
+                    <div id="columnsList" class="columns-list"></div>
                     <button id="addColumnBtn" class="action-btn add-btn">＋ カラムを追加</button>
                 </div>
             </div>
@@ -42,12 +42,29 @@ js: dbTester.js
 
         <main class="panel right-panel">
             <div class="tabs">
-                <button class="tab-btn active">Markdown仕様書</button>
-                <button class="tab-btn">CREATE文</button>
+                <button class="tab-btn active" data-target="mdTab">📝 仕様書プレビュー</button>
+                <button class="tab-btn" data-target="sqlTab">▶️ SQLテスト</button>
             </div>
 
-            <div id="mdPreviewArea" class="preview-area">
+            <div id="mdTab" class="tab-content active preview-area">
+                <div id="mdPreviewArea"></div>
+            </div>
+
+            <div id="sqlTab" class="tab-content" style="display: flex; flex-direction: column; gap: 10px; height: 100%;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <span id="dbStatusText" style="color: #94A3B8; font-size: 0.9rem;">⏳ DBエンジン準備中...</span>
+                    <button id="runSqlBtn" class="action-btn run-btn">▶ SQL実行 (Ctrl+Enter)</button>
                 </div>
+                
+                <textarea id="sqlInput" class="styled-input" spellcheck="false" placeholder="INSERT文やSELECT文を書いてテストできます...
+例:
+INSERT INTO users (name) VALUES ('Alice');
+SELECT * FROM users;"></textarea>
+                
+                <div id="resultArea" class="preview-area" style="flex: 1;">
+                    <div class="empty-state" style="color: #64748B;">実行結果がここに表示されます</div>
+                </div>
+            </div>
         </main>
     </div>
 </main>
