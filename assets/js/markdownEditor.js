@@ -99,8 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 💾 .mdファイルとして保存
     exportMdBtn.addEventListener('click', () => {
         const fileName = getFileName() + ".md"; // ★入力欄から取得
-
-        currentFileName = `${inputName}.md`; // ベースのファイル名を更新
+        
         try {
             const text = mdInput.value;
             const blob = new Blob([text], { type: 'text/markdown;charset=utf-8;' });
