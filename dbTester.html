@@ -1,47 +1,53 @@
 ---
 layout: default
-title: DBテスター (Wasm SQLite)
+title: DB設計＆テストスタジオ - Creative-Support-Tools
 css: dbTester.css
 js: dbTester.js
 ---
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <main class="container-fluid">
     <div class="editor-toolbar panel">
         <div class="toolbar-group">
-            <button id="runSqlBtn" class="action-btn run-btn">▶ RUN SQL</button>
-            <span id="statusText" class="status-text">🔄 データベースエンジン準備中...</span>
+            <span class="toolbar-title">DB設計スタジオ</span>
+            <input type="text" id="fileNameInput" class="styled-input" placeholder="ファイル名" value="schema">
         </div>
         <div class="toolbar-group">
-            <button id="resetDbBtn" class="action-btn">🗑️ DBリセット</button>
+            <button id="exportSqlBtn" class="action-btn">📝 CREATE文保存</button>
+            <button id="exportMdBtn" class="action-btn">📄 仕様書(MD)保存</button>
+            <button id="exportPdfBtn" class="action-btn" disabled title="PDF出力は準備中です">📄 PDF保存 (準備中)</button>
         </div>
     </div>
 
     <div class="studio-layout">
-        <aside class="panel left-panel editor-panel">
-            <textarea id="sqlInput" spellcheck="false" placeholder="ここにSQLを入力してください...">
--- テーブル作成
-CREATE TABLE users (
-    id INTEGER PRIMARY KEY,
-    name TEXT NOT NULL,
-    role TEXT
-);
+        <aside class="panel left-panel">
+            <div class="panel-header">
+                <h3>テーブル設計 (GUI)</h3>
+            </div>
+            
+            <div class="table-designer">
+                <div class="input-group">
+                    <label>テーブル名</label>
+                    <input type="text" id="tableName" value="users" class="styled-input full-width">
+                </div>
 
--- テストデータの挿入
-INSERT INTO users (name, role) VALUES 
-('Alice', 'Admin'),
-('Bob', 'Editor'),
-('Charlie', 'Viewer');
-
--- データを確認
-SELECT * FROM users;
-            </textarea>
+                <div class="columns-container">
+                    <h4>カラム定義</h4>
+                    <div id="columnsList" class="columns-list">
+                        </div>
+                    <button id="addColumnBtn" class="action-btn add-btn">＋ カラムを追加</button>
+                </div>
+            </div>
         </aside>
 
-        <main class="panel right-panel preview-panel">
-            <div id="resultArea" class="result-area">
-                <div class="empty-state">実行結果がここに表示されます</div>
+        <main class="panel right-panel">
+            <div class="tabs">
+                <button class="tab-btn active">Markdown仕様書</button>
+                <button class="tab-btn">CREATE文</button>
             </div>
+
+            <div id="mdPreviewArea" class="preview-area">
+                </div>
         </main>
     </div>
 </main>
