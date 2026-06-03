@@ -122,7 +122,6 @@
     border: 1px solid #334155; /* ★追加: 目立ちすぎないグレーの枠線 */
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2); /* ★追加: 内側に影をつけて立体感を出す */
     transition: border-color 0.2s; /* ★追加: フォーカス時のアニメーション用 */
-    border: none;
     border-radius: 8px;
     font-family: monospace;
     font-size: 1rem;
