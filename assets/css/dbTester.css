@@ -94,3 +94,15 @@
 table.sql-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
 table.sql-table th, table.sql-table td { border: 1px solid #334155; padding: 8px; text-align: left; font-size: 0.9rem;}
 table.sql-table th { background-color: #1E293B; color: #38BDF8; }
+.data-list { margin-bottom: 15px; display: flex; flex-direction: column; gap: 8px; }
+.data-row {
+    display: flex; gap: 10px; align-items: center;
+    background-color: #0F172A; padding: 10px; border-radius: 6px;
+    border: 1px solid #334155;
+}
+.cells-container {
+    display: flex; gap: 8px; flex: 1; overflow-x: auto;
+}
+.data-cell {
+    flex: 1; min-width: 80px; font-size: 0.85rem;
+}

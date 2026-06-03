@@ -16,7 +16,8 @@ responsive: false
             <input type="text" id="fileNameInput" class="styled-input" placeholder="ファイル名" value="schema">
         </div>
         <div class="toolbar-group">
-            <button id="exportSqlBtn" class="action-btn">📝 CREATE文</button>
+            <button id="exportSqlBtn" class="action-btn" title="テーブル定義と初期データを保存">📝 設計SQL</button>
+            <button id="exportTestSqlBtn" class="action-btn" title="右側でテスト入力したSQLを保存">📝 実行SQL</button>
             <button id="exportMdBtn" class="action-btn">📄 仕様書(MD)</button>
             <button id="exportPdfBtn" class="action-btn">📄 PDF保存</button>
         </div>
@@ -32,10 +33,17 @@ responsive: false
                     <label>テーブル名</label>
                     <input type="text" id="tableName" value="users" class="styled-input full-width">
                 </div>
+                
                 <div class="columns-container">
                     <h4>カラム定義</h4>
                     <div id="columnsList" class="columns-list"></div>
                     <button id="addColumnBtn" class="action-btn add-btn">＋ カラムを追加</button>
+                </div>
+
+                <div class="data-container" style="margin-top: 25px; border-top: 1px solid #334155; padding-top: 15px;">
+                    <h4>初期データ (INSERT)</h4>
+                    <div id="dataRowsList" class="data-list"></div>
+                    <button id="addDataBtn" class="action-btn add-btn">＋ レコードを追加</button>
                 </div>
             </div>
         </aside>
@@ -56,10 +64,7 @@ responsive: false
                     <button id="runSqlBtn" class="action-btn run-btn">▶ SQL実行 (Ctrl+Enter)</button>
                 </div>
                 
-                <textarea id="sqlInput" class="styled-input" spellcheck="false" placeholder="INSERT文やSELECT文を書いてテストできます...
-例:
-INSERT INTO users (name) VALUES ('Alice');
-SELECT * FROM users;"></textarea>
+                <textarea id="sqlInput" class="styled-input" spellcheck="false" placeholder="ここにSELECT文などを書いてテスト実行できます..."></textarea>
                 
                 <div id="resultArea" class="preview-area" style="flex: 1;">
                     <div class="empty-state" style="color: #64748B;">実行結果がここに表示されます</div>
