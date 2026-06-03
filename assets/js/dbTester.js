@@ -195,59 +195,89 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // ==========================================
+   // ==========================================
     // 4. ダイアログ入力付きエクスポート処理
     // ==========================================
     function downloadFile(content, fileName) {
-        const blob = new Blob([content], { type: 'text/plain' });
-        const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-        a.download = fileName; a.click(); URL.revokeObjectURL(a.href);
+        if (!content) {
+            alert("保存するデータがありません。");
+            return;
+        }
+        try {
+            const blob = new Blob([content], { type: 'text/plain' });
+            const a = document.createElement('a'); 
+            a.href = URL.createObjectURL(blob);
+            a.download = fileName; 
+            document.body.appendChild(a); // ← ブラウザによってはこれが必要な場合があります
+            a.click(); 
+            URL.revokeObjectURL(a.href);
+            document.body.removeChild(a);
+        } catch (err) {
+            console.error("ダウンロードエラー:", err);
+            alert("ファイルのダウンロード中にエラーが発生しました。");
+        }
     }
 
     // 📝 設計SQL保存
-    exportSqlBtn.addEventListener('click', () => {
-        const defaultName = tableNameInput.value.trim() || 'schema';
-        const inputName = prompt("設計SQLのファイル名を入力してください（拡張子不要）:", defaultName);
-        if (inputName === null) return; // キャンセル時
-        const finalName = (inputName.trim() || defaultName) + ".sql";
-        downloadFile(currentSql, finalName);
-    });
+    if (exportSqlBtn) {
+        exportSqlBtn.addEventListener('click', () => {
+            const defaultName = tableNameInput ? (tableNameInput.value.trim() || 'schema') : 'schema';
+            const inputName = prompt("設計SQLのファイル名を入力してください（拡張子不要）:", defaultName);
+            if (inputName === null) return; // キャンセル時
+            const finalName = (inputName.trim() || defaultName) + ".sql";
+            downloadFile(currentSql, finalName);
+        });
+    }
 
     // 📝 実行SQL保存
-    exportTestSqlBtn.addEventListener('click', () => {
-        const defaultName = (tableNameInput.value.trim() || 'schema') + "_test";
-        const inputName = prompt("実行したテストSQLのファイル名を入力してください（拡張子不要）:", defaultName);
-        if (inputName === null) return;
-        const finalName = (inputName.trim() || defaultName) + ".sql";
-        downloadFile(sqlInput.value, finalName);
-    });
+    if (exportTestSqlBtn) {
+        exportTestSqlBtn.addEventListener('click', () => {
+            const defaultName = tableNameInput ? (tableNameInput.value.trim() + "_test") : 'schema_test';
+            const inputName = prompt("実行したテストSQLのファイル名を入力してください（拡張子不要）:", defaultName);
+            if (inputName === null) return;
+            const finalName = (inputName.trim() || defaultName) + ".sql";
+            downloadFile(sqlInput.value, finalName);
+        });
+    }
 
     // 📄 仕様書(MD)保存
-    exportMdBtn.addEventListener('click', () => {
-        const defaultName = tableNameInput.value.trim() || 'schema';
-        const inputName = prompt("Markdown仕様書のファイル名を入力してください（拡張子不要）:", defaultName);
-        if (inputName === null) return;
-        const finalName = (inputName.trim() || defaultName) + ".md";
-        downloadFile(currentMarkdown, finalName);
-    });
+    if (exportMdBtn) {
+        exportMdBtn.addEventListener('click', () => {
+            const defaultName = tableNameInput ? (tableNameInput.value.trim() || 'schema') : 'schema';
+            const inputName = prompt("Markdown仕様書のファイル名を入力してください（拡張子不要）:", defaultName);
+            if (inputName === null) return;
+            const finalName = (inputName.trim() || defaultName) + ".md";
+            downloadFile(currentMarkdown, finalName);
+        });
+    }
     
     // 📄 PDF保存
-    exportPdfBtn.addEventListener('click', () => {
-        const defaultName = tableNameInput.value.trim() || 'schema';
-        const inputName = prompt("PDF仕様書のファイル名を入力してください（拡張子不要）:", defaultName);
-        if (inputName === null) return;
-        const finalName = (inputName.trim() || defaultName) + ".pdf";
+    if (exportPdfBtn) {
+        exportPdfBtn.addEventListener('click', () => {
+            const defaultName = tableNameInput ? (tableNameInput.value.trim() || 'schema') : 'schema';
+            const inputName = prompt("PDF仕様書のファイル名を入力してください（拡張子不要）:", defaultName);
+            if (inputName === null) return;
+            const finalName = (inputName.trim() || defaultName) + ".pdf";
 
-        const element = document.getElementById('mdPreviewArea');
-        exportPdfBtn.textContent = '生成中...';
-        
-        html2pdf().set({
-            margin: 15, filename: finalName,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        }).from(element).save().finally(() => {
-            exportPdfBtn.textContent = '📄 PDF保存';
+            const element = document.getElementById('mdPreviewArea');
+            if (!element) return;
+            
+            exportPdfBtn.textContent = '生成中...';
+            
+            try {
+                html2pdf().set({
+                    margin: 15, filename: finalName,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                }).from(element).save().finally(() => {
+                    exportPdfBtn.textContent = '📄 PDF保存';
+                });
+            } catch (err) {
+                console.error("PDFエラー:", err);
+                alert("PDFの生成に失敗しました。");
+                exportPdfBtn.textContent = '📄 PDF保存';
+            }
         });
-    });
+    }
 });
