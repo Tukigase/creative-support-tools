@@ -1,13 +1,43 @@
 <header class="header" style="position: relative;">
     {% if page.url != "/" and page.url != "/index.html" %}
-    <a href="{{ '/' | relative_url }}" class="back-button">
+    <button id="smartBackBtn" class="back-button" style="background: none; border: none; padding: 0; cursor: pointer; font-family: inherit;">
         <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"
             stroke-linecap="round" stroke-linejoin="round">
             <line x1="19" y1="12" x2="5" y2="12"></line>
             <polyline points="12 19 5 12 12 5"></polyline>
         </svg>
-        <span class="back-text">TOPへ戻る</span>
-    </a>
+        <span class="back-text">戻る</span>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const backBtn = document.getElementById('smartBackBtn');
+            if (!backBtn) return;
+
+            backBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // 現在地が「お問い合わせ画面」かどうかをチェック
+                const isContactPage = window.location.pathname.endsWith('contact.html');
+
+                if (isContactPage) {
+                    // ★ 問い合わせ画面からの「戻る」は、無条件で直前のツール（作業状態のまま）に帰す！
+                    if (window.history.length > 1) {
+                        window.history.back();
+                    } else {
+                        window.location.href = "{{ '/' | relative_url }}";
+                    }
+                } else {
+                    // ツール画面にいる時は、いつもの安全ロジック（直前がCST内なら戻る、ブックマーク直撃ならTOPへ）
+                    if (window.history.length > 1 && document.referrer.includes(window.location.host)) {
+                        window.history.back();
+                    } else {
+                        window.location.href = "{{ '/' | relative_url }}";
+                    }
+                }
+            });
+        });
+    </script>
     {% endif %}
     
     <h1>{{ page.title | default: "Creative-Support-Tools" }}</h1>

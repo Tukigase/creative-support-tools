@@ -20,14 +20,23 @@ body {
     font-family: "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", Meiryo, sans-serif;
 }
 
-/* ヘッダー */
-.header {
-    background-color: var(--bg-header);
-    padding: 15px 20px;
+/* common.css の31行目付近 */
+.back-button {
+    position: absolute;
+    left: 20px;
     display: flex;
     align-items: center;
-    border-bottom: 1px solid #334155;
-    position: relative;
+    gap: 5px;
+    color: var(--main-btn);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+    line-height: 1; /* ★追加：ボタン化による縦位置のズレ防止 */
+}
+
+.back-button:hover {
+    color: var(--accent);
 }
 
 .header h1 {
