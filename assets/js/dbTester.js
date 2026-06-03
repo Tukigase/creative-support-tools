@@ -6,14 +6,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     const dataRowsList = document.getElementById('dataRowsList');
     const addDataBtn = document.getElementById('addDataBtn');
     const mdPreviewArea = document.getElementById('mdPreviewArea');
-    const fileNameInput = document.getElementById('fileNameInput');
     
+    // ボタン類
     const exportSqlBtn = document.getElementById('exportSqlBtn');
-    const exportTestSqlBtn = document.getElementById('exportTestSqlBtn'); // ★新規：実行SQL保存
+    const exportTestSqlBtn = document.getElementById('exportTestSqlBtn');
     const exportMdBtn = document.getElementById('exportMdBtn');
     const exportPdfBtn = document.getElementById('exportPdfBtn');
     const runSqlBtn = document.getElementById('runSqlBtn');
     
+    // SQLテスト用
     const sqlInput = document.getElementById('sqlInput');
     const resultArea = document.getElementById('resultArea');
     const dbStatusText = document.getElementById('dbStatusText');
@@ -59,7 +60,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         generatePreview();
     }
 
-    // ★新規：初期データ行の追加
+    // 初期データ行の追加
     function addDataRow() {
         const row = document.createElement('div'); row.className = 'data-row';
         const cellsContainer = document.createElement('div'); cellsContainer.className = 'cells-container';
@@ -68,29 +69,29 @@ document.addEventListener('DOMContentLoaded', async () => {
         removeBtn.addEventListener('click', () => { row.remove(); generatePreview(); });
         row.appendChild(removeBtn);
         dataRowsList.appendChild(row);
-        generatePreview(); // カラム同期を走らせる
+        generatePreview();
     }
 
-    // ★新規：カラム数の増減に合わせて、初期データの入力セル数を同期する
+    // カラム同期
     function syncDataGrid() {
         const colNames = Array.from(document.querySelectorAll('.col-name')).map(inp => inp.value.trim() || 'unknown');
         document.querySelectorAll('.data-row').forEach(row => {
             const cellsContainer = row.querySelector('.cells-container');
             let cells = Array.from(cellsContainer.querySelectorAll('.data-cell'));
-            while (cells.length < colNames.length) { // 足りないセルを追加
+            while (cells.length < colNames.length) {
                 const inp = document.createElement('input'); inp.className = 'styled-input data-cell';
                 inp.addEventListener('input', generatePreview);
                 cellsContainer.appendChild(inp); cells.push(inp);
             }
-            while (cells.length > colNames.length) { // 余分なセルを削除
+            while (cells.length > colNames.length) {
                 cells.pop().remove();
             }
-            cells.forEach((cell, i) => { cell.placeholder = colNames[i]; }); // プレースホルダーを更新
+            cells.forEach((cell, i) => { cell.placeholder = colNames[i]; });
         });
     }
 
     function generatePreview() {
-        syncDataGrid(); // 常にカラムと初期データセルを同期
+        syncDataGrid();
 
         const tableName = tableNameInput.value.trim() || 'untitled';
         const rows = document.querySelectorAll('.column-row');
@@ -110,7 +111,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
         sql += sqlLines.join(',\n') + `\n);\n`;
 
-        // ★新規：初期データ (INSERT文) の組み立て
         const dataRows = document.querySelectorAll('.data-row');
         if (dataRows.length > 0) {
             sql += `\n-- 初期データ\nINSERT INTO ${tableName} (${colNames.join(', ')}) VALUES \n`;
@@ -119,17 +119,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             let valuesList = [];
             dataRows.forEach(row => {
                 const cells = Array.from(row.querySelectorAll('.data-cell')).map(inp => inp.value);
-                
-                // MD用の行追加
                 md += `| ${cells.map(v => v ? v : '*(NULL)*').join(' | ')} |\n`;
 
-                // SQL用に文字列や数値を判別
                 const sqlVals = cells.map(v => {
                     const trimV = v.trim();
                     if (trimV === '') return 'NULL';
-                    if (!isNaN(trimV)) return trimV; // 数値ならそのまま
+                    if (!isNaN(trimV)) return trimV;
                     if (trimV.toUpperCase() === 'TRUE' || trimV.toUpperCase() === 'FALSE') return trimV.toUpperCase();
-                    return `'${v.replace(/'/g, "''")}'`; // 文字列はシングルクォートで囲む（エスケープ対応）
+                    return `'${v.replace(/'/g, "''")}'`;
                 });
                 valuesList.push(`(${sqlVals.join(', ')})`);
             });
@@ -158,7 +155,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const db = new SQL_WASM.Database();
 
         try {
-            db.exec(currentSql); // GUIで作ったCREATE & INSERT を先にかける
+            db.exec(currentSql);
             if (userQuery) {
                 const results = db.exec(userQuery);
                 if (results.length === 0) {
@@ -198,26 +195,59 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // 4. エクスポート処理
-    function getFileName() { return (fileNameInput.value.trim() || "schema"); }
-    function downloadFile(content, extension) {
-        if (!content) return;
+    // ==========================================
+    // 4. ダイアログ入力付きエクスポート処理
+    // ==========================================
+    function downloadFile(content, fileName) {
         const blob = new Blob([content], { type: 'text/plain' });
         const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-        a.download = `${getFileName()}.${extension}`; a.click(); URL.revokeObjectURL(a.href);
+        a.download = fileName; a.click(); URL.revokeObjectURL(a.href);
     }
 
-    exportSqlBtn.addEventListener('click', () => downloadFile(currentSql, 'sql'));
-    exportTestSqlBtn.addEventListener('click', () => downloadFile(sqlInput.value, 'test.sql')); // ★実行SQL保存
-    exportMdBtn.addEventListener('click', () => downloadFile(currentMarkdown, 'md'));
+    // 📝 設計SQL保存
+    exportSqlBtn.addEventListener('click', () => {
+        const defaultName = tableNameInput.value.trim() || 'schema';
+        const inputName = prompt("設計SQLのファイル名を入力してください（拡張子不要）:", defaultName);
+        if (inputName === null) return; // キャンセル時
+        const finalName = (inputName.trim() || defaultName) + ".sql";
+        downloadFile(currentSql, finalName);
+    });
+
+    // 📝 実行SQL保存
+    exportTestSqlBtn.addEventListener('click', () => {
+        const defaultName = (tableNameInput.value.trim() || 'schema') + "_test";
+        const inputName = prompt("実行したテストSQLのファイル名を入力してください（拡張子不要）:", defaultName);
+        if (inputName === null) return;
+        const finalName = (inputName.trim() || defaultName) + ".sql";
+        downloadFile(sqlInput.value, finalName);
+    });
+
+    // 📄 仕様書(MD)保存
+    exportMdBtn.addEventListener('click', () => {
+        const defaultName = tableNameInput.value.trim() || 'schema';
+        const inputName = prompt("Markdown仕様書のファイル名を入力してください（拡張子不要）:", defaultName);
+        if (inputName === null) return;
+        const finalName = (inputName.trim() || defaultName) + ".md";
+        downloadFile(currentMarkdown, finalName);
+    });
     
+    // 📄 PDF保存
     exportPdfBtn.addEventListener('click', () => {
+        const defaultName = tableNameInput.value.trim() || 'schema';
+        const inputName = prompt("PDF仕様書のファイル名を入力してください（拡張子不要）:", defaultName);
+        if (inputName === null) return;
+        const finalName = (inputName.trim() || defaultName) + ".pdf";
+
         const element = document.getElementById('mdPreviewArea');
+        exportPdfBtn.textContent = '生成中...';
+        
         html2pdf().set({
-            margin: 15, filename: `${getFileName()}.pdf`,
+            margin: 15, filename: finalName,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2, useCORS: true },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        }).from(element).save();
+        }).from(element).save().finally(() => {
+            exportPdfBtn.textContent = '📄 PDF保存';
+        });
     });
 });
