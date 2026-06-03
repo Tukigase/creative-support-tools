@@ -101,3 +101,29 @@ hr {
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(250, 204, 21, 0.4);
 }
+
+/* バッジの共通ベーススタイル */
+.badge {
+    display: inline-block;
+    padding: 3px 8px;
+    font-size: 0.7rem;          /* タイトルより一回り小さく */
+    font-weight: normal;        /* 文字の太さを通常にリセット */
+    vertical-align: middle;     /* タイトル文字と縦方向を中央揃え */
+    border-radius: 4px;
+    margin-left: 8px;           /* タイトルとの間の隙間 */
+    letter-spacing: normal;
+}
+
+/* 📱 スマホ対応（現行の落ち着いたトーンに合わせた深緑） */
+.badge-responsive {
+    background-color: #0f2d24;  /* 暗めの緑 */
+    color: #34d399;             /* 明るい緑文字 */
+    border: 1px solid #10b981;  /* 緑の枠線 */
+}
+
+/* 💻 PC推奨（現行のグレーネイビーに溶け込むトーン） */
+.badge-pc {
+    background-color: #0f172a;  /* 一段暗いネイビー */
+    color: #94a3b8;             /* 薄いグレー文字 */
+    border: 1px solid #334155;  /* グレーの枠線 */
+}
