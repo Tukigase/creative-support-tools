@@ -16,8 +16,11 @@ js: markdownEditor.js
                 📁 読み込み
                 <input type="file" id="importFile" accept=".md" style="display: none;">
             </label>
+
+            <input type="text" id="fileNameInput" class="styled-input" placeholder="ファイル名" value="document">
+
             <button id="exportMdBtn" class="action-btn">💾 .md保存</button>
-            
+
             <select id="themeSelect" class="styled-select" style="margin-left: 10px;">
                 <option value="theme-zenn">🎨 Zenn風</option>
                 <option value="theme-github">🏢 GitHub風</option>
@@ -53,10 +56,10 @@ graph TD;
     D --> E[PDFでエクスポート];
 ```
 </textarea>
-    </aside>
+        </aside>
 
-    <section class="panel right-panel preview-panel">
-        <div id="mdPreview" class="markdown-body theme-zenn">
+        <section class="panel right-panel preview-panel">
+            <div id="mdPreview" class="markdown-body theme-zenn">
             </div>
-    </section>
-</div>
+        </section>
+    </div>

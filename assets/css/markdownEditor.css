@@ -330,3 +330,20 @@
 .theme-github tr:nth-child(2n) {
     background-color: #f6f8fa;
 }
+
+/* ★追加：ファイル名入力欄のスタイル */
+.styled-input {
+    background-color: #0f172a;      /* エディタと同じトーンのネイビー */
+    color: #f8fafc;                 /* 文字色は白 */
+    border: 1px solid #334155;      /* 控えめなグレー枠線 */
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    width: 150px;                   /* 幅はお好みで調整してください */
+    transition: border-color 0.2s;
+}
+
+.styled-input:focus {
+    border-color: #38bdf8;          /* フォーカス時にアクセントカラー */
+    outline: none;
+}

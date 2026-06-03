@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const exportPdfBtn = document.getElementById('exportPdfBtn');
     const exportMdBtn = document.getElementById('exportMdBtn');
     const exportImgBtn = document.getElementById('exportImgBtn');
+    const fileNameInput = document.getElementById('fileNameInput');
 
     let currentFileName = 'document.md';
 
@@ -78,7 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const file = e.target.files[0];
         if (!file) return;
 
-        currentFileName = file.name;
+        const baseName = file.name.replace(/\.[^/.]+$/, "");
+        fileNameInput.value = baseName;
 
         const reader = new FileReader();
         reader.onload = (e) => {
@@ -89,11 +91,14 @@ document.addEventListener('DOMContentLoaded', () => {
         importFile.value = '';
     });
 
+    function getFileName() {
+        const inputVal = fileNameInput.value.trim();
+        return inputVal !== "" ? inputVal : "document";
+    }
+
     // 💾 .mdファイルとして保存
     exportMdBtn.addEventListener('click', () => {
-        let inputName = prompt("保存するファイル名を入力してください（拡張子不要）:", currentFileName.replace('.md', ''));
-        if (inputName === null) return; // キャンセル時
-        if (inputName.trim() === "") inputName = "document"; // 空欄時
+        const fileName = getFileName() + ".md"; // ★入力欄から取得
 
         currentFileName = `${inputName}.md`; // ベースのファイル名を更新
         try {
@@ -104,7 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const a = document.createElement('a');
             a.style.display = 'none';
             a.href = url;
-            a.download = currentFileName;
+            a.download = fileName;
 
             document.body.appendChild(a);
             a.click();
@@ -121,10 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 🖼️ 画像(PNG)エクスポート処理
     exportImgBtn.addEventListener('click', () => {
-        // ★追加: ファイル名を入力させる
-        let inputName = prompt("保存する画像ファイル名を入力してください（拡張子不要）:", currentFileName.replace('.md', ''));
-        if (inputName === null) return;
-        if (inputName.trim() === "") inputName = "document";
+        const fileName = getFileName() + ".png";
 
         const element = document.getElementById('mdPreview');
         const originalBtnText = exportImgBtn.textContent;
@@ -142,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const a = document.createElement('a');
             a.style.display = 'none';
             a.href = url;
-            a.download = `${inputName}.png`;
+            a.download = fileName;
 
             document.body.appendChild(a);
             a.click();
@@ -162,9 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 📄 PDFエクスポート処理
     exportPdfBtn.addEventListener('click', async () => {
-        let inputName = prompt("保存するPDFファイル名を入力してください（拡張子不要）:", currentFileName.replace('.md', ''));
-        if (inputName === null) return;
-        if (inputName.trim() === "") inputName = "document";
+        const fileName = getFileName() + ".pdf";
 
         const element = document.getElementById('mdPreview');
         const originalBtnText = exportPdfBtn.textContent;
@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // ★ 修正: pagebreak の avoid オプションに .mermaid を指定して途中でのスライスを防止
         const opt = {
             margin: 15,
-            filename: `${inputName}.pdf`,
+            filename: fileName,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2, useCORS: true },
             jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
