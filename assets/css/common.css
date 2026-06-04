@@ -21,7 +21,7 @@ body {
 }
 
 /* =========================================
-   ヘッダーエリア（崩れ防止のレイアウト修正）
+   ヘッダーエリア（正式名称リンク仕様）
 ========================================= */
 .header {
     background-color: var(--bg-header);
@@ -31,43 +31,58 @@ body {
     justify-content: center;    /* 横方向の中央揃え */
     padding: 0 20px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
 }
 
 .header h1 {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     margin: 0;
     color: var(--main-text);
     text-align: center;
-}
-/* ★追加：タイトルリンクのデザイン崩れ防止 */
-.header-logo-link {
-    color: inherit;          /* 親(h1)の文字色を引き継ぐ */
-    text-decoration: none;   /* 下線を消す */
-    transition: opacity 0.2s;
+    font-weight: 600;
+    letter-spacing: 0.05em;
 }
 
-.header-logo-link:hover {
-    opacity: 0.8;            /* ホバーした時に少し透明にしてクリックできる感を出す */
+/* 左側の独立した正式名称トップリンクボタン */
+.header-logo-brand {
+    position: absolute;
+    left: 20px;
+    background-color: #0F172A;
+    color: var(--main-btn);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+}
+
+.header-logo-brand:hover {
+    background-color: var(--main-btn);
+    color: var(--bg-base);
+    border-color: var(--main-btn);
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
 }
 
 /* スマート戻るボタン */
 .back-button {
     position: absolute;
-    left: 20px;
+    left: 185px; /* ロゴと被らないように配置位置を調整 */
     display: flex;
     align-items: center;
     gap: 6px;
-    color: var(--main-btn);
+    color: var(--sub-text);
     text-decoration: none;
     font-weight: bold;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     transition: all 0.2s;
-    height: 100%;             /* 親ヘッダーの高さに合わせる */
+    height: 100%;
 }
 
 .back-button:hover {
-    color: var(--accent);
-    opacity: 1;
+    color: var(--main-text);
 }
 
 /* お問い合わせアイコン */
@@ -77,15 +92,18 @@ body {
 }
 
 /* =========================================
-   フッター ＆ レスポンシブ設定
+   フッター（★重要：MDエディターを含む全画面で幅100%を強制）
 ========================================= */
 .footer {
     background-color: var(--bg-footer);
     text-align: center;
-    padding: 15px;
+    padding: 20px;
     color: var(--sub-text);
     font-size: 0.8rem;
     margin-top: auto;
+    width: 100% !important;   /* 幅を完全に画面横いっぱいに広げる */
+    box-sizing: border-box;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .footer p {
@@ -102,15 +120,26 @@ body {
     color: var(--accent);
 }
 
-/* スマホ用ヘッダー調整 */
+/* レスポンシブ調整 */
+@media (max-width: 900px) {
+    .header-logo-brand {
+        display: none; /* 画面幅が狭い時は中央を優先して隠す */
+    }
+    .back-button {
+        left: 20px;    /* ロゴが非表示になったら左端に寄せる */
+    }
+}
+
 @media (max-width: 768px) {
     .back-text {
-        display: none; /* 戻る文字を隠してアイコンだけに */
+        display: none; /* アイコンのみ */
     }
-    
+    .back-button {
+        left: 20px;
+    }
     .header h1 {
-        font-size: 1.1rem;
-        padding: 0 50px; /* 左右のボタンに被らないように余白確保 */
+        font-size: 1.0rem;
+        padding: 0 60px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;

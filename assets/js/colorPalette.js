@@ -14,6 +14,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const mockupWindow = document.getElementById('mockupWindow');
     const cssOutputCode = document.getElementById('cssOutputCode');
     const mdOutputCode = document.getElementById('mdOutputCode');
+    const paletteNameInput = document.getElementById('paletteNameInput');
+    const appendCssToMdCheck = document.getElementById('appendCssToMdCheck');
+    
+    // ダウンロードボタンの取得
+    const downloadCssBtn = document.getElementById('downloadCssBtn');
+    const downloadMdBtn = document.getElementById('downloadMdBtn');
+
+    // 現時点の生データを保持する変数
+    let currentCssContent = '';
+    let currentMdContent = '';
 
     // 2. 左パネル：入力UIの動的生成
     paletteSettings.forEach(setting => {
@@ -26,7 +36,6 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         inputsArea.appendChild(row);
 
-        // 色が変更されたときのイベントリスナー
         const inputEl = document.getElementById(setting.id);
         inputEl.addEventListener('input', (e) => {
             const newHex = e.target.value.toUpperCase();
@@ -35,23 +44,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 3. 全体更新関数（モックアップ反映・コード出力）
+    // 3. 全体更新関数
     function updatePalette() {
         let cssString = `:root {\n`;
         let mdString = `| 役割 | プレビュー | カラーコード | 用途・備考 |\n| :--- | :---: | :--- | :--- |\n`;
 
         paletteSettings.forEach(setting => {
             const hex = document.getElementById(setting.id).value.toUpperCase();
-
-            // モックアップへのCSS変数リアルタイム適用
             mockupWindow.style.setProperty(setting.varName, hex);
-
-            // 出力用コードの構築
             cssString += `    ${setting.varName}: ${hex};\n`;
             mdString += `| ${setting.label} | ![${hex}](https://placehold.co/15x15/${hex.replace('#', '')}/${hex.replace('#', '')}.png) | \`${hex}\` | ${setting.desc} |\n`;
         });
 
         cssString += `}`;
+        
+        currentCssContent = cssString;
+        currentMdContent = mdString;
+
         cssOutputCode.textContent = cssString;
         mdOutputCode.textContent = mdString;
     }
@@ -71,7 +80,13 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.copy-button').forEach(button => {
         button.addEventListener('click', function () {
             const targetId = this.dataset.copyTarget;
-            const textToCopy = document.getElementById(targetId).textContent;
+            let textToCopy = document.getElementById(targetId).textContent;
+            
+            // Markdownコピー時かつチェックボックスがONの場合、コピーバッファにもインジェクションする
+            if (targetId === 'mdOutputCode' && appendCssToMdCheck && appendCssToMdCheck.checked) {
+                textToCopy += `\n\n### 埋め込みCSSソース\n\`\`\`css\n${currentCssContent}\n\`\`\``;
+            }
+
             navigator.clipboard.writeText(textToCopy).then(() => {
                 const originalText = this.textContent;
                 this.textContent = 'コピー済!';
@@ -84,7 +99,43 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // 6. 右パネル：インポート処理
+    // ★ 6. ファイル保存（ダウンロード）機能の実装
+    function triggerDownload(content, extension) {
+        const nameSuffix = paletteNameInput.value.trim() || 'custom';
+        const finalFileName = `palette_${nameSuffix}.${extension}`;
+        
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = finalFileName;
+        
+        document.body.appendChild(a);
+        a.click();
+        
+        setTimeout(() => {
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }, 100);
+    }
+
+    // CSSの保存
+    downloadCssBtn.addEventListener('click', () => {
+        triggerDownload(currentCssContent, 'css');
+    });
+
+    // Markdownの保存（チェック判定つき）
+    downloadMdBtn.addEventListener('click', () => {
+        let finalMd = currentMdContent;
+        if (appendCssToMdCheck && appendCssToMdCheck.checked) {
+            // チェックONならテーブルの下にCSSのコードブロックを連結する
+            finalMd += `\n\n### 埋め込みCSSソース\n\`\`\`css\n${currentCssContent}\n\`\`\``;
+        }
+        triggerDownload(finalMd, 'md');
+    });
+
+    // 7. 右パネル：インポート処理
     const importBtn = document.getElementById('importBtn');
     const importCssText = document.getElementById('importCssText');
 
@@ -128,8 +179,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================================
     // 色彩理論（ハーモニー）自動生成ロジック
     // =========================================
-    
-    // ★追加：軽量化時に消した関数を計算用に復活！
     function hexToRgbArray(hex) { return [parseInt(hex.slice(1, 3), 16), parseInt(hex.slice(3, 5), 16), parseInt(hex.slice(5, 7), 16)]; }
     function rgbArrayToHex(rgb) { return "#" + rgb.map(x => Math.max(0, Math.min(255, Math.round(x))).toString(16).padStart(2, '0')).join(''); }
     function rgbToHsl(r, g, b) {
@@ -150,7 +199,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return [h * 360, s * 100, l * 100];
     }
 
-    // HSLからRGBへの変換関数
     function hslToRgb(h, s, l) {
         h /= 360; s /= 100; l /= 100;
         let r, g, b;
@@ -173,35 +221,26 @@ document.addEventListener('DOMContentLoaded', () => {
         return [r * 255, g * 255, b * 255];
     }
 
-    // HEXからHSLへ変換するラッパー
-    function hexToHsl(hex) {
-        return rgbToHsl(...hexToRgbArray(hex));
-    }
+    function hexToHsl(hex) { return rgbToHsl(...hexToRgbArray(hex)); }
 
-    // ハーモニー生成処理
     document.querySelectorAll('.harmony-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             const type = e.target.dataset.type;
-            
-            // 基準となる「ベース（背景）」の色を取得
             const baseHex = document.getElementById('bg-base').value;
             let [h, s, l] = hexToHsl(baseHex);
             
-            // 彩度や明度が低すぎると色が潰れるので、計算用に最低限の値を確保
             if (s < 20) s = 40;
             const isDark = l < 50; 
             
             let newColors = {};
 
             if (type === 'analogous') {
-                // 類似色 (色相を少しずつズラす)
                 newColors['bg-header'] = rgbArrayToHex(hslToRgb((h + 15) % 360, s, l));
                 newColors['bg-footer'] = rgbArrayToHex(hslToRgb((h - 15 + 360) % 360, s, isDark ? Math.max(l - 10, 5) : Math.min(l + 10, 95)));
                 newColors['main-btn']  = rgbArrayToHex(hslToRgb((h + 30) % 360, Math.min(s + 20, 100), isDark ? 60 : 40));
                 newColors['accent']    = rgbArrayToHex(hslToRgb((h - 30 + 360) % 360, Math.min(s + 30, 100), isDark ? 70 : 30));
             } 
             else if (type === 'complementary') {
-                // 補色 (色相を180度反転)
                 const compH = (h + 180) % 360;
                 newColors['bg-header'] = rgbArrayToHex(hslToRgb(h, s, isDark ? l + 5 : l - 5));
                 newColors['bg-footer'] = rgbArrayToHex(hslToRgb(h, s, isDark ? Math.max(l - 10, 5) : Math.min(l + 10, 95)));
@@ -209,7 +248,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 newColors['accent']    = rgbArrayToHex(hslToRgb(compH, Math.min(s + 40, 100), isDark ? 70 : 30));
             }
             else if (type === 'triadic') {
-                // 3色配色 (色相を120度ずつ配置)
                 const h2 = (h + 120) % 360;
                 const h3 = (h + 240) % 360;
                 newColors['bg-header'] = rgbArrayToHex(hslToRgb(h, s, isDark ? l + 5 : l - 5));
@@ -218,11 +256,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 newColors['accent']    = rgbArrayToHex(hslToRgb(h3, Math.min(s + 20, 100), isDark ? 70 : 30));
             }
 
-            // テキスト色は背景の明るさに応じて白か黒（濃いグレー）に調整
             newColors['main-text'] = isDark ? '#F8FAFC' : '#1E293B';
             newColors['sub-text']  = isDark ? '#94A3B8' : '#64748B';
 
-            // 画面の input 値を更新し、プレビューに反映
             Object.keys(newColors).forEach(id => {
                 document.getElementById(id).value = newColors[id];
                 document.getElementById(`${id}-hex`).textContent = newColors[id].toUpperCase();

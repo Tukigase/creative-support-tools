@@ -18,8 +18,7 @@ js: colorPalette.js
                     </div>
                 </div>
                 
-                <div class="color-inputs" id="colorInputsArea">
-                    </div>
+                <div class="color-inputs" id="colorInputsArea"></div>
             </section>
         </aside>
 
@@ -85,6 +84,12 @@ js: colorPalette.js
 
             <section class="panel-section mt-4">
                 <h2>エクスポート</h2>
+                
+                <div style="margin-bottom: 15px; display: flex; flex-direction: column; gap: 6px;">
+                    <label style="font-size: 0.85rem; color: var(--sub-text); font-weight: bold;">パレット名（保存用）</label>
+                    <input type="text" id="paletteNameInput" class="styled-input" style="width: 100%; box-sizing: border-box;" value="cyber-teal" placeholder="例: cyber-teal">
+                </div>
+
                 <div class="export-tabs">
                     <button class="tab-btn active" data-target="exportCss">CSS</button>
                     <button class="tab-btn" data-target="exportMd">Markdown</button>
@@ -94,14 +99,26 @@ js: colorPalette.js
                     <div class="code-box">
                         <code id="cssOutputCode"></code>
                     </div>
-                    <button class="action-btn copy-button mt-btn" data-copy-target="cssOutputCode">CSSをコピー</button>
+                    <div style="display: flex; gap: 10px;" class="mt-btn">
+                        <button id="copyCssBtn" class="action-btn copy-button" data-copy-target="cssOutputCode" style="flex: 1;">コピー</button>
+                        <button id="downloadCssBtn" class="action-btn" style="flex: 1; background-color: #0284c7; color: #fff;">💾 保存</button>
+                    </div>
                 </div>
 
                 <div class="export-content" id="exportMd">
                     <div class="code-box">
                         <code id="mdOutputCode"></code>
                     </div>
-                    <button class="action-btn copy-button mt-btn" data-copy-target="mdOutputCode">Markdownをコピー</button>
+                    
+                    <label style="display: flex; align-items: center; gap: 8px; color: var(--sub-text); font-size: 0.85rem; margin-top: 12px; cursor: pointer; user-select: none;">
+                        <input type="checkbox" id="appendCssToMdCheck" style="cursor: pointer; accent-color: var(--main-btn);">
+                        <span>テーブルの下にCSSコードを添付する</span>
+                    </label>
+
+                    <div style="display: flex; gap: 10px;" class="mt-btn">
+                        <button id="copyMdBtn" class="action-btn copy-button" data-copy-target="mdOutputCode" style="flex: 1;">コピー</button>
+                        <button id="downloadMdBtn" class="action-btn" style="flex: 1; background-color: #0284c7; color: #fff;">💾 保存</button>
+                    </div>
                 </div>
             </section>
         </aside>
