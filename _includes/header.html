@@ -36,10 +36,11 @@
     {% endif %}
     
     <h1>
-        <span class="tool-title-main">{{ page.title | default: "Creative-Support-Tools" }}</span>
-        {% if page.url != "/" and page.url != "/index.html" %}
-        <span class="title-separator"> - </span>
-        <a href="{{ '/' | relative_url }}" class="header-brand-link" title="トップページへ戻る">Creative-Support-Tools</a>
+        {% if page.url == "/" or page.url == "/index.html" %}
+            {{ page.title | default: "Creative-Support-Tools" }}
+        {% else %}
+            {% assign tool_name = page.title | replace: ' - Creative-Support-Tools', '' %}
+            {{ tool_name }} - <a href="{{ '/' | relative_url }}" class="header-inline-brand-link" title="トップページへ戻る">Creative-Support-Tools</a>
         {% endif %}
     </h1>
 
