@@ -21,14 +21,14 @@ body {
 }
 
 /* =========================================
-   ヘッダーエリア（正式名称リンク仕様）
+   ヘッダーエリア
 ========================================= */
 .header {
     background-color: var(--bg-header);
-    height: 60px;               /* ヘッダーの高さを固定 */
+    height: 60px;               
     display: flex;
-    align-items: center;        /* 縦方向の中央揃え */
-    justify-content: center;    /* 横方向の中央揃え */
+    align-items: center;        
+    justify-content: center;    
     padding: 0 20px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     position: relative;
@@ -43,33 +43,27 @@ body {
     letter-spacing: 0.05em;
 }
 
-/* 左側の独立した正式名称トップリンクボタン */
-.header-logo-brand {
-    position: absolute;
-    left: 20px;
-    background-color: #0F172A;
-    color: var(--main-btn);
-    text-decoration: none;
-    font-weight: bold;
-    font-size: 0.75rem;
-    padding: 4px 10px;
-    border-radius: 4px;
-    border: 1px solid rgba(56, 189, 248, 0.3);
-    transition: all 0.2s;
-    letter-spacing: 0.02em;
+/* ★追加：元のテキストを活かした、下線なし・透明度のあるブランドリンク */
+.header-inline-brand-link {
+    color: var(--main-text);   /* 通常のテキスト色と同じ */
+    text-decoration: none;     /* ハイパーリンクの紫や下線を消去 */
+    font-size: inherit;        /* ツール名と同じサイズ */
+    font-weight: inherit;
+    opacity: 0.65;             /* 初期状態は少し透明にして馴染ませる */
+    cursor: pointer;           /* クリックできるカーソルに */
+    transition: opacity 0.2s, color 0.2s;
 }
 
-.header-logo-brand:hover {
-    background-color: var(--main-btn);
-    color: var(--bg-base);
-    border-color: var(--main-btn);
-    box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+/* カーソルを合わせたとき（ホバー時） */
+.header-inline-brand-link:hover {
+    opacity: 1;                /* クッキリ表示にする */
+    color: var(--main-btn);    /* メインカラー（青）に優しく反応 */
 }
 
 /* スマート戻るボタン */
 .back-button {
     position: absolute;
-    left: 185px; /* ロゴと被らないように配置位置を調整 */
+    left: 20px; /* 定位置の左端に戻す */
     display: flex;
     align-items: center;
     gap: 6px;
@@ -86,13 +80,16 @@ body {
 }
 
 /* お問い合わせアイコン */
+.contact-icon {
+    transition: opacity 0.2s, color 0.2s;
+}
 .contact-icon:hover {
     color: var(--accent) !important;
     opacity: 1 !important;
 }
 
 /* =========================================
-   フッター（★重要：MDエディターを含む全画面で幅100%を強制）
+   フッター
 ========================================= */
 .footer {
     background-color: var(--bg-footer);
@@ -121,21 +118,9 @@ body {
 }
 
 /* レスポンシブ調整 */
-@media (max-width: 900px) {
-    .header-logo-brand {
-        display: none; /* 画面幅が狭い時は中央を優先して隠す */
-    }
-    .back-button {
-        left: 20px;    /* ロゴが非表示になったら左端に寄せる */
-    }
-}
-
 @media (max-width: 768px) {
     .back-text {
-        display: none; /* アイコンのみ */
-    }
-    .back-button {
-        left: 20px;
+        display: none; /* スマホではアイコンのみ */
     }
     .header h1 {
         font-size: 1.0rem;
@@ -145,5 +130,9 @@ body {
         text-overflow: ellipsis;
         max-width: 100%;
         box-sizing: border-box;
+    }
+    /* スマホなどで文字が溢れるのを防ぐためにリンク部分を非表示化 */
+    .header-inline-brand-link {
+        display: none;
     }
 }
