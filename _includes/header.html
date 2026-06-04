@@ -1,6 +1,4 @@
 <header class="header" style="position: relative;">
-    <a href="{{ '/' | relative_url }}" class="header-logo-brand" title="トップページへ戻る">Creative-Support-Tools</a>
-
     {% if page.url != "/" and page.url != "/index.html" %}
     <button id="smartBackBtn" class="back-button" style="background: none; border: none; padding: 0; cursor: pointer; font-family: inherit;">
         <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"
@@ -18,19 +16,14 @@
 
             backBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                
-                // 現在地が「お問い合わせ画面」かどうかをチェック
                 const isContactPage = window.location.pathname.endsWith('contact.html');
-
                 if (isContactPage) {
-                    // 問い合わせ画面からの「戻る」は、無条件で直前のツール（作業状態のまま）に帰す！
                     if (window.history.length > 1) {
                         window.history.back();
                     } else {
                         window.location.href = "{{ '/' | relative_url }}";
                     }
                 } else {
-                    // ツール画面にいる時は、いつもの安全ロジック（直前がCST内なら戻る、ブックマーク直撃ならTOPへ）
                     if (window.history.length > 1 && document.referrer.includes(window.location.host)) {
                         window.history.back();
                     } else {
@@ -42,7 +35,13 @@
     </script>
     {% endif %}
     
-    <h1>{{ page.title | default: "Creative-Support-Tools" }}</h1>
+    <h1>
+        <span class="tool-title-main">{{ page.title | default: "Creative-Support-Tools" }}</span>
+        {% if page.url != "/" and page.url != "/index.html" %}
+        <span class="title-separator"> - </span>
+        <a href="{{ '/' | relative_url }}" class="header-brand-link" title="トップページへ戻る">Creative-Support-Tools</a>
+        {% endif %}
+    </h1>
 
     <a href="{{ '/contact.html' | relative_url }}" class="contact-icon" title="お問い合わせ" style="position: absolute; right: 20px; color: var(--main-text); text-decoration: none; display: flex; align-items: center; justify-content: center; opacity: 0.7; transition: opacity 0.2s;">
         <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none"

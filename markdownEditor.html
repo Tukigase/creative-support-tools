@@ -35,27 +35,27 @@ js: markdownEditor.js
     <div class="studio-layout">
         <aside class="panel left-panel editor-panel">
             <textarea id="mdInput" spellcheck="false">
-# Creative Markdown Editor
+                # Creative Markdown Editor
 
-ここは完全ブラウザ完結のMarkdownエディターです。
-記述した内容は右側にリアルタイムでプレビューされます。
+                ここは完全ブラウザ完結のMarkdownエディターです。
+                記述した内容は右側にリアルタイムでプレビューされます。
 
-## ✨ 特徴
-- **Mermaid対応**: サーバーなしで図表を描画できます。
-- **テーマ切替**: Zenn風とGitHub風の見た目をワンクリックで切り替え。
-- **PDF出力**: 美しい仕様書をそのままPDFとしてエクスポート。
+                ## ✨ 特徴
+                - **Mermaid対応**: サーバーなしで図表を描画できます。
+                - **テーマ切替**: Zenn風とGitHub風の見た目をワンクリックで切り替え。
+                - **PDF出力**: 美しい仕様書をそのままPDFとしてエクスポート。
 
-## 📊 Mermaidのテスト
+                ## 📊 Mermaidのテスト
 
-```mermaid
-graph TD;
-    A[Markdown入力] --> B(marked.jsでHTML化);
-    A --> C(mermaid.jsでSVG化);
-    B --> D{プレビュー画面};
-    C --> D;
-    D --> E[PDFでエクスポート];
-```
-</textarea>
+                ```mermaid
+                graph TD;
+                    A[Markdown入力] --> B(marked.jsでHTML化);
+                    A --> C(mermaid.jsでSVG化);
+                    B --> D{プレビュー画面};
+                    C --> D;
+                    D --> E[PDFでエクスポート];
+                ```
+            </textarea>
         </aside>
 
         <section class="panel right-panel preview-panel">
@@ -63,3 +63,4 @@ graph TD;
             </div>
         </section>
     </div>
+</main>
